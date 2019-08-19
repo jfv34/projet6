@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "192663849490",
+    "firebase_url": "https://projet6-8ac86.firebaseio.com",
+    "project_id": "projet6-8ac86",
+    "storage_bucket": "projet6-8ac86.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192663849490:android:c40caf839531f025",
+        "android_client_info": {
+          "package_name": "com.vincler.jf.projet6"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192663849490-ike3hao01q3qbp1vbcmej1ivrtajt244.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUl6dJOEqC1j4PosDCuw6fdr5llSOWCnY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192663849490-ike3hao01q3qbp1vbcmej1ivrtajt244.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

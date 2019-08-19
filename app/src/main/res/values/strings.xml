@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Go4Lunch</string>
+    <string name="drawer_title">Go4Lunch</string>
+    <string name="drawer_item1">YOUR LUNCH</string>
+    <string name="drawer_item2">SETTINGS</string>
+    <string name="drawer_item3">LOGOUT</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="menu_bottom_map">Map View</string>
+    <string name="menu_bottom_listview">List View</string>
+    <string name="menu_bottom_workmates">Workmates</string>
+    <string name="facebook_app_id">2315253275355969</string>
+    <string name="fb_login_protocol_scheme">fb2315253275355969</string>
+
+</resources>
