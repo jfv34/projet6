@@ -1,16 +1,15 @@
 package com.vincler.jf.projet6;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,15 +30,10 @@ public class ConnectActivity extends AppCompatActivity {
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
                 new AuthUI.IdpConfig.FacebookBuilder().build()
 
-
              /*
-
-
                 new AuthUI.IdpConfig.TwitterBuilder().build()
                 */
         );
-
-
 
         startActivityForResult(
                 AuthUI.getInstance()
@@ -48,11 +42,7 @@ public class ConnectActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_IN);
 
-
-
     }
-
-
 
 
     @Override
@@ -65,15 +55,20 @@ public class ConnectActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                toast(R.string.connectActivity_toast_successful);
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the
                 // sign-in flow using the back button. Otherwise check
                 // response.getError().getErrorCode() and handle the error.
                 // ...
+                toast(R.string.connectActivity_toast_failed);
             }
         }
     }
 
-
+    private void toast(int message) {
+        Toast toast = Toast.makeText(this, getString(message), Toast.LENGTH_LONG);
+        toast.show();
+    }
 }
