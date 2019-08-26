@@ -11,6 +11,8 @@
     <string name="menu_bottom_workmates">Workmates</string>
     <string name="facebook_application_id">2315253275355969</string>
     <string name="fb_login_protocol_scheme">fb2315253275355969</string>
+    <string name="twitter_consumer_key" translatable="false">zJmufD8cNVAsK9UWgcPMHudur</string>
+    <string name="twitter_consumer_secret" translatable="false">JyTEXIHWIYGS94JNFAQB78brrkUmDfhgObuGdH3zci1KD87CK9</string>
     <string name="connectActivity_toast_successful">successful connection</string>
     <string name="connectActivity_toast_failed">connection failed</string>
 
