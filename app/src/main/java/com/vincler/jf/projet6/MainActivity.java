@@ -1,9 +1,12 @@
 package com.vincler.jf.projet6;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,11 +17,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.vincler.jf.projet6.model.User;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private static final int RC_SIGN_IN = 123;
-
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +63,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .setLogo(R.drawable.ic_logo)
                         .build(),
                 RC_SIGN_IN);
-
-
     }
 
     private void configureSearchView() {
         SearchView searchView = findViewById(R.id.searchView);
         searchView.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -76,18 +78,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
-                // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 toast(R.string.connectActivity_toast_successful);
-                // ...
+                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                createUser(firebaseUser);
+                displayUserinNavDrawer();
+
             } else {
-                // Sign in failed. If response is null the user canceled the
+                // Sign in failed. If response is null the firebaseUser canceled the
                 // sign-in flow using the back button. Otherwise check
                 // response.getError().getErrorCode() and handle the error.
                 // ...
                 toast(R.string.connectActivity_toast_failed);
             }
         }
+    }
+
+    private void displayUserinNavDrawer() {
+        TextView viewName = findViewById(R.id.nav_header_name_and_surname_tv);
+        TextView viewMail = findViewById(R.id.nav_header_mail_tv);
+        ImageView imageView = findViewById(R.id.nav_header_iv);
+
+        viewName.setText(user.name);
+        viewMail.setText(user.mail);
+
+        Glide.with(this)
+                .load(user.photo)
+                .into(imageView);
     }
 
     @Override
@@ -132,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
     }
 
     private void configureNavigationView() {
@@ -140,10 +155,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    private void createUser(FirebaseUser firebaseUser) {
+        if (firebaseUser != null) {
+
+            String name = firebaseUser.getDisplayName();
+            String mail = firebaseUser.getEmail();
+            Uri photoUrl = firebaseUser.getPhotoUrl();
+            user = new User(name, mail, photoUrl);
+        }
+    }
+
+
     private void toast(int message) {
         Toast toast = Toast.makeText(this, getString(message), Toast.LENGTH_LONG);
         toast.show();
     }
-
-
 }
