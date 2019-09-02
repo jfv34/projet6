@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,6 +82,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void configureSearchView() {
         SearchView searchView = findViewById(R.id.searchView);
         searchView.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toolbar.setTitle("");
+                toolbar.setNavigationIcon(null);
+
+
+            }
+        });
+
     }
 
     @Override
