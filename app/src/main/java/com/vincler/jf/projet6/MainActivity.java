@@ -18,6 +18,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.navigation.NavigationView;
@@ -55,14 +56,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new AuthUI.IdpConfig.TwitterBuilder().build()
         );
 
+        // You must provide a custom layout XML resource and configure at least one
+// provider button ID. It's important that that you set the button ID for every provider
+// that you have enabled.
+        AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
+                .Builder(R.layout.custom_layout)
+                .setEmailButtonId(R.id.email_button)
+                .setGoogleButtonId(R.id.custom_layout_googleButton)
+                .setFacebookButtonId(R.id.custom_layout_facebookButton)
+                .setTwitterButtonId(R.id.custom_layout_twitterButton)
+                .build();
+
+
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
-                        .setTheme(R.style.FullscreenTheme)
-                        .setLogo(R.drawable.ic_logo)
+                        .setAuthMethodPickerLayout(customLayout)
                         .build(),
                 RC_SIGN_IN);
+
     }
 
     private void configureSearchView() {
