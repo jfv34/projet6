@@ -22,6 +22,8 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 // that you have enabled.
         AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
                 .Builder(R.layout.custom_layout)
-                .setEmailButtonId(R.id.email_button)
+                .setEmailButtonId(R.id.custom_layout_emailButton)
                 .setGoogleButtonId(R.id.custom_layout_googleButton)
                 .setFacebookButtonId(R.id.custom_layout_facebookButton)
                 .setTwitterButtonId(R.id.custom_layout_twitterButton)
@@ -88,11 +90,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onClick(View v) {
                 toolbar.setTitle("");
                 toolbar.setNavigationIcon(null);
-
-
             }
         });
-
     }
 
     @Override
@@ -158,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.activity_main_drawer_3:
-                finish();
+                disconnectUser();
                 break;
             default:
                 break;
@@ -166,6 +165,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         this.drawerLayout.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    private void disconnectUser() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        recreate();
+                    }
+                });
     }
 
     private void configureDrawerLayout() {

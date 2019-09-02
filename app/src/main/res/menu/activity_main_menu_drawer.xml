@@ -28,7 +28,6 @@
                 <item
                     android:id="@+id/activity_main_drawer_3"
                     android:icon="@drawable/ic_menu_logout"
-
                     android:title="@string/drawer_item3" />
 
             </group>
