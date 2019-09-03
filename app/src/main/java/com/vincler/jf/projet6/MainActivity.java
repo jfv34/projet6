@@ -44,7 +44,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+
+       setContentView(R.layout.activity_main);
 
         configureToolbar();
         configureDrawerLayout();
@@ -59,23 +61,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new AuthUI.IdpConfig.TwitterBuilder().build()
         );
 
-        // You must provide a custom layout XML resource and configure at least one
-// provider button ID. It's important that that you set the button ID for every provider
-// that you have enabled.
-        AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
+/*        AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
                 .Builder(R.layout.custom_layout)
                 .setEmailButtonId(R.id.custom_layout_emailButton)
                 .setGoogleButtonId(R.id.custom_layout_googleButton)
                 .setFacebookButtonId(R.id.custom_layout_facebookButton)
                 .setTwitterButtonId(R.id.custom_layout_twitterButton)
-                .build();
+                .build();*/
 
 
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
-                        .setAuthMethodPickerLayout(customLayout)
+                        .setTheme(R.style.LoginTheme)
+                        .setLogo(R.drawable.ic_logo)
+                        //.setAuthMethodPickerLayout(customLayout)
                         .build(),
                 RC_SIGN_IN);
 
