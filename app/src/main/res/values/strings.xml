@@ -16,5 +16,6 @@
     <string name="connectActivity_toast_successful">successful connection</string>
     <string name="connectActivity_toast_failed">connection failed</string>
     <string name="customlayout_textlogo">Find a nice restaurant and invite your co-workers for lunch!</string>
+    <string name="title_hungry">I\'m Hungry !</string>
 
 </resources>

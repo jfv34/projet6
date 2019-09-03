@@ -3,9 +3,10 @@ package com.vincler.jf.projet6;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,13 +14,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
-import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,28 +31,30 @@ import com.vincler.jf.projet6.model.User;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
     private static final int RC_SIGN_IN = 123;
     private User user;
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private EditText customEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
+        toolbar = findViewById(R.id.activity_main_toolbar);
+        customEditText = findViewById(R.id.activity_main_customEditText);
 
-       setContentView(R.layout.activity_main);
+        Toolbar();
+        DrawerLayout();
+        NavigationView();
+        FirebaseUI();
+    }
 
-        configureToolbar();
-        configureDrawerLayout();
-        configureNavigationView();
-        configureSearchView();
-
-
+    private void FirebaseUI() {
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
@@ -61,38 +62,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 new AuthUI.IdpConfig.TwitterBuilder().build()
         );
 
-/*        AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
-                .Builder(R.layout.custom_layout)
-                .setEmailButtonId(R.id.custom_layout_emailButton)
-                .setGoogleButtonId(R.id.custom_layout_googleButton)
-                .setFacebookButtonId(R.id.custom_layout_facebookButton)
-                .setTwitterButtonId(R.id.custom_layout_twitterButton)
-                .build();*/
-
-
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
                         .setTheme(R.style.LoginTheme)
                         .setLogo(R.drawable.ic_logo)
-                        //.setAuthMethodPickerLayout(customLayout)
                         .build(),
                 RC_SIGN_IN);
-
-    }
-
-    private void configureSearchView() {
-        SearchView searchView = findViewById(R.id.searchView);
-        searchView.setLayoutParams(new Toolbar.LayoutParams(Gravity.END));
-
-        searchView.setOnSearchClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toolbar.setTitle("");
-                toolbar.setNavigationIcon(null);
-            }
-        });
     }
 
     @Override
@@ -106,19 +83,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 toast(R.string.connectActivity_toast_successful);
                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                 createUser(firebaseUser);
-                displayUserinNavDrawer();
+                displayUserInNavDrawer();
 
             } else {
-                // Sign in failed. If response is null the firebaseUser canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
                 toast(R.string.connectActivity_toast_failed);
             }
         }
     }
 
-    private void displayUserinNavDrawer() {
+    private void displayUserInNavDrawer() {
         TextView viewName = findViewById(R.id.nav_header_name_and_surname_tv);
         TextView viewMail = findViewById(R.id.nav_header_mail_tv);
         ImageView imageView = findViewById(R.id.nav_header_iv);
@@ -140,11 +113,55 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void configureToolbar() {
-        toolbar = findViewById(R.id.activity_main_toolbar);
+    private void Toolbar() {
+
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("I'm Hungry !");
+        noDisplayEditText();
+        displayTitle();
+        searchButtonListener();
+
+
     }
+
+    private void searchButtonListener() {
+        final ImageButton searchButton = findViewById(R.id.activity_main_searchButton_imButton);
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noDisplayTitle();
+                noDisplaySearchButton(searchButton);
+                noDisplayNavigationIcon();
+
+
+            }
+        });
+    }
+
+
+
+    private void noDisplayEditText() {
+
+        customEditText.setWidth(0);
+    }
+
+    private void noDisplayNavigationIcon() {
+        toolbar.setNavigationIcon(null);
+    }
+
+    private void noDisplaySearchButton(ImageButton searchButton) {
+        searchButton.setVisibility(View.INVISIBLE);
+    }
+
+
+    private void displayTitle() {
+        getSupportActionBar().setTitle("    " + getString(R.string.title_hungry));
+    }
+
+    private void noDisplayTitle() {
+        getSupportActionBar().setTitle("");
+    }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -168,24 +185,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void disconnectUser() {
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    public void onComplete(@NonNull Task<Void> task) {
-                        recreate();
-                    }
-                });
-    }
 
-    private void configureDrawerLayout() {
+    private void DrawerLayout() {
         drawerLayout = findViewById(R.id.activity_main_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
 
-    private void configureNavigationView() {
+    private void NavigationView() {
         NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -200,6 +208,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void disconnectUser() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        recreate();
+                    }
+                });
+    }
 
     private void toast(int message) {
         Toast toast = Toast.makeText(this, getString(message), Toast.LENGTH_LONG);
