@@ -3,6 +3,9 @@ package com.vincler.jf.projet6;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -48,7 +51,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar = findViewById(R.id.activity_main_toolbar);
         customEditText = findViewById(R.id.activity_main_customEditText);
 
-        Toolbar();
+        String text = customEditText.getText().toString();
+
+
+        setSupportActionBar(toolbar);
+        displayToolbar();
         DrawerLayout();
         NavigationView();
         FirebaseUI();
@@ -113,14 +120,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void Toolbar() {
+    private void displayToolbar() {
 
-        setSupportActionBar(toolbar);
         noDisplayEditText();
         displayTitle();
         searchButtonListener();
-
-
     }
 
     private void searchButtonListener() {
@@ -132,17 +136,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 noDisplayTitle();
                 noDisplaySearchButton(searchButton);
                 noDisplayNavigationIcon();
-
-
+                displayEditText();
             }
         });
     }
 
+    private void displayEditText() {
+        customEditText.setVisibility(View.VISIBLE);
+    }
 
 
     private void noDisplayEditText() {
 
-        customEditText.setWidth(0);
+        customEditText.setVisibility(View.GONE);
     }
 
     private void noDisplayNavigationIcon() {
@@ -160,6 +166,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void noDisplayTitle() {
         getSupportActionBar().setTitle("");
+    }
+
+    private void editTextListener() {
+        customEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String text = customEditText.getText().toString();
+                Log.i("tag_ontextchange", text);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String text = customEditText.getText().toString();
+                Log.i("tag_aftertextchange", text);
+            }
+        });
+
     }
 
 

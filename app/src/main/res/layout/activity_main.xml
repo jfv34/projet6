@@ -28,31 +28,27 @@
 
 
             <com.libizo.CustomEditText
-
                 android:id="@+id/activity_main_customEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="5dp"
-                android:hint="First Name"
-                android:inputType="phone"
-                app:libIZO_setPrefix="+91"
-                app:libIZO_setPrefixTextColor="#FF4081"
-                app:libIZO_clearIconTint="#8f1f15"
+                android:drawableStart="@drawable/ic_icon_search_black"
+                android:drawableEnd="@drawable/ic_icon_voice"
+                android:drawablePadding="5dp"
+                android:hint="Search..."
+                android:inputType="text"
+                app:libIZO_setBackgroundColor="#FFFFFF"
                 app:libIZO_setBorderColor="#FFFFFF"
-                app:libIZO_setBorderView="true"
-                app:libIZO_setClearIconVisible="true"
-                app:libIZO_setCornerRadius="4dp"
-                app:libIZO_setStrokeWidth="2dp"/>
+                app:libIZO_setBorderView="true" />
 
-        <ImageButton
-            android:id="@+id/activity_main_searchButton_imButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_icon_search"
-            android:background="@null"
-            android:layout_gravity="end"
-            android:layout_marginEnd="20dp"
-            />
+            <ImageButton
+                android:id="@+id/activity_main_searchButton_imButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="20dp"
+                android:background="@null"
+                android:src="@drawable/ic_icon_search_white" />
 
         </androidx.appcompat.widget.Toolbar>
 
