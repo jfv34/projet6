@@ -57,7 +57,7 @@
 
             android:id="@+id/activity_main_viewpager"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/activity_main_bottom_nav_view"
             app:layout_constraintTop_toBottomOf="@id/activity_main_toolbar" />
 
@@ -85,21 +85,21 @@
         app:itemTextColor="#ffffff"
         app:menu="@menu/activity_main_menu_drawer">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:clickable="true"
-        android:gravity="center"
-        android:orientation="vertical">
-
-        <ImageView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_logo_without_text" />
+            android:layout_gravity="bottom"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_logo_without_text" />
+
+        </LinearLayout>
 
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

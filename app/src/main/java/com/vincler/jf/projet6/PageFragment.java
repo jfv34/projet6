@@ -40,7 +40,6 @@ public class PageFragment extends Fragment {
             case 2:
                 fragmentLayout = R.layout.fragment_work;
         }
-
         return inflater.inflate(fragmentLayout, container, false);
     }
 }

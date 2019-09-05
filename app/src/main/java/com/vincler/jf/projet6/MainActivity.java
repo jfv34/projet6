@@ -264,15 +264,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 switch (menuItem.getItemId()) {
                     case R.id.menu_bottom_map:
                         viewPager.setCurrentItem(0);
-                        Log.i("tag_menu", "mapview");
                         break;
                     case R.id.menu_bottom_listview:
                         viewPager.setCurrentItem(1);
-                        Log.i("tag_menu", "listview");
                         break;
                     case R.id.menu_bottom_workmates:
                         viewPager.setCurrentItem(2);
-                        Log.i("tag_menu", "workmates");
                 }
                 return true;
             }
