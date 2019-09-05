@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
@@ -56,12 +57,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setSupportActionBar(toolbar);
         displayToolbar();
-        DrawerLayout();
-        NavigationView();
-        FirebaseUI();
+        drawerLayout();
+        navigationView();
+        viewPager();
+        firebaseUI();
     }
 
-    private void FirebaseUI() {
+    private void firebaseUI() {
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
@@ -214,16 +216,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-    private void DrawerLayout() {
+    private void drawerLayout() {
         drawerLayout = findViewById(R.id.activity_main_drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
 
-    private void NavigationView() {
+    private void navigationView() {
         NavigationView navigationView = findViewById(R.id.activity_main_nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void viewPager() {
+        ViewPager pager = findViewById(R.id.activity_main_viewpager);
+        pager.setAdapter(new PageAdapter(getSupportFragmentManager()));
+
+
     }
 
     private void createUser(FirebaseUser firebaseUser) {
