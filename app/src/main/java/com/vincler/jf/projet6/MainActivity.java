@@ -27,6 +27,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private User user;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
+    private BottomNavigationView bottomNavigationView;
+    private ViewPager viewPager;
     private EditText customEditText;
 
     @Override
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.activity_main_toolbar);
+        bottomNavigationView = findViewById(R.id.activity_main_bottom_nav_view);
+        viewPager = findViewById(R.id.activity_main_viewpager);
         customEditText = findViewById(R.id.activity_main_customEditText);
 
         String text = customEditText.getText().toString();
@@ -60,8 +65,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout();
         navigationView();
         viewPager();
+        bottomView();
         firebaseUI();
     }
+
 
     private void firebaseUI() {
         List<AuthUI.IdpConfig> providers = Arrays.asList(
@@ -229,10 +236,47 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void viewPager() {
-        ViewPager pager = findViewById(R.id.activity_main_viewpager);
-        pager.setAdapter(new PageAdapter(getSupportFragmentManager()));
 
+        viewPager.setAdapter(new PageAdapter(getSupportFragmentManager()));
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                bottomNavigationView.getMenu().getItem(position).setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    private void bottomView() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_bottom_map:
+                        viewPager.setCurrentItem(0);
+                        Log.i("tag_menu", "mapview");
+                        break;
+                    case R.id.menu_bottom_listview:
+                        viewPager.setCurrentItem(1);
+                        Log.i("tag_menu", "listview");
+                        break;
+                    case R.id.menu_bottom_workmates:
+                        viewPager.setCurrentItem(2);
+                        Log.i("tag_menu", "workmates");
+                }
+                return true;
+            }
+        });
     }
 
     private void createUser(FirebaseUser firebaseUser) {
@@ -260,3 +304,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toast.show();
     }
 }
+

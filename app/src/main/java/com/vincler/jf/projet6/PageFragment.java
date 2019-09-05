@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -25,17 +24,23 @@ public class PageFragment extends Fragment {
         return (fragment);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View fragmentview = inflater.inflate(R.layout.fragment_page, container, false);
-        TextView textView = fragmentview.findViewById(R.id.fragment_page_textview_test);
         int position = getArguments().getInt(KEY_POSITION);
-        textView.setText("Page numéro " + position);
+        int fragmentLayout = 0;
 
+        switch (position) {
+            case 0:
+                fragmentLayout = R.layout.fragment_map;
+                break;
+            case 1:
+                fragmentLayout = R.layout.fragment_list;
+                break;
+            case 2:
+                fragmentLayout = R.layout.fragment_work;
+        }
 
-        return fragmentview;
+        return inflater.inflate(fragmentLayout, container, false);
     }
-
 }

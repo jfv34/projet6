@@ -22,7 +22,6 @@ public class PageAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.i("tag_position", String.valueOf(position));
         return (PageFragment.newInstance(position));
     }
 }
