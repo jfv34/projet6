@@ -32,6 +32,9 @@
     </style>
 
     <style name="LoginTheme" parent="FirebaseUI">
+        <item name="android:windowActionBarOverlay">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:textColor">#ffffff</item>
         <item name="editTextColor">#ffffff</item>
         <item name="android:textColorPrimary">#ffffff</item>
@@ -49,11 +52,6 @@
         <item name="android:layout_gravity">center</item>
         <item name="android:padding">0dp</item>
     </style>
-
-
-
-
-
 
 
 </resources>
