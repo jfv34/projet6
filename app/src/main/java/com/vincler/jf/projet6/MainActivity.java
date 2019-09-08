@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;
     private EditText customEditText;
+    private String text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +57,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bottomNavigationView = findViewById(R.id.activity_main_bottom_nav_view);
         viewPager = findViewById(R.id.activity_main_viewpager);
         customEditText = findViewById(R.id.activity_main_customEditText);
-
-        String text = customEditText.getText().toString();
 
 
         setSupportActionBar(toolbar);
@@ -150,8 +149,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+
     private void displayEditText() {
         customEditText.setVisibility(View.VISIBLE);
+        editTextListener();
     }
 
 
@@ -186,13 +187,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String text = customEditText.getText().toString();
+                text = customEditText.getText().toString();
                 Log.i("tag_ontextchange", text);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                String text = customEditText.getText().toString();
+                text = customEditText.getText().toString();
                 Log.i("tag_aftertextchange", text);
             }
         });

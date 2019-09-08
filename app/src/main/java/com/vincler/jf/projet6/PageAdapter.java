@@ -1,8 +1,5 @@
 package com.vincler.jf.projet6;
 
-import android.util.Log;
-import android.widget.TextView;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -22,7 +19,18 @@ public class PageAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return (PageFragment.newInstance(position));
+        switch (position) {
+            case 0: //Page number 1
+                return MapFragment.newInstance();
+            case 1: //Page number 2
+                return ListFragment.newInstance();
+            case 2: //Page number 3
+                return WorkFragment.newInstance();
+            default:
+                return null;
+        }
     }
+
+
 }
 

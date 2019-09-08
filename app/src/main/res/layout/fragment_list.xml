@@ -6,9 +6,9 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/fragment_list_textView"
         android:gravity="center"
         android:textSize="20sp"
-        android:text="THIS IS LISTVIEW"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -34,6 +34,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
 
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
@@ -42,4 +43,3 @@ dependencies {
 
 }
 apply plugin: 'com.google.gms.google-services'
-
