@@ -1,4 +1,4 @@
-package com.vincler.jf.projet6.model;
+package com.vincler.jf.projet6.models;
 
 import android.net.Uri;
 

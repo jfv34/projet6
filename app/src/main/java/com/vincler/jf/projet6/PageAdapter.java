@@ -4,6 +4,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.vincler.jf.projet6.fragments.ListFragment;
+import com.vincler.jf.projet6.fragments.MapFragment;
+import com.vincler.jf.projet6.fragments.WorkFragment;
+
 public class PageAdapter extends FragmentPagerAdapter {
 
     private static final int NUMBER_OF_PAGES = 3;
