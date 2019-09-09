@@ -16,11 +16,14 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.vincler.jf.projet6.R;
 
 import static android.content.Context.LOCATION_SERVICE;
 
-public class MapFragment extends Fragment implements LocationListener {
+public class MapFragment extends Fragment implements LocationListener, OnMapReadyCallback {
 
     private static final int PERMISSIONS_REQUEST_CODE = 123;
     private LocationManager locationManager;
@@ -37,8 +40,8 @@ public class MapFragment extends Fragment implements LocationListener {
 
 
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-        textView = rootView.findViewById((R.id.fragment_map_textView));
-        textView.setText("This is the map");
+      SupportMapFragment map = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+      map.getMapAsync(this);
 
 
         return rootView;
@@ -125,6 +128,11 @@ public class MapFragment extends Fragment implements LocationListener {
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
             checkpermissions();
         }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 }
 

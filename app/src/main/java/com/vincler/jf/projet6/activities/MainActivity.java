@@ -3,11 +3,10 @@ package com.vincler.jf.projet6.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -72,21 +71,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     private void firebaseUI() {
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build(),
-                new AuthUI.IdpConfig.FacebookBuilder().build(),
-                new AuthUI.IdpConfig.TwitterBuilder().build()
-        );
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
 
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .setTheme(R.style.LoginTheme)
-                        .setLogo(R.drawable.ic_logo)
-                        .build(),
-                RC_SIGN_IN);
+            List<AuthUI.IdpConfig> providers = Arrays.asList(
+                    new AuthUI.IdpConfig.EmailBuilder().build(),
+                    new AuthUI.IdpConfig.GoogleBuilder().build(),
+                    new AuthUI.IdpConfig.FacebookBuilder().build(),
+                    new AuthUI.IdpConfig.TwitterBuilder().build()
+            );
+
+            startActivityForResult(
+                    AuthUI.getInstance()
+                            .createSignInIntentBuilder()
+                            .setAvailableProviders(providers)
+                            .setTheme(R.style.LoginTheme)
+                            .setLogo(R.drawable.ic_logo)
+                            .build(),
+                    RC_SIGN_IN);
+        }
     }
 
     @Override
@@ -169,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void noDisplaySearchButton(ImageButton searchButton) {
         searchButton.setVisibility(View.INVISIBLE);
+
     }
 
 
@@ -181,22 +185,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void editTextListener() {
-        customEditText.addTextChangedListener(new TextWatcher() {
+        customEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    displayToolbar();
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                text = customEditText.getText().toString();
-                Log.i("tag_ontextchange", text);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                text = customEditText.getText().toString();
-                Log.i("tag_aftertextchange", text);
+                    return true;
+                }
+                return false;
             }
         });
 
