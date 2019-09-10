@@ -16,9 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.vincler.jf.projet6.R;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -29,6 +32,7 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     private LocationManager locationManager;
     private double latitude;
     private double longitude;
+    private GoogleMap googleMap;
 
     public static MapFragment newInstance() {
 
@@ -52,10 +56,8 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
             @Override
             public void onMapReady(GoogleMap googleMap) {
 
+                MapFragment.this.googleMap = googleMap;
                 googleMap.setMyLocationEnabled(true);
-                latitude = 48;
-                longitude = 2;
-
 
             }
         });
@@ -79,10 +81,16 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     @Override
     public void onLocationChanged(Location location) {
 
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-        Log.i("tag_lagitude", String.valueOf(latitude));
-        Log.i("tag_longitude", String.valueOf(longitude));
+        //latitude = location.getLatitude();
+        //longitude = location.getLongitude();
+
+        latitude = 48.8584;
+        longitude = 2.2945;
+        if(googleMap!=null){
+            LatLng latlng = new LatLng(latitude,longitude);
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+        }
+
     }
 
     @Override
