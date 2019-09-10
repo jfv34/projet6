@@ -1,6 +1,7 @@
 package com.vincler.jf.projet6.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -10,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
@@ -27,27 +27,39 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
     private static final int PERMISSIONS_REQUEST_CODE = 123;
     private LocationManager locationManager;
-    private TextView textView;
+    private double latitude;
+    private double longitude;
 
     public static MapFragment newInstance() {
 
         return new MapFragment();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-      SupportMapFragment map = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-      map.getMapAsync(this);
 
 
         return rootView;
-
     }
 
+    private void loadMap() {
+
+        SupportMapFragment map = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        map.getMapAsync(new OnMapReadyCallback() {
+            @SuppressLint("MissingPermission")
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+
+                googleMap.setMyLocationEnabled(true);
+                latitude = 48;
+                longitude = 2;
+
+
+            }
+        });
+    }
 
     @Override
     public void onPause() {
@@ -67,12 +79,10 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     @Override
     public void onLocationChanged(Location location) {
 
-        double latitude = location.getLatitude();
-        double longitude = location.getLongitude();
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
         Log.i("tag_lagitude", String.valueOf(latitude));
         Log.i("tag_longitude", String.valueOf(longitude));
-
-
     }
 
     @Override
@@ -119,7 +129,7 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
 
         }
-
+        loadMap();
     }
 
     @Override

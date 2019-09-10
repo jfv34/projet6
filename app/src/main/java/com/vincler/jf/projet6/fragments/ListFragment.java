@@ -26,7 +26,6 @@ public class ListFragment extends Fragment {
         textView = rootView.findViewById((R.id.fragment_list_textView));
         textView.setText("This is the ListView");
 
-
         return rootView;
 
 

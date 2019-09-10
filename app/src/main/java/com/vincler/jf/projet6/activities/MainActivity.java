@@ -2,7 +2,6 @@ package com.vincler.jf.projet6.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.inputmethodservice.Keyboard;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -159,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void displayToolbar() {
+    public void displayToolbar() {
 
         noDisplayEditText();
         displayTitle();
@@ -232,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void closeKeyboard() {
         View view = this.getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
