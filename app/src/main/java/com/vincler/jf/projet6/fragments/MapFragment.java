@@ -7,7 +7,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.vincler.jf.projet6.R;
 
@@ -78,17 +77,19 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         checkpermissions();
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onLocationChanged(Location location) {
 
-        //latitude = location.getLatitude();
-        //longitude = location.getLongitude();
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
 
-        latitude = 48.8584;
-        longitude = 2.2945;
-        if(googleMap!=null){
-            LatLng latlng = new LatLng(latitude,longitude);
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+        if (googleMap != null) {
+            LatLng latlng = new LatLng(latitude, longitude);
+
+            CameraPosition cameraPosition = new CameraPosition.Builder().zoom(15).target(latlng).build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
         }
 
     }
