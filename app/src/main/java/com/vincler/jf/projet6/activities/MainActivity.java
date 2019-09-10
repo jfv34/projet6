@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;
     private EditText customEditText;
-    private String text;
+    private ImageButton searchButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,17 +58,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         bottomNavigationView = findViewById(R.id.activity_main_bottom_nav_view);
         viewPager = findViewById(R.id.activity_main_viewpager);
         customEditText = findViewById(R.id.activity_main_customEditText);
+        searchButton = findViewById(R.id.activity_main_searchButton_imButton);
 
-
-        setSupportActionBar(toolbar);
+        configureViews();
         displayToolbar();
-        drawerLayout();
-        navigationView();
-        viewPager();
-        bottomView();
         firebaseUI();
     }
 
+    private void configureViews() {
+        setSupportActionBar(toolbar);
+        searchButtonListener();
+        navigationView();
+        viewPager();
+        bottomView();
+    }
 
     private void firebaseUI() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -111,6 +114,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void createUser(FirebaseUser firebaseUser) {
+        if (firebaseUser != null) {
+
+            String name = firebaseUser.getDisplayName();
+            String mail = firebaseUser.getEmail();
+            Uri photoUrl = firebaseUser.getPhotoUrl();
+            user = new User(name, mail, photoUrl);
+        }
+    }
+
+    private void disconnectUser() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    public void onComplete(@NonNull Task<Void> task) {
+                        recreate();
+                    }
+                });
+    }
+
     private void displayUserInNavDrawer() {
         TextView viewName = findViewById(R.id.nav_header_name_and_surname_tv);
         TextView viewMail = findViewById(R.id.nav_header_mail_tv);
@@ -137,29 +160,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         noDisplayEditText();
         displayTitle();
-        searchButtonListener();
+        drawerLayout();
+        displaySearchButton();
+    }
+
+    private void displaySearchBar() {
+
+        noDisplayTitle();
+        noDisplaySearchButton();
+        noDisplayNavigationIcon();
+        displayEditText();
     }
 
     private void searchButtonListener() {
-        final ImageButton searchButton = findViewById(R.id.activity_main_searchButton_imButton);
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                noDisplayTitle();
-                noDisplaySearchButton(searchButton);
-                noDisplayNavigationIcon();
-                displayEditText();
+                displaySearchBar();
             }
         });
     }
-
 
     private void displayEditText() {
         customEditText.setVisibility(View.VISIBLE);
         editTextListener();
     }
-
 
     private void noDisplayEditText() {
 
@@ -170,11 +196,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toolbar.setNavigationIcon(null);
     }
 
-    private void noDisplaySearchButton(ImageButton searchButton) {
+    private void noDisplaySearchButton() {
         searchButton.setVisibility(View.INVISIBLE);
-
     }
 
+    private void displaySearchButton() {
+        searchButton.setVisibility(View.VISIBLE);
+    }
 
     private void displayTitle() {
         getSupportActionBar().setTitle("    " + getString(R.string.title_hungry));
@@ -190,15 +218,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     displayToolbar();
-
                     return true;
                 }
                 return false;
             }
         });
-
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -221,7 +246,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         return true;
     }
-
 
     private void drawerLayout() {
         drawerLayout = findViewById(R.id.activity_main_drawer_layout);
@@ -276,29 +300,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    private void createUser(FirebaseUser firebaseUser) {
-        if (firebaseUser != null) {
-
-            String name = firebaseUser.getDisplayName();
-            String mail = firebaseUser.getEmail();
-            Uri photoUrl = firebaseUser.getPhotoUrl();
-            user = new User(name, mail, photoUrl);
-        }
-    }
-
-    private void disconnectUser() {
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    public void onComplete(@NonNull Task<Void> task) {
-                        recreate();
-                    }
-                });
-    }
-
     private void toast(int message) {
         Toast toast = Toast.makeText(this, getString(message), Toast.LENGTH_LONG);
         toast.show();
     }
 }
-
