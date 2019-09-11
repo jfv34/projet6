@@ -7,22 +7,36 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceLikelihood;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.vincler.jf.projet6.R;
 
+import java.util.Collections;
+import java.util.List;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.Context.LOCATION_SERVICE;
 
 public class MapFragment extends Fragment implements LocationListener, OnMapReadyCallback {
@@ -57,6 +71,53 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
                 MapFragment.this.googleMap = googleMap;
                 googleMap.setMyLocationEnabled(true);
+
+
+                //  Initialize the SDK
+
+                Places.initialize(getActivity(), "AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc");
+
+                // Create a new Places client instance
+                PlacesClient placesClient = Places.createClient(getActivity());
+
+                // Use fields to define the data types to return.
+                List<Place.Field> placeFields = Collections.singletonList(Place.Field.NAME);
+
+// Use the builder to create a FindCurrentPlaceRequest.
+                FindCurrentPlaceRequest request =
+                        FindCurrentPlaceRequest.newInstance(placeFields);
+
+// Call findCurrentPlace and handle the response (first check that the user has granted permission).
+                if (ContextCompat.checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    Task<FindCurrentPlaceResponse> placeResponse = placesClient.findCurrentPlace(request);
+                    placeResponse.addOnCompleteListener(task -> {
+                        if (task.isSuccessful()){
+                            FindCurrentPlaceResponse response = task.getResult();
+                            for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
+                                Log.i("tag_place", String.format("Place '%s' has likelihood: %f",
+                                        placeLikelihood.getPlace().getName(),
+                                        placeLikelihood.getLikelihood(),placeLikelihood.getPlace()));
+
+                            }
+                        } else {
+                            Exception exception = task.getException();
+
+                            if (exception instanceof ApiException) {
+                                ApiException apiException = (ApiException) exception;
+
+                                Log.e("tag","Place not found:" + apiException.getStatusCode());
+                            }
+                        }
+                    });
+                }
+
+
+
+
+
+
+
+
 
             }
         });
@@ -112,10 +173,10 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     private void checkpermissions() {
 
         if
-        (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+        (ActivityCompat.checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             }, PERMISSIONS_REQUEST_CODE);
             return;
@@ -153,6 +214,12 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     public void onMapReady(GoogleMap googleMap) {
 
     }
+
+
 }
+
+
+
+
 
 

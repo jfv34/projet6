@@ -2,8 +2,10 @@ package com.vincler.jf.projet6.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager.widget.ViewPager;
@@ -26,8 +29,15 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.PlaceLikelihood;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,7 +47,10 @@ import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.User;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -65,7 +78,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         configureViews();
         displayToolbar();
         firebaseUI();
+
+
+
+
     }
+
+
+
 
     private void configureViews() {
         setSupportActionBar(toolbar);
@@ -315,4 +335,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toast toast = Toast.makeText(this, getString(message), Toast.LENGTH_LONG);
         toast.show();
     }
+
+
 }
+
