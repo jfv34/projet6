@@ -32,7 +32,6 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.vincler.jf.projet6.R;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;

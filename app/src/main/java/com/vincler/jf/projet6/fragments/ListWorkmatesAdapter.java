@@ -29,8 +29,7 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        Users users1 = new Users("abcdef","ab@hfh.ccom",null);
-        users.add(users1);
+
 
 
         Context context = parent.getContext();
@@ -47,7 +46,7 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return users.size();
+        return 0;
     }
 
 
