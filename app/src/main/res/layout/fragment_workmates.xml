@@ -3,14 +3,17 @@
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragment_work"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/fragment_word_textView"
-        android:gravity="center"
-        android:textSize="20sp"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_workmates_recyclerview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:scrollbars="vertical">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>

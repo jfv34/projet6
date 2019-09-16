@@ -35,6 +35,7 @@ import com.vincler.jf.projet6.R;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.Context.LOCATION_SERVICE;
@@ -75,28 +76,31 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
                 //  Initialize the SDK
 
-                Places.initialize(getActivity(), "AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc");
+                Places.initialize(Objects.requireNonNull(getActivity()), "AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc");
 
                 // Create a new Places client instance
                 PlacesClient placesClient = Places.createClient(getActivity());
 
                 // Use fields to define the data types to return.
-                List<Place.Field> placeFields = Collections.singletonList(Place.Field.NAME);
+
+                List<Place.Field> placeFieldsName = Collections.singletonList(Place.Field.NAME);
+
 
 // Use the builder to create a FindCurrentPlaceRequest.
                 FindCurrentPlaceRequest request =
-                        FindCurrentPlaceRequest.newInstance(placeFields);
+                        FindCurrentPlaceRequest.newInstance(placeFieldsName);
 
 // Call findCurrentPlace and handle the response (first check that the user has granted permission).
                 if (ContextCompat.checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
                     Task<FindCurrentPlaceResponse> placeResponse = placesClient.findCurrentPlace(request);
                     placeResponse.addOnCompleteListener(task -> {
-                        if (task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             FindCurrentPlaceResponse response = task.getResult();
                             for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
-                                Log.i("tag_place", String.format("Place '%s' has likelihood: %f",
-                                        placeLikelihood.getPlace().getName(),
-                                        placeLikelihood.getLikelihood(),placeLikelihood.getPlace()));
+
+                                String i = placeLikelihood.getPlace().toString();
+                                Log.i("tag_place: ", i);
 
                             }
                         } else {
@@ -105,20 +109,11 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                             if (exception instanceof ApiException) {
                                 ApiException apiException = (ApiException) exception;
 
-                                Log.e("tag","Place not found:" + apiException.getStatusCode());
+                                Log.e("tag", "Place not found:" + apiException.getStatusCode());
                             }
                         }
                     });
                 }
-
-
-
-
-
-
-
-
-
             }
         });
     }
