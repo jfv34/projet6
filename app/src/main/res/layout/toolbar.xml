@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="?attr/colorPrimary"
+    app:contentInsetStartWithNavigation="0dp"
+    app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
+    app:theme="@style/ToolbarColoredBackArrow"
+    app:titleTextColor="#ffffff">
+
+
+    <com.libizo.CustomEditText
+        android:id="@+id/activity_main_customEditText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="-4dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:drawableStart="@drawable/ic_icon_search_black"
+        android:drawableEnd="@drawable/ic_icon_voice"
+        android:drawablePadding="5dp"
+        android:hint="Search..."
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        app:libIZO_setBackgroundColor="#FFFFFF"
+        app:libIZO_setBorderColor="#FFFFFF"
+        app:libIZO_setBorderView="true"
+        app:libIZO_setCornerRadius="4dp" />
+
+    <ImageButton
+        android:id="@+id/activity_main_searchButton_imButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginEnd="20dp"
+        android:background="@null"
+        android:src="@drawable/ic_icon_search_white" />
+
+</androidx.appcompat.widget.Toolbar>

@@ -39,7 +39,7 @@ import java.util.Objects;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.Context.LOCATION_SERVICE;
 
-public class MapFragment extends Fragment implements LocationListener, OnMapReadyCallback {
+public class MapFragment extends DrawerFragment implements LocationListener, OnMapReadyCallback {
 
     private static final int PERMISSIONS_REQUEST_CODE = 123;
     private LocationManager locationManager;
@@ -57,7 +57,6 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-
         return rootView;
     }
 
@@ -72,7 +71,6 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                 MapFragment.this.googleMap = googleMap;
                 googleMap.setMyLocationEnabled(true);
 
-
                 //  Initialize the SDK
 
                 Places.initialize(Objects.requireNonNull(getActivity()), "AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc");
@@ -83,7 +81,6 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                 // Use fields to define the data types to return.
 
                 List<Place.Field> placeFieldsName = Collections.singletonList(Place.Field.NAME);
-
 
 // Use the builder to create a FindCurrentPlaceRequest.
                 FindCurrentPlaceRequest request =

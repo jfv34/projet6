@@ -1,110 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main_drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.vincler.jf.projet6.activities.MainActivity"
-    tools:openDrawer="start">
+    android:orientation="vertical">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/activity_main_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/activity_main_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:contentInsetStartWithNavigation="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/activity_main_viewpager"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
-            app:theme="@style/ToolbarColoredBackArrow"
-            app:titleTextColor="#ffffff">
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/activity_main_bottom_nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        app:menu="@menu/activity_main_menu_bottom" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>
 
 
-            <com.libizo.CustomEditText
-                android:id="@+id/activity_main_customEditText"
-                android:imeOptions="actionDone"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp"
-                app:libIZO_setCornerRadius="4dp"
-                android:drawableStart="@drawable/ic_icon_search_black"
-                android:layout_marginLeft="-4dp"
-                android:drawableEnd="@drawable/ic_icon_voice"
-                android:drawablePadding="5dp"
-                android:hint="Search..."
-                android:inputType="text"
-                app:libIZO_setBackgroundColor="#FFFFFF"
-                app:libIZO_setBorderColor="#FFFFFF"
-                app:libIZO_setBorderView="true" />
-
-            <ImageButton
-                android:id="@+id/activity_main_searchButton_imButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="20dp"
-                android:background="@null"
-                android:src="@drawable/ic_icon_search_white" />
-
-        </androidx.appcompat.widget.Toolbar>
-
-
-        <androidx.viewpager.widget.ViewPager
-
-            android:id="@+id/activity_main_viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/activity_main_bottom_nav_view"
-            app:layout_constraintTop_toBottomOf="@id/activity_main_toolbar" />
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-
-            android:id="@+id/activity_main_bottom_nav_view"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_gravity="start"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:menu="@menu/activity_main_menu_bottom" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/activity_main_nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#EF6C00"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/activity_main_nav_header"
-        app:itemIconTint="#ffffff"
-        app:itemTextColor="#ffffff"
-        app:menu="@menu/activity_main_menu_drawer">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:clickable="true"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_logo_without_text" />
-
-        </LinearLayout>
-
-    </com.google.android.material.navigation.NavigationView>
-</androidx.drawerlayout.widget.DrawerLayout>
