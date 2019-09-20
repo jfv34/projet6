@@ -18,7 +18,6 @@ import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vincler.jf.projet6.PageAdapter;
@@ -28,7 +27,7 @@ import com.vincler.jf.projet6.models.Users;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
     private Users users;
@@ -41,21 +40,14 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         bottomNavigationView = findViewById(R.id.activity_main_bottom_nav_view);
         viewPager = findViewById(R.id.activity_main_viewpager);
 
-
         configureViews();
         firebaseUI();
-
-
     }
 
-
     private void configureViews() {
-
-
         viewPager();
         bottomView();
     }
@@ -143,7 +135,6 @@ public class MainActivity extends AppCompatActivity{
         }
     }*/
 
-
     private void viewPager() {
 
         viewPager.setAdapter(new PageAdapter(getSupportFragmentManager()));
@@ -189,7 +180,5 @@ public class MainActivity extends AppCompatActivity{
         Toast toast = Toast.makeText(this, getString(message), Toast.LENGTH_LONG);
         toast.show();
     }
-
-
 }
 

@@ -2,39 +2,40 @@ package com.vincler.jf.projet6.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.PlaceLikelihood;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
-import com.google.android.libraries.places.api.net.PlacesClient;
 import com.vincler.jf.projet6.R;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import com.vincler.jf.projet6.UnsafeOkHttpClient;
+import com.vincler.jf.projet6.data.RestaurantsService;
+
+import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.Context.LOCATION_SERVICE;
@@ -55,9 +56,13 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.fragment_map, container, false);
-
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
         return rootView;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
     private void loadMap() {
@@ -68,7 +73,9 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
             @Override
             public void onMapReady(GoogleMap googleMap) {
 
-                MapFragment.this.googleMap = googleMap;
+                retrofit();
+
+                /*MapFragment.this.googleMap = googleMap;
                 googleMap.setMyLocationEnabled(true);
 
                 //  Initialize the SDK
@@ -109,9 +116,42 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
                             }
                         }
                     });
-                }
+                }*/
             }
         });
+    }
+
+    private void retrofit() {
+
+     /*   HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder builder = UnsafeOkHttpClient.getUnsafeOkHttpClient().addInterceptor(interceptor);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://maps.googleapis.com/maps/api/place/findplacefromtext/output?")
+                .client(builder.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        final RestaurantsService service = retrofit.create(RestaurantsService.class);
+        service.listRestaurants().enqueue(new Callback<ListRestaurantsResponse>() {
+            @Override
+            public void onResponse(Call<ListRestaurantsResponse> call, Response<ListRestaurantsResponse> response) {
+
+              *//*  Intent intent = new Intent(MainActivity.this, ResultSearchActivity.class);
+                Bundle b = new Bundle();
+                b.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) response.body().getResults());
+                intent.putExtras(b);
+                startActivity(intent);*//*
+
+            }
+
+            @Override
+            public void onFailure(Call<ListRestaurantsResponse> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+*/
     }
 
     @Override

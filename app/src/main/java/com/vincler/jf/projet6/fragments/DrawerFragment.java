@@ -1,5 +1,6 @@
 package com.vincler.jf.projet6.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -33,21 +36,24 @@ public abstract class DrawerFragment extends Fragment implements NavigationView.
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_list, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        toolbar = rootView.findViewById(R.id.activity_main_toolbar);
+        toolbar = rootView.findViewById(R.id.toolbar);
         customEditText = rootView.findViewById(R.id.activity_main_customEditText);
         searchButton = rootView.findViewById(R.id.activity_main_searchButton_imButton);
-        drawerLayout = rootView.findViewById(R.id.activity_main_drawer_layout);
+        drawerLayout = rootView.findViewById(R.id.fragment_map_drawer_layout);
         navigationView = rootView.findViewById(R.id.activity_main_nav_view);
 
-        //setSupportActionBar(toolbar);
+        displayToolbar();
+
         return rootView;
 
     }
 
     public void displayToolbar() {
 
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        navigationView();
         noDisplayEditText();
         displayTitle();
         drawerLayout();
@@ -92,14 +98,16 @@ public abstract class DrawerFragment extends Fragment implements NavigationView.
 
     private void displaySearchButton() {
         searchButton.setVisibility(View.VISIBLE);
+        searchButtonListener();
     }
 
     private void displayTitle() {
-        // getSupportActionBar().setTitle("    " + getString(R.string.title_hungry));
+        toolbar.setTitle("    " + getString(R.string.title_hungry));
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("    " + getString(R.string.title_hungry));
     }
 
     private void noDisplayTitle() {
-        //  getSupportActionBar().setTitle("");
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("");
     }
 
     private void editTextListener() {
@@ -117,11 +125,11 @@ public abstract class DrawerFragment extends Fragment implements NavigationView.
     }
 
     private void closeKeyboard() {
-       /* View view = this.getCurrentFocus();
+        View view = getActivity().getCurrentFocus();
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);*/
-        // }
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     @Override
