@@ -39,16 +39,15 @@ public abstract class DrawerFragment extends Fragment implements NavigationView.
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
         toolbar = rootView.findViewById(R.id.toolbar);
-        customEditText = rootView.findViewById(R.id.activity_main_customEditText);
-        searchButton = rootView.findViewById(R.id.activity_main_searchButton_imButton);
+        customEditText = rootView.findViewById(R.id.toolbar_customEditText);
+        searchButton = rootView.findViewById(R.id.toolbar_searchButton_imButton);
         drawerLayout = rootView.findViewById(R.id.fragment_map_drawer_layout);
-        navigationView = rootView.findViewById(R.id.activity_main_nav_view);
-
+        navigationView = rootView.findViewById(R.id.nav_view);
         displayToolbar();
 
         return rootView;
-
     }
+
 
     public void displayToolbar() {
 

@@ -13,7 +13,7 @@
 
 
     <com.libizo.CustomEditText
-        android:id="@+id/activity_main_customEditText"
+        android:id="@+id/toolbar_customEditText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="-4dp"
@@ -32,7 +32,7 @@
         app:libIZO_setCornerRadius="4dp" />
 
     <ImageButton
-        android:id="@+id/activity_main_searchButton_imButton"
+        android:id="@+id/toolbar_searchButton_imButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"

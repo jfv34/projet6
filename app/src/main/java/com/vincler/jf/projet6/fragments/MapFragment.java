@@ -2,13 +2,12 @@ package com.vincler.jf.projet6.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -26,8 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.UnsafeOkHttpClient;
 import com.vincler.jf.projet6.data.RestaurantsService;
-
-import java.util.ArrayList;
+import com.vincler.jf.projet6.models.ListRestaurantsResponse;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -47,6 +46,9 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
     private double latitude;
     private double longitude;
     private GoogleMap googleMap;
+    private DrawerLayout drawerLayout;
+    private final String RADIUS = "1500";
+
 
     public static MapFragment newInstance() {
 
@@ -57,91 +59,57 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        drawerLayout = rootView.findViewById(R.id.fragment_map_drawer_layout);
+
         return rootView;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
     }
 
     private void loadMap() {
 
         SupportMapFragment map = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         map.getMapAsync(new OnMapReadyCallback() {
-            @SuppressLint("MissingPermission")
+
             @Override
+            @SuppressLint("MissingPermission")
             public void onMapReady(GoogleMap googleMap) {
 
-                retrofit();
-
-                /*MapFragment.this.googleMap = googleMap;
                 googleMap.setMyLocationEnabled(true);
+                requestByRetrofit();
 
-                //  Initialize the SDK
-
-                Places.initialize(Objects.requireNonNull(getActivity()), "AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc");
-
-                // Create a new Places client instance
-                PlacesClient placesClient = Places.createClient(getActivity());
-
-                // Use fields to define the data types to return.
-
-                List<Place.Field> placeFieldsName = Collections.singletonList(Place.Field.NAME);
-
-// Use the builder to create a FindCurrentPlaceRequest.
-                FindCurrentPlaceRequest request =
-                        FindCurrentPlaceRequest.newInstance(placeFieldsName);
-
-// Call findCurrentPlace and handle the response (first check that the user has granted permission).
-                if (ContextCompat.checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-
-                    Task<FindCurrentPlaceResponse> placeResponse = placesClient.findCurrentPlace(request);
-                    placeResponse.addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            FindCurrentPlaceResponse response = task.getResult();
-                            for (PlaceLikelihood placeLikelihood : response.getPlaceLikelihoods()) {
-
-                                String i = placeLikelihood.getPlace().toString();
-                                Log.i("tag_place: ", i);
-
-                            }
-                        } else {
-                            Exception exception = task.getException();
-
-                            if (exception instanceof ApiException) {
-                                ApiException apiException = (ApiException) exception;
-
-                                Log.e("tag", "Place not found:" + apiException.getStatusCode());
-                            }
-                        }
-                    });
-                }*/
             }
         });
     }
 
-    private void retrofit() {
 
-     /*   HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+    private void requestByRetrofit() {
+
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = UnsafeOkHttpClient.getUnsafeOkHttpClient().addInterceptor(interceptor);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://maps.googleapis.com/maps/api/place/findplacefromtext/output?")
+                .baseUrl("https://maps.googleapis.com/maps/api/place/nearbysearch/")
                 .client(builder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         final RestaurantsService service = retrofit.create(RestaurantsService.class);
-        service.listRestaurants().enqueue(new Callback<ListRestaurantsResponse>() {
+
+        String locationUser = latitude + "," + longitude;
+
+        service.listRestaurants(locationUser, RADIUS).enqueue(new Callback<ListRestaurantsResponse>() {
             @Override
             public void onResponse(Call<ListRestaurantsResponse> call, Response<ListRestaurantsResponse> response) {
 
-              *//*  Intent intent = new Intent(MainActivity.this, ResultSearchActivity.class);
-                Bundle b = new Bundle();
-                b.putParcelableArrayList("data", (ArrayList<? extends Parcelable>) response.body().getResults());
-                intent.putExtras(b);
-                startActivity(intent);*//*
+                if (!response.body().getResults().isEmpty()) {
+                    Log.i("tag_response", response.body().getResults().get(0).getRestaurant());
+                }
+
 
             }
 
@@ -151,7 +119,7 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
             }
         });
 
-*/
+
     }
 
     @Override
@@ -184,6 +152,7 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
 
         }
 
+        requestByRetrofit();
     }
 
     @Override
