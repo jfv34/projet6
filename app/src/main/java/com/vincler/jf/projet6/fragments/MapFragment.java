@@ -57,8 +57,7 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View rootView = super.onCreateView(inflater, container, savedInstanceState);
-        drawerLayout = rootView.findViewById(R.id.fragment_map_drawer_layout);
+        View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
         return rootView;
     }
