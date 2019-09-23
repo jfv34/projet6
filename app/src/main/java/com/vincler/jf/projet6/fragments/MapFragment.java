@@ -86,9 +86,8 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
         });
     }
 
-
     private void requestByRetrofit() {
-
+        Log.i("tag_requestByRetrofit","ok");
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = UnsafeOkHttpClient.getUnsafeOkHttpClient().addInterceptor(interceptor);
@@ -99,15 +98,21 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         final RestaurantsService service = retrofit.create(RestaurantsService.class);
-
+        Log.i("tag_service",service.toString());
+        Log.i("tag_service_latitude", String.valueOf(latitude));
         String locationUser = latitude + "," + longitude;
-
+        Log.i("tag_service_location", String.valueOf(locationUser));
         service.listRestaurants(locationUser, RADIUS).enqueue(new Callback<ListRestaurantsResponse>() {
             @Override
             public void onResponse(Call<ListRestaurantsResponse> call, Response<ListRestaurantsResponse> response) {
+                Log.i("tag_onResponse","ok");
+                String result = response.body().getResults().toString();
 
                 if (!response.body().getResults().isEmpty()) {
-                    Log.i("tag_response", response.body().getResults().get(0).getRestaurant());
+                    Log.i("tag_response_restaurant", response.body().getResults().get(0).getRestaurant());
+                    Log.i("tag_response_latitude", String.valueOf(response.body().getResults().get(0).getLatitude()));
+                    Log.i("tag_response_longitude", String.valueOf(response.body().getResults().get(0).getLongitude()));
+
                 }
 
 
@@ -118,6 +123,7 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
                 t.printStackTrace();
             }
         });
+
 
 
     }
@@ -134,25 +140,32 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
     @Override
     public void onResume() {
         super.onResume();
-        checkpermissions();
+        checkPermissions();
     }
 
     @SuppressLint("MissingPermission")
     @Override
     public void onLocationChanged(Location location) {
+Log.i("tag_onLocationchanged","ok");
+        updatesGeolocationUser(location);
+        updatesMapDisplay();
+        requestByRetrofit();
+    }
 
+    private void updatesGeolocationUser(Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
+        Log.i("tag_updatesGéo_latitude", String.valueOf(latitude));
+    }
 
+    private void updatesMapDisplay() {
+        Log.i("tag_updatesMap","ok");
         if (googleMap != null) {
+            Log.i("tag_updatesMap_if","ok");
             LatLng latlng = new LatLng(latitude, longitude);
-
             CameraPosition cameraPosition = new CameraPosition.Builder().zoom(15).target(latlng).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
         }
-
-        requestByRetrofit();
     }
 
     @Override
@@ -170,7 +183,7 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
 
     }
 
-    private void checkpermissions() {
+    private void checkPermissions() {
 
         if
         (ActivityCompat.checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -206,7 +219,7 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PERMISSIONS_REQUEST_CODE) {
-            checkpermissions();
+            checkPermissions();
         }
     }
 
