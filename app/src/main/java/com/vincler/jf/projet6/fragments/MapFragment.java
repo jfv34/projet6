@@ -45,9 +45,9 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
     private LocationManager locationManager;
     private double latitude;
     private double longitude;
-    private GoogleMap googleMap;
     private DrawerLayout drawerLayout;
     private final String RADIUS = "1500";
+    //private GoogleMap googleMap;
 
 
     public static MapFragment newInstance() {
@@ -81,6 +81,7 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
 
                 googleMap.setMyLocationEnabled(true);
                 requestByRetrofit();
+                updatesMapDisplay(googleMap);
 
             }
         });
@@ -148,7 +149,7 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
     public void onLocationChanged(Location location) {
 Log.i("tag_onLocationchanged","ok");
         updatesGeolocationUser(location);
-        updatesMapDisplay();
+        //updatesMapDisplay();
         requestByRetrofit();
     }
 
@@ -158,7 +159,7 @@ Log.i("tag_onLocationchanged","ok");
         Log.i("tag_updatesGéo_latitude", String.valueOf(latitude));
     }
 
-    private void updatesMapDisplay() {
+    private void updatesMapDisplay(GoogleMap googleMap) {
         Log.i("tag_updatesMap","ok");
         if (googleMap != null) {
             Log.i("tag_updatesMap_if","ok");
