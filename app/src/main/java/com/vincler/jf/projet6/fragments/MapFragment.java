@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -45,7 +44,8 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
     private LocationManager locationManager;
     private double latitude;
     private double longitude;
-    private DrawerLayout drawerLayout;
+    private double previousLatitude;
+    private double previousLongitude;
     private final String RADIUS = "1500";
     private GoogleMap googleMap;
 
@@ -135,8 +135,14 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
     public void onLocationChanged(Location location) {
         updatesGeolocationUser(location);
         updatesMapDisplay();
-        requestByRetrofit();
+        if (latitude != previousLatitude && longitude != previousLongitude) {
+            previousLatitude = latitude;
+            previousLongitude = longitude;
+            requestByRetrofit();
+        }
+
     }
+
 
     private void updatesGeolocationUser(Location location) {
         latitude = location.getLatitude();
@@ -210,9 +216,3 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
 
     }
 }
-
-
-
-
-
-
