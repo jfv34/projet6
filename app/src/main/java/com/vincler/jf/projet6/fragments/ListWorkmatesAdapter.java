@@ -11,10 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vincler.jf.projet6.R;
-import com.vincler.jf.projet6.models.Users;
-
-import java.util.List;
-
+/*
 public class ListWorkmatesAdapter extends RecyclerView.Adapter {
 
     private List<Users> users;
@@ -64,4 +61,4 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter {
 
 
     }
-}
+}*/

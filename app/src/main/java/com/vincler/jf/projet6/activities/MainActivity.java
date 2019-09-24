@@ -2,7 +2,6 @@ package com.vincler.jf.projet6.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,7 +23,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,7 +31,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vincler.jf.projet6.PageAdapter;
 import com.vincler.jf.projet6.R;
-import com.vincler.jf.projet6.models.Users;
 
 import java.util.Arrays;
 import java.util.List;
@@ -41,7 +38,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int RC_SIGN_IN = 123;
-    private Users users;
     private BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;
     private Toolbar toolbar;
@@ -63,10 +59,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         searchButton = findViewById(R.id.toolbar_searchButton_imButton);
         drawerLayout = findViewById(R.id.fragment_map_drawer_layout);
         navigationView = findViewById(R.id.nav_view);
-        displayToolbar();
 
         configureViews();
+        displayToolbar();
         firebaseUI();
+
+
     }
 
 
@@ -203,6 +201,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             .setLogo(R.drawable.ic_logo)
                             .build(),
                     RC_SIGN_IN);
+        } else {
+            displayUserInNavDrawer();
         }
     }
 
@@ -210,13 +210,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+
         if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
 
             if (resultCode == RESULT_OK) {
                 toast(R.string.connectActivity_toast_successful);
-                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                createUser(firebaseUser);
+
                 displayUserInNavDrawer();
 
             } else {
@@ -225,15 +224,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void createUser(FirebaseUser firebaseUser) {
-        if (firebaseUser != null) {
-
-            String name = firebaseUser.getDisplayName();
-            String mail = firebaseUser.getEmail();
-            Uri photoUrl = firebaseUser.getPhotoUrl();
-            users = new Users(name, mail, photoUrl);
-        }
-    }
 
     private void disconnectUser() {
         AuthUI.getInstance()
@@ -246,16 +236,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void displayUserInNavDrawer() {
-        TextView viewName = findViewById(R.id.nav_header_name_and_surname_tv);
-        TextView viewMail = findViewById(R.id.nav_header_mail_tv);
-        ImageView imageView = findViewById(R.id.nav_header_iv);
+        View headerLayout =
+                navigationView.inflateHeaderView(R.layout.activity_main_nav_header);
 
-        viewName.setText(users.name);
-        viewMail.setText(users.mail);
+        TextView viewName = headerLayout.findViewById(R.id.nav_header_name_and_surname_tv);
+        TextView viewMail = headerLayout.findViewById(R.id.nav_header_mail_tv);
+        ImageView imageView = headerLayout.findViewById(R.id.nav_header_iv);
 
-        Glide.with(this)
-                .load(users.photo)
-                .into(imageView);
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            viewName.setText(firebaseUser.getDisplayName());
+            viewMail.setText(firebaseUser.getEmail());
+            Glide.with(this)
+                    .load(firebaseUser.getPhotoUrl())
+                    .into(imageView);
+        }
+
+
     }
 
  /*   @Override

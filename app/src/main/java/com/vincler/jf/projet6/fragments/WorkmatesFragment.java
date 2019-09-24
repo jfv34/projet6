@@ -11,16 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vincler.jf.projet6.R;
-import com.vincler.jf.projet6.models.Users;
 
-import java.util.List;
 
 public class WorkmatesFragment extends Fragment {
 
     TextView textView;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    private List<Users> usersList;
 
     public static WorkmatesFragment newInstance() {
 
@@ -34,8 +31,8 @@ public class WorkmatesFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.fragment_workmates_recyclerview);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        ListWorkmatesAdapter listWorkmatesAdapter = new ListWorkmatesAdapter(usersList);
-        recyclerView.setAdapter(listWorkmatesAdapter);
+       // ListWorkmatesAdapter listWorkmatesAdapter = new ListWorkmatesAdapter(usersList);
+        //recyclerView.setAdapter(listWorkmatesAdapter);
         return rootView;
 
 
