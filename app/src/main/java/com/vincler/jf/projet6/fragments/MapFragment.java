@@ -130,12 +130,18 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
             String name = response.body().getResults().get(i).getRestaurant();
             double latitude = response.body().getResults().get(i).getLatitude();
             double longitude = response.body().getResults().get(i).getLongitude();
-            Restaurant restaurant = new Restaurant(name, latitude, longitude);
+            String address = response.body().getResults().get(i).getAddress();
+
+
+
+
+
+            Restaurant restaurant = new Restaurant(name, latitude, longitude,address);
             restaurantData.add(i, restaurant);
             Log.i("tag_response_tab_name", restaurantData.get(i).getName());
             Log.i("tag_response_tab_lat", String.valueOf(restaurantData.get(i).getLatitude()));
             Log.i("tag_response_tab_long", String.valueOf(restaurantData.get(i).getLongitude()));
-
+            Log.i("tag_response_tab_adress", String.valueOf(restaurantData.get(i).getAddress()));
         }
 
 

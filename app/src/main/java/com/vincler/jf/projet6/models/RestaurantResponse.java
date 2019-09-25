@@ -4,10 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class RestaurantResponse {
 
-    public RestaurantResponse(String restaurantName, double latitude, double longitude) {
+    public RestaurantResponse(String restaurantName, double latitude, double longitude, String address) {
         this.restaurantName = restaurantName;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.address = address;
 
     }
 
@@ -23,6 +24,9 @@ public class RestaurantResponse {
     @SerializedName("geometry")
     public GeometryResponse geometryResponse;
 
+    @SerializedName("vicinity")
+    public String address;
+
 
     public String getRestaurant() {
         return restaurantName;
@@ -36,5 +40,9 @@ public class RestaurantResponse {
     public double getLongitude() {
 
         return geometryResponse.locationResponse.longitude;
+    }
+
+    public String getAddress() {
+        return address;
     }
 }
