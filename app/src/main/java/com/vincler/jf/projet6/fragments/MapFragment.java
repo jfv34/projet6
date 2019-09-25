@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -38,7 +39,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.Context.LOCATION_SERVICE;
 
-public class MapFragment extends DrawerFragment implements LocationListener, OnMapReadyCallback {
+public class MapFragment extends Fragment implements LocationListener, OnMapReadyCallback {
 
     private static final int PERMISSIONS_REQUEST_CODE = 123;
     private LocationManager locationManager;
@@ -95,15 +96,18 @@ public class MapFragment extends DrawerFragment implements LocationListener, OnM
 
         final RestaurantsService service = retrofit.create(RestaurantsService.class);
         String locationUser = latitude + "," + longitude;
+        Log.i("tag_locationUser",locationUser);
         service.listRestaurants(locationUser, RADIUS).enqueue(new Callback<ListRestaurantsResponse>() {
             @Override
             public void onResponse(Call<ListRestaurantsResponse> call, Response<ListRestaurantsResponse> response) {
                 Log.i("tag_response", "ok");
 
                 if (!response.body().getResults().isEmpty()) {
-                    Log.i("tag_response", "name: " + response.body().getResults().get(0).getRestaurant());
+                    Log.i("tag_response", "name1: " + response.body().getResults().get(0).getRestaurant());
+                    Log.i("tag_response", "name2: " + response.body().getResults().get(1).getRestaurant());
                     Log.i("tag_response", "latitude: " + String.valueOf(response.body().getResults().get(0).getLatitude()));
                     Log.i("tag_response", "longitude: " + String.valueOf(response.body().getResults().get(0).getLongitude()));
+
                 }
             }
 

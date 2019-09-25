@@ -8,6 +8,7 @@ public class Restaurants {
         this.restaurantName = restaurantName;
         this.latitude = latitude;
         this.longitude = longitude;
+
     }
 
     @SerializedName("name")
@@ -19,16 +20,21 @@ public class Restaurants {
     @SerializedName("lng")
     public double longitude;
 
+    @SerializedName("geometry")
+    public GeometryResponse geometryResponse;
+
+
     public String getRestaurant() {
         return restaurantName;
     }
 
     public double getLatitude() {
-        return latitude;
+
+        return geometryResponse.locationResponse.latitude;
     }
 
     public double getLongitude() {
-        return longitude;
-    }
 
+        return geometryResponse.locationResponse.longitude;
+    }
 }
