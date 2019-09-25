@@ -153,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.activity_main_drawer_3:
-                // disconnectUser();
+                disconnectUser();
                 break;
             default:
                 break;
@@ -254,14 +254,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
- /*   @Override
+    @Override
     public void onBackPressed() {
         if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
-    }*/
+    }
 
     private void viewPager() {
 

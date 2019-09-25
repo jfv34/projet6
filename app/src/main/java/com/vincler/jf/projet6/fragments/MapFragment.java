@@ -81,12 +81,12 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                 MapFragment.this.googleMap = googleMap;
                 googleMap.setMyLocationEnabled(true);
                 updatesMapDisplay();
-                requestByRetrofit();
+                retrofit();
             });
         }
     }
 
-    private void requestByRetrofit() {
+    private void retrofit() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient.Builder builder = UnsafeOkHttpClient.getUnsafeOkHttpClient().addInterceptor(interceptor);
@@ -98,20 +98,23 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                 .build();
 
         final RestaurantsService service = retrofit.create(RestaurantsService.class);
+
+        requestForListRestaurant(service);
+    }
+
+
+    private void requestForListRestaurant(RestaurantsService service) {
+
         String locationUser = latitude + "," + longitude;
-        Log.i("tag_locationUser", locationUser);
+
         service.listRestaurants(locationUser, RADIUS).enqueue(new Callback<ListRestaurantResponse>() {
             @Override
             public void onResponse(Call<ListRestaurantResponse> call, Response<ListRestaurantResponse> response) {
                 Log.i("tag_response", "ok");
 
                 if (!response.body().getResults().isEmpty()) {
-
-                    getData(response);
-
+                    getDataRestaurants(response);
                 }
-
-
             }
 
             @Override
@@ -122,7 +125,7 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         });
     }
 
-    private void getData(Response<ListRestaurantResponse> response) {
+    private void getDataRestaurants(Response<ListRestaurantResponse> response) {
 
         ArrayList<Restaurant> restaurantData = new ArrayList<>();
 
@@ -132,19 +135,14 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
             double longitude = response.body().getResults().get(i).getLongitude();
             String address = response.body().getResults().get(i).getAddress();
 
-
-
-
-
-            Restaurant restaurant = new Restaurant(name, latitude, longitude,address);
+            Restaurant restaurant = new Restaurant(name, latitude, longitude, address);
             restaurantData.add(i, restaurant);
+
             Log.i("tag_response_tab_name", restaurantData.get(i).getName());
             Log.i("tag_response_tab_lat", String.valueOf(restaurantData.get(i).getLatitude()));
             Log.i("tag_response_tab_long", String.valueOf(restaurantData.get(i).getLongitude()));
             Log.i("tag_response_tab_adress", String.valueOf(restaurantData.get(i).getAddress()));
         }
-
-
     }
 
     @Override
@@ -170,11 +168,9 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         if (latitude != previousLatitude && longitude != previousLongitude) {
             previousLatitude = latitude;
             previousLongitude = longitude;
-            requestByRetrofit();
+            retrofit();
         }
-
     }
-
 
     private void updatesGeolocationUser(Location location) {
         latitude = location.getLatitude();
