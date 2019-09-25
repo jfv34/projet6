@@ -26,7 +26,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.UnsafeOkHttpClient;
 import com.vincler.jf.projet6.data.RestaurantsService;
-import com.vincler.jf.projet6.models.ListRestaurantsResponse;
+import com.vincler.jf.projet6.models.ListRestaurantResponse;
+import com.vincler.jf.projet6.models.Restaurant;
+
+import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -96,27 +99,46 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
         final RestaurantsService service = retrofit.create(RestaurantsService.class);
         String locationUser = latitude + "," + longitude;
-        Log.i("tag_locationUser",locationUser);
-        service.listRestaurants(locationUser, RADIUS).enqueue(new Callback<ListRestaurantsResponse>() {
+        Log.i("tag_locationUser", locationUser);
+        service.listRestaurants(locationUser, RADIUS).enqueue(new Callback<ListRestaurantResponse>() {
             @Override
-            public void onResponse(Call<ListRestaurantsResponse> call, Response<ListRestaurantsResponse> response) {
+            public void onResponse(Call<ListRestaurantResponse> call, Response<ListRestaurantResponse> response) {
                 Log.i("tag_response", "ok");
 
                 if (!response.body().getResults().isEmpty()) {
-                    Log.i("tag_response", "name1: " + response.body().getResults().get(0).getRestaurant());
-                    Log.i("tag_response", "name2: " + response.body().getResults().get(1).getRestaurant());
-                    Log.i("tag_response", "latitude: " + String.valueOf(response.body().getResults().get(0).getLatitude()));
-                    Log.i("tag_response", "longitude: " + String.valueOf(response.body().getResults().get(0).getLongitude()));
+
+                    getData(response);
 
                 }
+
+
             }
 
             @Override
-            public void onFailure(Call<ListRestaurantsResponse> call, Throwable t) {
+            public void onFailure(Call<ListRestaurantResponse> call, Throwable t) {
                 Log.i("tag_response", "onFailure");
                 t.printStackTrace();
             }
         });
+    }
+
+    private void getData(Response<ListRestaurantResponse> response) {
+
+        ArrayList<Restaurant> restaurantData = new ArrayList<>();
+
+        for (int i = 0; i < response.body().results.size(); i++) {
+            String name = response.body().getResults().get(i).getRestaurant();
+            double latitude = response.body().getResults().get(i).getLatitude();
+            double longitude = response.body().getResults().get(i).getLongitude();
+            Restaurant restaurant = new Restaurant(name, latitude, longitude);
+            restaurantData.add(i, restaurant);
+            Log.i("tag_response_tab_name", restaurantData.get(i).getName());
+            Log.i("tag_response_tab_lat", String.valueOf(restaurantData.get(i).getLatitude()));
+            Log.i("tag_response_tab_long", String.valueOf(restaurantData.get(i).getLongitude()));
+
+        }
+
+
     }
 
     @Override
