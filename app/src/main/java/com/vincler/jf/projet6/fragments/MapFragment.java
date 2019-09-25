@@ -92,7 +92,7 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         OkHttpClient.Builder builder = UnsafeOkHttpClient.getUnsafeOkHttpClient().addInterceptor(interceptor);
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://maps.googleapis.com/maps/api/place/nearbysearch/")
+                .baseUrl("https://maps.googleapis.com/maps/api/place/")
                 .client(builder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
