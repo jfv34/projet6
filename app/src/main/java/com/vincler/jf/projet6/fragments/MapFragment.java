@@ -134,14 +134,16 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
             double latitude = response.body().getResults().get(i).getLatitude();
             double longitude = response.body().getResults().get(i).getLongitude();
             String address = response.body().getResults().get(i).getAddress();
+            String photo = response.body().getResults().get(i).getPhoto();
 
-            Restaurant restaurant = new Restaurant(name, latitude, longitude, address);
+            Restaurant restaurant = new Restaurant(name, latitude, longitude, address, photo);
             restaurantData.add(i, restaurant);
 
             Log.i("tag_response_tab_name", restaurantData.get(i).getName());
             Log.i("tag_response_tab_lat", String.valueOf(restaurantData.get(i).getLatitude()));
             Log.i("tag_response_tab_long", String.valueOf(restaurantData.get(i).getLongitude()));
-            Log.i("tag_response_tab_adress", String.valueOf(restaurantData.get(i).getAddress()));
+            Log.i("tag_response_tab_addres", String.valueOf(restaurantData.get(i).getAddress()));
+            Log.i("tag_response_tab_photo", String.valueOf(restaurantData.get(i).getPhoto()));
         }
     }
 

@@ -2,14 +2,17 @@ package com.vincler.jf.projet6.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class RestaurantResponse {
 
-    public RestaurantResponse(String restaurantName, double latitude, double longitude, String address) {
+    public RestaurantResponse(String restaurantName, double latitude, double longitude, String address,
+                              String photo) {
         this.restaurantName = restaurantName;
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
-
+        this.photo = photo;
     }
 
     @SerializedName("name")
@@ -21,8 +24,14 @@ public class RestaurantResponse {
     @SerializedName("lng")
     public double longitude;
 
+    @SerializedName("html_attributions")
+    public String photo;
+
     @SerializedName("geometry")
     public GeometryResponse geometryResponse;
+
+    @SerializedName("photos")
+    public List<PhotosResponse> photosResponse;
 
     @SerializedName("vicinity")
     public String address;
@@ -44,5 +53,9 @@ public class RestaurantResponse {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getPhoto() {
+        return photosResponse.get(0).photo_html_response.get(0).toString();
     }
 }

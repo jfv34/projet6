@@ -3,6 +3,7 @@ package com.vincler.jf.projet6.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -125,8 +126,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void editTextListener() {
         customEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                String text = v.getText().toString();
+                Log.i("tag_text",text);
                 closeKeyboard();
                 displayToolbar();
+
                 return true;
             }
             return false;
