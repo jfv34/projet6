@@ -27,11 +27,13 @@ public class ListRestaurantsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        String[] myData = new String[3];
-        myData[0] = "premier texte";
-        myData[1] = "deuxième texte";
-        myData[2] = "troisième texte";
-
+        String[] myData = new String[6];
+        myData[0] = "text one";
+        myData[1] = "text two";
+        myData[2] = "text three";
+        myData[3] = "text four";
+        myData[4] = "text five";
+        myData[5] = "text six";
 
         View rootView = inflater.inflate(R.layout.fragment_listrestaurants, container, false);
         recyclerView = rootView.findViewById(R.id.listRestaurants_recyclerView);
