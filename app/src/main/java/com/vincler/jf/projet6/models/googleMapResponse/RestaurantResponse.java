@@ -1,6 +1,8 @@
-package com.vincler.jf.projet6.models;
+package com.vincler.jf.projet6.models.googleMapResponse;
 
 import com.google.gson.annotations.SerializedName;
+import com.vincler.jf.projet6.models.googleMapResponse.GeometryResponse;
+import com.vincler.jf.projet6.models.googleMapResponse.PhotosResponse;
 
 import java.util.ArrayList;
 import java.util.List;

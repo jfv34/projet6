@@ -1,4 +1,4 @@
-package com.vincler.jf.projet6.models;
+package com.vincler.jf.projet6.models.googleMapResponse;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.vincler.jf.projet6.data;
 
-import com.vincler.jf.projet6.models.ListRestaurantResponse;
+import com.vincler.jf.projet6.models.googleMapResponse.ListRestaurantResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

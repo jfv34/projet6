@@ -35,7 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.UnsafeOkHttpClient;
 import com.vincler.jf.projet6.data.RestaurantsService;
-import com.vincler.jf.projet6.models.ListRestaurantResponse;
+import com.vincler.jf.projet6.models.googleMapResponse.ListRestaurantResponse;
 import com.vincler.jf.projet6.models.Restaurant;
 
 import java.util.ArrayList;

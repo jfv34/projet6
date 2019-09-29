@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vincler.jf.projet6.ListRestaurantsAdapter;
 import com.vincler.jf.projet6.R;
 
-public class ListRestaurantsFragment extends Fragment {
+public class RestaurantsFragment extends Fragment {
 
+    public static RestaurantsFragment newInstance() {
 
-    public static ListRestaurantsFragment newInstance() {
-
-        return new ListRestaurantsFragment();
+        return new RestaurantsFragment();
     }
 
     @Override
@@ -31,9 +30,8 @@ public class ListRestaurantsFragment extends Fragment {
         myData[4] = "text five";
         myData[5] = "text six";
 
-
-        View rootView = inflater.inflate(R.layout.fragment_listrestaurants, container, false);
-        RecyclerView recyclerView = rootView.findViewById(R.id.listRestaurants_recyclerView);
+        View rootView = inflater.inflate(R.layout.fragment_restaurants, container, false);
+        RecyclerView recyclerView = rootView.findViewById(R.id.fragment_restaurant_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -41,9 +39,7 @@ public class ListRestaurantsFragment extends Fragment {
         RecyclerView.Adapter adapter = new ListRestaurantsAdapter(myData);
         recyclerView.setAdapter(adapter);
 
-
         return rootView;
-
 
     }
 }

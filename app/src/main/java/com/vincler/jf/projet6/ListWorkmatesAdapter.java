@@ -8,7 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurantsAdapter.ViewHolder> {
+public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdapter.ViewHolder> {
 
     private String[] myData;
 
@@ -19,7 +19,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         }
     }
 
-    public ListRestaurantsAdapter(String[] myData) {
+    public ListWorkmatesAdapter(String[] myData) {
         this.myData = myData;
     }
 
@@ -28,7 +28,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
                                          int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_restaurant, parent, false);
+                .inflate(R.layout.item_workmates, parent, false);
 
         return new ViewHolder(v);
     }

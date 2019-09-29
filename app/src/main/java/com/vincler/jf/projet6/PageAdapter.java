@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.vincler.jf.projet6.fragments.ListRestaurantsFragment;
+import com.vincler.jf.projet6.fragments.RestaurantsFragment;
 import com.vincler.jf.projet6.fragments.MapFragment;
 import com.vincler.jf.projet6.fragments.WorkmatesFragment;
 
@@ -27,7 +27,7 @@ public class PageAdapter extends FragmentPagerAdapter {
             case 0: //Page number 1
                 return MapFragment.newInstance();
             case 1: //Page number 2
-                return ListRestaurantsFragment.newInstance();
+                return RestaurantsFragment.newInstance();
             case 2: //Page number 3
                 return WorkmatesFragment.newInstance();
             default:
