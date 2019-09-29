@@ -162,19 +162,23 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
             Log.i("tag_response_photo", String.valueOf(restaurantsData.get(i).getPhoto()));
         }
 
-        markers(restaurantsData, sizeRestaurantsData);
+        markersRestaurantsDisplayed(restaurantsData, sizeRestaurantsData);
     }
 
-    private void markers(ArrayList<Restaurant> restaurantData, int sizeRestaurantsData) {
+    private void markersRestaurantsDisplayed(ArrayList<Restaurant> restaurantData, int sizeRestaurantsData) {
 
         for (int i = 0; i < sizeRestaurantsData; i++) {
             double latitude = restaurantData.get(i).getLatitude();
             double longitude = restaurantData.get(i).getLongitude();
 
-            googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(latitude, longitude))
-                    .icon(bitmapDescriptorFromVector(getActivity())));
+            markers(latitude, longitude, R.drawable.icon_marker_red);
         }
+    }
+
+    private void markers(double latitude, double longitude, int drawable) {
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .icon(bitmapDescriptorFromVector(getActivity(), drawable)));
     }
 
     @Override
@@ -185,9 +189,9 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         return false;
     }
 
-    private BitmapDescriptor bitmapDescriptorFromVector(Context context) {
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int drawable) {
 
-        Drawable background = ContextCompat.getDrawable(context, R.drawable.icon_marker_red);
+        Drawable background = ContextCompat.getDrawable(context, drawable);
         assert background != null;
         background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
         Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -326,9 +330,9 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
             double restaurantLongitude = restaurantsData.get(restaurantFound_id).getLongitude();
             locationFocusedOnUser = false;
             updatesMapDisplay(restaurantLatitude, restaurantLongitude);
+
+            // Error non-static méthode cannot be...
+            //markers(restaurantLatitude, restaurantLongitude, R.drawable.icon_marker_blue );
         }
-
-
     }
-
 }
