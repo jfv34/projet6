@@ -35,8 +35,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.UnsafeOkHttpClient;
 import com.vincler.jf.projet6.data.RestaurantsService;
-import com.vincler.jf.projet6.models.googleMapResponse.ListRestaurantResponse;
 import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.googleMapResponse.ListRestaurantResponse;
 
 import java.util.ArrayList;
 
@@ -61,7 +61,9 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     private double longitudeUser;
     private double previousLatitudeUser;
     private double previousLongitudeUser;
-    private GoogleMap googleMap;
+    private static GoogleMap googleMap;
+    private static ArrayList<Restaurant> restaurantsData = new ArrayList<>();
+    public static boolean locationFocusedOnUser = true;
 
     public static MapFragment newInstance() {
 
@@ -90,9 +92,10 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
                 MapFragment.this.googleMap = googleMap;
                 googleMap.setMyLocationEnabled(true);
-                updatesMapDisplay();
+                updatesMapDisplay(latitudeUser, longitudeUser);
                 retrofit();
                 googleMap.setOnMarkerClickListener(this);
+                onUserMoveMap();
             });
         }
     }
@@ -110,14 +113,15 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
         final RestaurantsService service = retrofit.create(RestaurantsService.class);
 
-        requestForListRestaurant(service);
+        requestForListRestaurant(service, latitudeUser, longitudeUser);
     }
 
-    private void requestForListRestaurant(RestaurantsService service) {
+    private void requestForListRestaurant(RestaurantsService service, double latitudeRequest,
+                                          double longitudeRequest) {
 
-        String locationUser = latitudeUser + "," + longitudeUser;
+        String locationRequest = latitudeRequest + "," + longitudeRequest;
 
-        service.listRestaurants(locationUser, RADIUS).enqueue(new Callback<ListRestaurantResponse>() {
+        service.listRestaurants(locationRequest, RADIUS).enqueue(new Callback<ListRestaurantResponse>() {
             @Override
             public void onResponse(Call<ListRestaurantResponse> call, Response<ListRestaurantResponse> response) {
                 Log.i("tag_response", "ok");
@@ -137,8 +141,6 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
     private void getDataRestaurants(Response<ListRestaurantResponse> response) {
 
-        ArrayList<Restaurant> restaurantData = new ArrayList<>();
-
         int sizeRestaurantsData = response.body().results.size();
 
         for (int i = 0; i < sizeRestaurantsData; i++) {
@@ -151,16 +153,16 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
 
             Restaurant restaurant = new Restaurant(name, latitude, longitude, address, photo);
-            restaurantData.add(i, restaurant);
+            restaurantsData.add(i, restaurant);
 
-            Log.i("tag_response_name", restaurantData.get(i).getName());
-            Log.i("tag_response_lat", String.valueOf(restaurantData.get(i).getLatitude()));
-            Log.i("tag_response_long", String.valueOf(restaurantData.get(i).getLongitude()));
-            Log.i("tag_response_addres", String.valueOf(restaurantData.get(i).getAddress()));
-            Log.i("tag_response_photo", String.valueOf(restaurantData.get(i).getPhoto()));
+            Log.i("tag_response_name", restaurantsData.get(i).getName());
+            Log.i("tag_response_lat", String.valueOf(restaurantsData.get(i).getLatitude()));
+            Log.i("tag_response_long", String.valueOf(restaurantsData.get(i).getLongitude()));
+            Log.i("tag_response_addres", String.valueOf(restaurantsData.get(i).getAddress()));
+            Log.i("tag_response_photo", String.valueOf(restaurantsData.get(i).getPhoto()));
         }
 
-        markers(restaurantData, sizeRestaurantsData);
+        markers(restaurantsData, sizeRestaurantsData);
     }
 
     private void markers(ArrayList<Restaurant> restaurantData, int sizeRestaurantsData) {
@@ -175,9 +177,17 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         }
     }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        String id = marker.getId();
+        Log.i("tag_marckerClick", "CLICK " + id);
+
+        return false;
+    }
+
     private BitmapDescriptor bitmapDescriptorFromVector(Context context) {
 
-        Drawable background = ContextCompat.getDrawable(context, R.drawable.icon_marker);
+        Drawable background = ContextCompat.getDrawable(context, R.drawable.icon_marker_red);
         assert background != null;
         background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
         Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -204,12 +214,14 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     @SuppressLint("MissingPermission")
     @Override
     public void onLocationChanged(Location location) {
-        updatesGeolocationUser(location);
-        updatesMapDisplay();
-        if (latitudeUser != previousLatitudeUser && longitudeUser != previousLongitudeUser) {
-            previousLatitudeUser = latitudeUser;
-            previousLongitudeUser = longitudeUser;
-            retrofit();
+        if (locationFocusedOnUser) {
+            updatesGeolocationUser(location);
+            updatesMapDisplay(latitudeUser, longitudeUser);
+            if (latitudeUser != previousLatitudeUser && longitudeUser != previousLongitudeUser) {
+                previousLatitudeUser = latitudeUser;
+                previousLongitudeUser = longitudeUser;
+                retrofit();
+            }
         }
     }
 
@@ -218,12 +230,27 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         longitudeUser = location.getLongitude();
     }
 
-    private void updatesMapDisplay() {
+    private static void updatesMapDisplay(double latitude, double longitude) {
         if (googleMap != null) {
-            LatLng latlng = new LatLng(latitudeUser, longitudeUser);
+            LatLng latlng = new LatLng(latitude, longitude);
             CameraPosition cameraPosition = new CameraPosition.Builder().zoom(ZOOM_MAP).target(latlng).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
+    }
+
+    public void onUserMoveMap() {
+        googleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                locationFocusedOnUser = false;
+                LatLng latLng = googleMap.getCameraPosition().target;
+                double latitude = latLng.latitude;
+                double longitude = latLng.longitude;
+
+                ///  requestForListRestaurant(...);    ???
+
+            }
+        });
     }
 
     @Override
@@ -282,15 +309,26 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+    }
+
+    public static void searchRestaurant(String restaurant) {
+
+        int restaurantFound_id = -1;
+        for (int i = 0; i < restaurantsData.size(); i++) {
+            String r = restaurantsData.get(i).getName();
+            if (r.equals(restaurant)) {
+                restaurantFound_id = i;
+                break;
+            }
+        }
+        if (restaurantFound_id != -1) {
+            double restaurantLatitude = restaurantsData.get(restaurantFound_id).getLatitude();
+            double restaurantLongitude = restaurantsData.get(restaurantFound_id).getLongitude();
+            locationFocusedOnUser = false;
+            updatesMapDisplay(restaurantLatitude, restaurantLongitude);
+        }
 
 
     }
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        String id = marker.getId();
-        Log.i("tag_marckerClick", "CLICK " + id);
-
-        return false;
-    }
 }

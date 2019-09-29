@@ -32,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vincler.jf.projet6.PageAdapter;
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.fragments.MapFragment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -125,10 +126,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void editTextListener() {
         customEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                String text = v.getText().toString();
-                Log.i("tag_text", text);
+                String restaurant = v.getText().toString();
+                Log.i("tag_text", restaurant);
                 closeKeyboard();
                 displayToolbar();
+                MapFragment.searchRestaurant(restaurant);
+
 
                 return true;
             }

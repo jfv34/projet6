@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.vincler.jf.projet6.ListRestaurantsAdapter;
 import com.vincler.jf.projet6.ListWorkmatesAdapter;
 import com.vincler.jf.projet6.R;
 
