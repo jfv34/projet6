@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.UnsafeOkHttpClient;
@@ -50,11 +51,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.Context.LOCATION_SERVICE;
 
-public class MapFragment extends Fragment implements LocationListener, OnMapReadyCallback {
+public class MapFragment extends Fragment implements LocationListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private static final int PERMISSIONS_REQUEST_CODE = 123;
     private static final int ZOOM_MAP = 16;
-    private static final String RADIUS = "500";
+    private static final String RADIUS = "1000";
     private LocationManager locationManager;
     private double latitudeUser;
     private double longitudeUser;
@@ -91,6 +92,7 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                 googleMap.setMyLocationEnabled(true);
                 updatesMapDisplay();
                 retrofit();
+                googleMap.setOnMarkerClickListener(this);
             });
         }
     }
@@ -184,7 +186,7 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         background.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
-    
+
     @Override
     public void onPause() {
         super.onPause();
@@ -282,5 +284,14 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
+
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        String id = marker.getId();
+        Log.i("tag_marckerClick", "CLICK " + id);
+
+        return false;
     }
 }
