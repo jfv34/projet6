@@ -18,16 +18,16 @@
                 <item
                     app:itemIconTint="#FFFFFF"
                     android:id="@+id/activity_main_drawer_1"
-                    android:icon="@drawable/ic_menu_restaurant"
+                    android:icon="@drawable/menu_restaurant"
                     android:title="@string/drawer_item1" />
                 <item
                     android:id="@+id/activity_main_drawer_2"
-                    android:icon="@drawable/ic_menu_settings"
+                    android:icon="@drawable/menu_settings"
                     android:title="@string/drawer_item2" />
 
                 <item
                     android:id="@+id/activity_main_drawer_3"
-                    android:icon="@drawable/ic_menu_logout"
+                    android:icon="@drawable/menu_logout"
                     android:title="@string/drawer_item3" />
 
             </group>

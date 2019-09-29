@@ -20,8 +20,8 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="5dp"
-        android:drawableStart="@drawable/ic_icon_search_black"
-        android:drawableEnd="@drawable/ic_icon_voice"
+        android:drawableStart="@drawable/icon_search_black"
+        android:drawableEnd="@drawable/icon_voice"
         android:drawablePadding="5dp"
         android:hint="Search..."
         android:imeOptions="actionDone"
@@ -38,6 +38,6 @@
         android:layout_gravity="end"
         android:layout_marginEnd="20dp"
         android:background="@null"
-        android:src="@drawable/ic_icon_search_white" />
+        android:src="@drawable/icon_search_white" />
 
 </androidx.appcompat.widget.Toolbar>

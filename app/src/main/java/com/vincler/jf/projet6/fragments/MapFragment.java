@@ -161,7 +161,6 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         }
 
         markers(restaurantData, sizeRestaurantsData);
-
     }
 
     private void markers(ArrayList<Restaurant> restaurantData, int sizeRestaurantsData) {
@@ -178,7 +177,7 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context) {
 
-        Drawable background = ContextCompat.getDrawable(context, R.drawable.ic_marker);
+        Drawable background = ContextCompat.getDrawable(context, R.drawable.icon_marker);
         assert background != null;
         background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
         Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);

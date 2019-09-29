@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             .createSignInIntentBuilder()
                             .setAvailableProviders(providers)
                             .setTheme(R.style.LoginTheme)
-                            .setLogo(R.drawable.ic_logo)
+                            .setLogo(R.drawable.logo)
                             .build(),
                     RC_SIGN_IN);
         } else {
