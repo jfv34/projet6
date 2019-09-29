@@ -3,6 +3,7 @@ package com.vincler.jf.projet6.models;
 public class Restaurant {
 
     private String name;
+    private String type;
     private double latitude;
     private double longitude;
     private String address;

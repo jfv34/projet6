@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-
     public void displayToolbar() {
 
         setSupportActionBar(toolbar);
@@ -127,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         customEditText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 String text = v.getText().toString();
-                Log.i("tag_text",text);
+                Log.i("tag_text", text);
                 closeKeyboard();
                 displayToolbar();
 
@@ -312,5 +311,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toast toast = Toast.makeText(this, getString(message), Toast.LENGTH_LONG);
         toast.show();
     }
+
+
 }
+
+
 

@@ -2,7 +2,11 @@ package com.vincler.jf.projet6.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -15,14 +19,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.UnsafeOkHttpClient;
 import com.vincler.jf.projet6.data.RestaurantsService;
@@ -45,12 +53,13 @@ import static android.content.Context.LOCATION_SERVICE;
 public class MapFragment extends Fragment implements LocationListener, OnMapReadyCallback {
 
     private static final int PERMISSIONS_REQUEST_CODE = 123;
+    private static final int ZOOM_MAP = 16;
+    private static final String RADIUS = "500";
     private LocationManager locationManager;
-    private double latitude;
-    private double longitude;
-    private double previousLatitude;
-    private double previousLongitude;
-    private final String RADIUS = "1500";
+    private double latitudeUser;
+    private double longitudeUser;
+    private double previousLatitudeUser;
+    private double previousLongitudeUser;
     private GoogleMap googleMap;
 
     public static MapFragment newInstance() {
@@ -102,10 +111,9 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         requestForListRestaurant(service);
     }
 
-
     private void requestForListRestaurant(RestaurantsService service) {
 
-        String locationUser = latitude + "," + longitude;
+        String locationUser = latitudeUser + "," + longitudeUser;
 
         service.listRestaurants(locationUser, RADIUS).enqueue(new Callback<ListRestaurantResponse>() {
             @Override
@@ -129,24 +137,54 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
         ArrayList<Restaurant> restaurantData = new ArrayList<>();
 
-        for (int i = 0; i < response.body().results.size(); i++) {
+        int sizeRestaurantsData = response.body().results.size();
+
+        for (int i = 0; i < sizeRestaurantsData; i++) {
+
             String name = response.body().getResults().get(i).getRestaurant();
             double latitude = response.body().getResults().get(i).getLatitude();
             double longitude = response.body().getResults().get(i).getLongitude();
             String address = response.body().getResults().get(i).getAddress();
             String photo = response.body().getResults().get(i).getPhoto();
 
+
             Restaurant restaurant = new Restaurant(name, latitude, longitude, address, photo);
             restaurantData.add(i, restaurant);
 
-            Log.i("tag_response_tab_name", restaurantData.get(i).getName());
-            Log.i("tag_response_tab_lat", String.valueOf(restaurantData.get(i).getLatitude()));
-            Log.i("tag_response_tab_long", String.valueOf(restaurantData.get(i).getLongitude()));
-            Log.i("tag_response_tab_addres", String.valueOf(restaurantData.get(i).getAddress()));
-            Log.i("tag_response_tab_photo", String.valueOf(restaurantData.get(i).getPhoto()));
+            Log.i("tag_response_name", restaurantData.get(i).getName());
+            Log.i("tag_response_lat", String.valueOf(restaurantData.get(i).getLatitude()));
+            Log.i("tag_response_long", String.valueOf(restaurantData.get(i).getLongitude()));
+            Log.i("tag_response_addres", String.valueOf(restaurantData.get(i).getAddress()));
+            Log.i("tag_response_photo", String.valueOf(restaurantData.get(i).getPhoto()));
+        }
+
+        markers(restaurantData, sizeRestaurantsData);
+
+    }
+
+    private void markers(ArrayList<Restaurant> restaurantData, int sizeRestaurantsData) {
+
+        for (int i = 0; i < sizeRestaurantsData; i++) {
+            double latitude = restaurantData.get(i).getLatitude();
+            double longitude = restaurantData.get(i).getLongitude();
+
+            googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(latitude, longitude))
+                    .icon(bitmapDescriptorFromVector(getActivity())));
         }
     }
 
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context) {
+
+        Drawable background = ContextCompat.getDrawable(context, R.drawable.ic_marker);
+        assert background != null;
+        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        background.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+    
     @Override
     public void onPause() {
         super.onPause();
@@ -167,22 +205,22 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
     public void onLocationChanged(Location location) {
         updatesGeolocationUser(location);
         updatesMapDisplay();
-        if (latitude != previousLatitude && longitude != previousLongitude) {
-            previousLatitude = latitude;
-            previousLongitude = longitude;
+        if (latitudeUser != previousLatitudeUser && longitudeUser != previousLongitudeUser) {
+            previousLatitudeUser = latitudeUser;
+            previousLongitudeUser = longitudeUser;
             retrofit();
         }
     }
 
     private void updatesGeolocationUser(Location location) {
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
+        latitudeUser = location.getLatitude();
+        longitudeUser = location.getLongitude();
     }
 
     private void updatesMapDisplay() {
         if (googleMap != null) {
-            LatLng latlng = new LatLng(latitude, longitude);
-            CameraPosition cameraPosition = new CameraPosition.Builder().zoom(15).target(latlng).build();
+            LatLng latlng = new LatLng(latitudeUser, longitudeUser);
+            CameraPosition cameraPosition = new CameraPosition.Builder().zoom(ZOOM_MAP).target(latlng).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }
     }

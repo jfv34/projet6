@@ -14,10 +14,6 @@ import com.vincler.jf.projet6.R;
 
 public class ListRestaurantsFragment extends Fragment {
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-
 
     public static ListRestaurantsFragment newInstance() {
 
@@ -35,13 +31,14 @@ public class ListRestaurantsFragment extends Fragment {
         myData[4] = "text five";
         myData[5] = "text six";
 
+
         View rootView = inflater.inflate(R.layout.fragment_listrestaurants, container, false);
-        recyclerView = rootView.findViewById(R.id.listRestaurants_recyclerView);
+        RecyclerView recyclerView = rootView.findViewById(R.id.listRestaurants_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ListRestaurantsAdapter(myData);
+        RecyclerView.Adapter adapter = new ListRestaurantsAdapter(myData);
         recyclerView.setAdapter(adapter);
 
 

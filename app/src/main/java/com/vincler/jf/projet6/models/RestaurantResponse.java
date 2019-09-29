@@ -2,17 +2,20 @@ package com.vincler.jf.projet6.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantResponse {
 
     public RestaurantResponse(String restaurantName, double latitude, double longitude, String address,
-                              String photo) {
+                              String photo, ArrayList typesListResponse) {
         this.restaurantName = restaurantName;
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
         this.photo = photo;
+        this.typesListResponse = typesListResponse;
+
     }
 
     @SerializedName("name")
@@ -33,13 +36,17 @@ public class RestaurantResponse {
     @SerializedName("photos")
     public List<PhotosResponse> photosResponse;
 
+    @SerializedName("types")
+    public ArrayList typesListResponse;
+
+
     @SerializedName("vicinity")
     public String address;
-
 
     public String getRestaurant() {
         return restaurantName;
     }
+
 
     public double getLatitude() {
 
@@ -56,6 +63,14 @@ public class RestaurantResponse {
     }
 
     public String getPhoto() {
-        return photosResponse.get(0).photo_html_response.get(0).toString();
+
+        if ((photosResponse) != null) {
+            return photosResponse.get(0).photo_html_response.get(0).toString();
+        }
+        return "";
+    }
+
+    public String getType() {
+        return typesListResponse.get(0).toString();
     }
 }
