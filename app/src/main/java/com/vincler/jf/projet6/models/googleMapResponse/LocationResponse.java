@@ -8,5 +8,4 @@ class LocationResponse {
 
     @SerializedName("lng")
     public double longitude;
-
 }

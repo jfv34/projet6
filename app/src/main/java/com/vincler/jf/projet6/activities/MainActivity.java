@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.MutableLiveData;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -32,14 +33,32 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vincler.jf.projet6.PageAdapter;
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.UnsafeOkHttpClient;
+import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.fragments.MapFragment;
+import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.googleMapResponse.ListRestaurantResponse;
+import com.vincler.jf.projet6.models.googleMapResponse.RestaurantResponse;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int RC_SIGN_IN = 123;
+
+    RestaurantsService service;
+    public MutableLiveData<ArrayList<Restaurant>> restaurantsData = new MutableLiveData<>(new ArrayList<>());
+
     private BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;
     private Toolbar toolbar;
@@ -62,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.fragment_map_drawer_layout);
         navigationView = findViewById(R.id.nav_view);
 
+        retrofit();
         configureViews();
         displayToolbar();
         firebaseUI();
@@ -164,20 +184,75 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             default:
                 break;
         }
-        this.drawerLayout.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
 
         return true;
     }
 
-    private void drawerLayout() {
+    private void retrofit() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder builder = UnsafeOkHttpClient.getUnsafeOkHttpClient().addInterceptor(interceptor);
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://maps.googleapis.com/maps/api/place/")
+                .client(builder.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        service = retrofit.create(RestaurantsService.class);
+    }
+
+    public void findRestaurantsNearCoordinates(double latitude, double longitude) {
+        String locationRequest = latitude + "," + longitude;
+
+        service.listRestaurants(locationRequest, "1000").enqueue(new Callback<ListRestaurantResponse>() {
+            @Override
+            public void onResponse(Call<ListRestaurantResponse> call, Response<ListRestaurantResponse> response) {
+                Log.i("tag_response", "ok");
+                if (!response.body().getResults().isEmpty()) {
+                    getDataRestaurants(response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ListRestaurantResponse> call, Throwable t) {
+                Log.i("tag_response", "onFailure");
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void getDataRestaurants(Response<ListRestaurantResponse> response) {
+
+        ArrayList newRestaurants = new ArrayList();
+
+        int sizeRestaurantsData = response.body().results.size();
+
+        for (int i = 0; i < sizeRestaurantsData; i++) {
+
+            RestaurantResponse res = response.body().getResults().get(i);
+
+            Restaurant restaurant = new Restaurant(res.getRestaurant(), res.getLatitude(), res.getLongitude(), res.getAddress(), res.getPhoto());
+            newRestaurants.add(i, restaurant);
+
+            Log.i("tag_response_name", restaurant.getName());
+            Log.i("tag_response_lat", String.valueOf(restaurant.getLatitude()));
+            Log.i("tag_response_long", String.valueOf(restaurant.getLongitude()));
+            Log.i("tag_response_addres", String.valueOf(restaurant.getAddress()));
+            Log.i("tag_response_photo", String.valueOf(restaurant.getPhoto()));
+        }
+
+        restaurantsData.postValue(newRestaurants);
+    }
+
+    private void drawerLayout() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
 
     private void navigationView() {
-
         navigationView.setNavigationItemSelectedListener(this);
     }
 
