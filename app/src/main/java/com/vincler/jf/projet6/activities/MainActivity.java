@@ -37,6 +37,7 @@ import com.vincler.jf.projet6.UnsafeOkHttpClient;
 import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.fragments.MapFragment;
 import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.SearchStatus;
 import com.vincler.jf.projet6.models.googleMapResponse.ListRestaurantResponse;
 import com.vincler.jf.projet6.models.googleMapResponse.RestaurantResponse;
 
@@ -233,7 +234,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             RestaurantResponse res = response.body().getResults().get(i);
 
-            Restaurant restaurant = new Restaurant(res.getRestaurant(), res.getLatitude(), res.getLongitude(), res.getAddress(), res.getPhoto());
+            Restaurant restaurant = new Restaurant(res.getRestaurant(), res.getLatitude(), res.getLongitude(),
+                    res.getAddress(), res.getPhoto(), SearchStatus.DEFAULT);
             newRestaurants.add(i, restaurant);
 
             Log.i("tag_response_name", restaurant.getName());
