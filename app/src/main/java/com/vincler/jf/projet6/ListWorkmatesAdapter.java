@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdapter.ViewHolder> {
 
-    private String[] myData;
+    private String[] name;
+    private String[] address;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -19,9 +20,10 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
         }
     }
 
-    public ListWorkmatesAdapter(String[] myData) {
-        this.myData = myData;
-    }
+    public ListWorkmatesAdapter(String[] name) {
+        this.name = name;
+        this.address = address;
+}
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,
@@ -36,12 +38,16 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        TextView textview = holder.itemView.findViewById(R.id.item_workmates_tv);
-        textview.setText(myData[position]);
+        TextView name_tv = holder.itemView.findViewById(R.id.item_workmates_tv);
+
+
+        name_tv.setText(name[position]);
+
+
     }
 
     @Override
     public int getItemCount() {
-        return myData.length;
+        return name.length;
     }
 }

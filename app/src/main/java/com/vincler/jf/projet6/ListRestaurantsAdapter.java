@@ -10,7 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurantsAdapter.ViewHolder> {
 
-    private String[] myData;
+    private String[] name;
+    private String[] address;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -19,8 +20,9 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         }
     }
 
-    public ListRestaurantsAdapter(String[] myData) {
-        this.myData = myData;
+    public ListRestaurantsAdapter(String[] name, String[] address) {
+        this.name = name;
+        this.address = address;
     }
 
     @Override
@@ -36,12 +38,16 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        TextView textview = holder.itemView.findViewById(R.id.item_workmates_tv);
-        textview.setText(myData[position]);
+        TextView name_tv = holder.itemView.findViewById(R.id.item_restaurant_name_tv);
+        TextView address_tv = holder.itemView.findViewById(R.id.item_restaurant_address_tv);
+
+        name_tv.setText(name[position]);
+        address_tv.setText(address[position]);
+
     }
 
     @Override
     public int getItemCount() {
-        return myData.length;
+        return name.length;
     }
 }

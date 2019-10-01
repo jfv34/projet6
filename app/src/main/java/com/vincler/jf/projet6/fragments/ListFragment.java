@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,24 +48,22 @@ public class ListFragment extends Fragment {
 
     private void displayRestaurants(ArrayList<Restaurant> restaurants) {
 
-        String[] data = new String[6];
-        if(!restaurants.isEmpty()){
+        String[] name = new String[6];
+        String[] address = new String[6];
 
+        if (!restaurants.isEmpty()) {
 
-        data[0] = restaurants.get(0).getName();}
-        data[1] = "text two";
-        data[2] = "text three";
-        data[3] = "text four";
-        data[4] = "text five";
-        data[5] = "text six";
+            for (int i = 0; i < name.length; i++) {
+                name[i] = restaurants.get(i).getName();
+                address[i] = restaurants.get(i).getAddress();
+            }
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter adapter = new ListRestaurantsAdapter(data);
-        recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+            recyclerView.setHasFixedSize(true);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(layoutManager);
+            RecyclerView.Adapter adapter = new ListRestaurantsAdapter(name, address);
+            recyclerView.setAdapter(adapter);
+        }
     }
 }
-
-

@@ -6,17 +6,25 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/item_workmates_tv"
+    android:id="@+id/item_restaurant_name_tv"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="50sp"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_restaurant_address_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="50sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/item_restaurant_name_tv" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/item_workmates_tv"
+        app:layout_constraintTop_toBottomOf="@id/item_restaurant_address_tv"
         app:layout_constraintStart_toStartOf="parent"
         android:src="@drawable/logo"
         android:background="@color/quantum_black_100"
