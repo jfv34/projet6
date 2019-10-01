@@ -11,6 +11,8 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.activities.MainActivity;
 import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.SearchStatus;
 
 import java.util.ArrayList;
 
@@ -66,19 +69,51 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
         super.onViewCreated(view, savedInstanceState);
 
         ((MainActivity) getActivity()).restaurantsData.observe(this, restaurants -> {
-            displayRestaurants(restaurants);
+            displayRestaurants(restaurants, "");
+        });
+
+        ((MainActivity) getActivity()).customEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                displayRestaurants((((MainActivity) getActivity()).restaurantsData.getValue()), s.toString());
+
+            }
         });
     }
 
-    void displayRestaurants(ArrayList<Restaurant> restaurants) {
+    void displayRestaurants(ArrayList<Restaurant> restaurants, String textSearched) {
+        ((MainActivity) getActivity()).hideRestaurantsNotSearched(textSearched);
+        Log.i("tag_display_restau", "ok");
+
         if (googleMap != null) {
             googleMap.clear();
+
             for (int i = 0; i < restaurants.size(); i++) {
-                double latitude = restaurants.get(i).getLatitude();
-                double longitude = restaurants.get(i).getLongitude();
-                markers(latitude, longitude, R.drawable.icon_marker_red);
+                if (restaurants.get(i).getSearchStatus() == SearchStatus.DEFAULT) {
+                    double latitude = restaurants.get(i).getLatitude();
+                    double longitude = restaurants.get(i).getLongitude();
+                    markers(latitude, longitude, R.drawable.icon_marker_red);
+                }
+
             }
         }
+    }
+
+    private void markers(double latitude, double longitude, int drawable) {
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(latitude, longitude))
+                .icon(bitmapDescriptorFromVector(requireContext(), drawable)));
     }
 
     @SuppressLint("MissingPermission")
@@ -107,23 +142,17 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                         previousLatitude = latitude;
                         previousLongitude = longitude;
                         ((MainActivity) getActivity()).findRestaurantsNearCoordinates(latitude, longitude);
+
+                        ArrayList<Restaurant> restaurants = ((MainActivity) getActivity()).restaurantsData.getValue();
+
+                        if (restaurants != null) {
+                            displayRestaurants(restaurants, "");
+                        }
                     }
                 });
-
-                ArrayList<Restaurant> restaurants = ((MainActivity) getActivity()).restaurantsData.getValue();
-                if (restaurants != null) {
-                    displayRestaurants(restaurants);
-                }
-
                 onUserMoveMap();
             });
         }
-    }
-
-    private void markers(double latitude, double longitude, int drawable) {
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(latitude, longitude))
-                .icon(bitmapDescriptorFromVector(requireContext(), drawable)));
     }
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int drawable) {
@@ -225,26 +254,5 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-    }
-
-    public static void searchRestaurant(String restaurant) {
-        int restaurantFound_id = -1;
-        /*for (int i = 0; i < restaurantsData.size(); i++) {
-            String r = restaurantsData.get(i).getName();
-            if (r.equals(restaurant)) {
-                restaurantFound_id = i;
-                break;
-            }
-        }
-
-        if (restaurantFound_id != -1) {
-            double restaurantLatitude = restaurantsData.get(restaurantFound_id).getLatitude();
-            double restaurantLongitude = restaurantsData.get(restaurantFound_id).getLongitude();
-            locationFocusedOnUser = false;
-            updatesMapDisplay(restaurantLatitude, restaurantLongitude);
-
-            // Error non-static méthode cannot be...
-            //markers(restaurantLatitude, restaurantLongitude, R.drawable.icon_marker_blue );
-        }*/
     }
 }

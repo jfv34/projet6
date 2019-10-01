@@ -3,6 +3,8 @@ package com.vincler.jf.projet6.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,7 +37,6 @@ import com.vincler.jf.projet6.PageAdapter;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.UnsafeOkHttpClient;
 import com.vincler.jf.projet6.data.RestaurantsService;
-import com.vincler.jf.projet6.fragments.MapFragment;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.models.SearchStatus;
 import com.vincler.jf.projet6.models.googleMapResponse.ListRestaurantResponse;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager viewPager;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
-    private EditText customEditText;
+    public EditText customEditText;
     private ImageButton searchButton;
     private NavigationView navigationView;
 
@@ -146,19 +147,94 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void editTextListener() {
         customEditText.setOnEditorActionListener((v, actionId, event) -> {
+
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 String restaurant = v.getText().toString();
                 Log.i("tag_text", restaurant);
                 closeKeyboard();
                 displayToolbar();
-                MapFragment.searchRestaurant(restaurant);
-
 
                 return true;
             }
             return false;
         });
+
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        };
+
+        customEditText.addTextChangedListener(new TextWatcher() {
+
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+
+            }
+        });
     }
+
+    public void hideRestaurantsNotSearched(String searchText) {
+
+        if (searchText.isEmpty()) {
+            searchText = customEditText.getText().toString();
+        }
+
+        int restaurantsDataSize = restaurantsData.getValue().size();
+        Log.i("tag_search", searchText);
+
+        for (int i = 0; i < restaurantsDataSize; i++) {
+            String r = restaurantsData.getValue().get(i).getName();
+            if (!r.toLowerCase().contains(searchText.toLowerCase())) {
+
+                Restaurant data = restaurantsData.getValue().get(i);
+                Restaurant restaurantModified = new Restaurant(
+                        data.getName(),
+                        data.getLatitude(),
+                        data.getLongitude(),
+                        data.getAddress(),
+                        data.getPhoto(),
+                        SearchStatus.DO_NOT_DISPLAY);
+
+                restaurantsData.getValue().set(i, (restaurantModified));
+            } else {
+                Restaurant data = restaurantsData.getValue().get(i);
+                Restaurant restaurantModified = new Restaurant(
+                        data.getName(),
+                        data.getLatitude(),
+                        data.getLongitude(),
+                        data.getAddress(),
+                        data.getPhoto(),
+                        SearchStatus.DEFAULT);
+
+                restaurantsData.getValue().set(i, (restaurantModified));
+            }
+        }
+    }
+
 
     private void closeKeyboard() {
         View view = getCurrentFocus();
@@ -208,8 +284,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         String locationRequest = latitude + "," + longitude;
 
         service.listRestaurants(locationRequest, "1000").enqueue(new Callback<ListRestaurantResponse>() {
+
             @Override
             public void onResponse(Call<ListRestaurantResponse> call, Response<ListRestaurantResponse> response) {
+
+
                 Log.i("tag_response", "ok");
                 if (!response.body().getResults().isEmpty()) {
                     getDataRestaurants(response);
@@ -227,6 +306,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void getDataRestaurants(Response<ListRestaurantResponse> response) {
 
         ArrayList newRestaurants = new ArrayList();
+        Log.i("tag_newRestau", "getDataRestau");
 
         int sizeRestaurantsData = response.body().results.size();
 
@@ -243,9 +323,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.i("tag_response_long", String.valueOf(restaurant.getLongitude()));
             Log.i("tag_response_addres", String.valueOf(restaurant.getAddress()));
             Log.i("tag_response_photo", String.valueOf(restaurant.getPhoto()));
+            Log.i("tag_response_search", String.valueOf(restaurant.getSearchStatus()));
         }
 
-        restaurantsData.postValue(newRestaurants);
+
+        restaurantsData.setValue(newRestaurants);
+
+
     }
 
     private void drawerLayout() {
