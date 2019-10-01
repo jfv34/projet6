@@ -8,10 +8,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurantsAdapter.ViewHolder> {
 
-    private String[] name;
-    private String[] address;
+    List<String> name;
+    List<String> address;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -20,7 +23,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         }
     }
 
-    public ListRestaurantsAdapter(String[] name, String[] address) {
+    public ListRestaurantsAdapter(List name, List address) {
         this.name = name;
         this.address = address;
     }
@@ -41,13 +44,12 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         TextView name_tv = holder.itemView.findViewById(R.id.item_restaurant_name_tv);
         TextView address_tv = holder.itemView.findViewById(R.id.item_restaurant_address_tv);
 
-        name_tv.setText(name[position]);
-        address_tv.setText(address[position]);
-
+        name_tv.setText(name.get(position));
+        address_tv.setText(address.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return name.length;
+        return name.size();
     }
 }

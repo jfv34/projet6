@@ -17,6 +17,7 @@ import com.vincler.jf.projet6.activities.MainActivity;
 import com.vincler.jf.projet6.models.Restaurant;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ListFragment extends Fragment {
 
@@ -48,14 +49,15 @@ public class ListFragment extends Fragment {
 
     private void displayRestaurants(ArrayList<Restaurant> restaurants) {
 
-        String[] name = new String[6];
-        String[] address = new String[6];
+        List<String> name = new ArrayList<>();
+        List<String> address = new ArrayList<>();
 
         if (!restaurants.isEmpty()) {
 
-            for (int i = 0; i < name.length; i++) {
-                name[i] = restaurants.get(i).getName();
-                address[i] = restaurants.get(i).getAddress();
+            for (int i = 0; i < restaurants.size(); i++) {
+                name.add(restaurants.get(i).getName());
+
+               address.add(restaurants.get(i).getAddress());
             }
 
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
