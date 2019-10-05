@@ -52,6 +52,7 @@ public class ListFragment extends Fragment {
         List<String> name = new ArrayList<>();
         List<String> address = new ArrayList<>();
         List<String> photo = new ArrayList<>();
+        List<Double> rating = new ArrayList<>();
         List<Double> latitude = new ArrayList<>();
         List<Double> longitude = new ArrayList<>();
 
@@ -61,6 +62,7 @@ public class ListFragment extends Fragment {
                 name.add(restaurants.get(i).getName());
                 address.add(restaurants.get(i).getAddress());
                 photo.add(restaurants.get(i).getPhoto());
+                rating.add(restaurants.get(i).getRating());
                 latitude.add(restaurants.get(i).getLatitude());
                 longitude.add(restaurants.get(i).getLongitude());
             }
@@ -72,7 +74,7 @@ public class ListFragment extends Fragment {
 
 
             RecyclerView.Adapter adapter = new ListRestaurantsAdapter(name, address, photo,
-                    latitude, longitude);
+                    rating, latitude, longitude);
             recyclerView.setAdapter(adapter);
         }
     }

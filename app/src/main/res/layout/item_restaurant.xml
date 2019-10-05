@@ -44,15 +44,15 @@
         android:textSize="16sp"
         android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/item_restaurant_address_tv" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageView
         android:id="@+id/item_restaurant_photo_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="@color/quantum_black_100"
-        android:src="@drawable/restau100"
+
+        android:src="@drawable/restau"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,6 +70,55 @@
         app:layout_constraintTop_toTopOf="parent"
 
         />
+    <ImageView
+        android:id="@+id/item_restaurant_star1_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:src="@drawable/icon_star_icon"
+        app:layout_constraintEnd_toStartOf="@id/item_restaurant_photo_iv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
+
+    <ImageView
+        android:id="@+id/item_restaurant_star2_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:src="@drawable/icon_star_icon"
+        app:layout_constraintEnd_toStartOf="@id/item_restaurant_star1_iv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/item_restaurant_star3_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:src="@drawable/icon_star_icon"
+        app:layout_constraintEnd_toStartOf="@id/item_restaurant_star2_iv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/item_restaurant_star4_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:src="@drawable/icon_star_icon"
+        app:layout_constraintEnd_toStartOf="@id/item_restaurant_star3_iv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/item_restaurant_star5_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:src="@drawable/icon_star_icon"
+        app:layout_constraintEnd_toStartOf="@id/item_restaurant_star4_iv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -199,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         data.getLongitude(),
                         data.getAddress(),
                         data.getPhoto(),
+                        data.getRating(),
                         SearchStatus.DO_NOT_DISPLAY,
                         restaurantsData.getValue().get(i).getOpening_hours_List(),  // not changed
                         data.getPlaceid()
@@ -212,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         data.getLongitude(),
                         data.getAddress(),
                         data.getPhoto(),
+                        data.getRating(),
                         SearchStatus.DEFAULT,
                         restaurantsData.getValue().get(i).getOpening_hours_List(), // not changed
                         data.getPlaceid()
@@ -312,15 +314,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ArrayList<String> opening_hours_List = null;
 
             Restaurant restaurant = new Restaurant(res.getName(), res.getLatitude(), res.getLongitude(),
-                    res.getAddress(), res.getPhoto(), SearchStatus.DEFAULT, opening_hours_List, res.getPlaceid());
+                    res.getAddress(), res.getPhoto(), res.getRating(), SearchStatus.DEFAULT, opening_hours_List, res.getPlaceid());
             newRestaurants.add(i, restaurant);
 
-            Log.i("tag_response_name", restaurant.getName());
-            Log.i("tag_response_lat", String.valueOf(restaurant.getLatitude()));
-            Log.i("tag_response_long", String.valueOf(restaurant.getLongitude()));
-            Log.i("tag_response_addres", String.valueOf(restaurant.getAddress()));
-            Log.i("tag_response_photo", String.valueOf(restaurant.getPhoto()));
-            Log.i("tag_response_search", String.valueOf(restaurant.getSearchStatus()));
         }
         restaurantsData.setValue(newRestaurants);
     }
