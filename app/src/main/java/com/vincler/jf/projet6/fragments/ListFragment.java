@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -76,6 +77,8 @@ public class ListFragment extends Fragment {
             RecyclerView.Adapter adapter = new ListRestaurantsAdapter(name, address, photo,
                     rating, latitude, longitude);
             recyclerView.setAdapter(adapter);
+
+
         }
     }
 

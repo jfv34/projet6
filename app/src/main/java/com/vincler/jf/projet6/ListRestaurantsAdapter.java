@@ -44,6 +44,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_restaurant, parent, false);
 
+
         return new ViewHolder(v);
     }
 
