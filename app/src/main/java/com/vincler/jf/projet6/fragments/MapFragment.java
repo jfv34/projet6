@@ -105,7 +105,6 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                     double longitude = restaurants.get(i).getLongitude();
                     markers(latitude, longitude, R.drawable.icon_marker_red);
                 }
-
             }
         }
     }
@@ -142,6 +141,7 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                         previousLatitude = latitude;
                         previousLongitude = longitude;
                         ((MainActivity) getActivity()).findRestaurantsNearCoordinates(latitude, longitude);
+                        //((MainActivity) getActivity()).findDetailsRestaurants();
 
                         ArrayList<Restaurant> restaurants = ((MainActivity) getActivity()).restaurantsData.getValue();
 

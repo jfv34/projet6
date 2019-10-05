@@ -8,13 +8,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurantsAdapter.ViewHolder> {
 
     List<String> name;
     List<String> address;
+    List<String> latitude;
+    List<String> longitude;
+    List<String> photo;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -23,9 +25,12 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         }
     }
 
-    public ListRestaurantsAdapter(List name, List address) {
+    public ListRestaurantsAdapter(List name, List address, List photo, List latitude, List longitude) {
         this.name = name;
         this.address = address;
+        this.photo = photo;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     @Override
@@ -43,9 +48,16 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
         TextView name_tv = holder.itemView.findViewById(R.id.item_restaurant_name_tv);
         TextView address_tv = holder.itemView.findViewById(R.id.item_restaurant_address_tv);
+        TextView distance_tv = holder.itemView.findViewById(R.id.item_restaurant_distance_tv);
 
         name_tv.setText(name.get(position));
-        address_tv.setText(address.get(position));
+
+        String addr = address.get(position);
+        address_tv.setText(addr.substring(0, addr.indexOf(",")));
+
+        String dist = "999m";
+        distance_tv.setText(dist);
+
     }
 
     @Override

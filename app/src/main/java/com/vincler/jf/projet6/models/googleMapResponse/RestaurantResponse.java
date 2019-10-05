@@ -8,13 +8,14 @@ import java.util.List;
 public class RestaurantResponse {
 
     public RestaurantResponse(String restaurantName, double latitude, double longitude, String address,
-                              String photo, ArrayList typesListResponse) {
+                              String photo, ArrayList typesListResponse, String placeid) {
         this.restaurantName = restaurantName;
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
         this.photo = photo;
         this.typesListResponse = typesListResponse;
+        this.placeid = placeid;
 
     }
 
@@ -39,11 +40,13 @@ public class RestaurantResponse {
     @SerializedName("types")
     public ArrayList typesListResponse;
 
-
     @SerializedName("vicinity")
     public String address;
 
-    public String getRestaurant() {
+    @SerializedName("place_id")
+    public String placeid;
+
+    public String getName() {
         return restaurantName;
     }
 
@@ -73,4 +76,6 @@ public class RestaurantResponse {
     public String getType() {
         return typesListResponse.get(0).toString();
     }
+
+    public String getPlaceid() {return placeid;}
 }

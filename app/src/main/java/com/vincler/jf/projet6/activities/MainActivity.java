@@ -35,8 +35,10 @@ import com.vincler.jf.projet6.PageAdapter;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.UnsafeOkHttpClient;
 import com.vincler.jf.projet6.data.RestaurantsService;
+import com.vincler.jf.projet6.fragments.MapFragment;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.models.SearchStatus;
+import com.vincler.jf.projet6.models.googleMapResponse.DetailsResponse;
 import com.vincler.jf.projet6.models.googleMapResponse.ListRestaurantResponse;
 import com.vincler.jf.projet6.models.googleMapResponse.RestaurantResponse;
 
@@ -86,6 +88,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         displayToolbar();
         firebaseUI();
 
+    }
+
+    private void retrofit() {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder builder = UnsafeOkHttpClient.getUnsafeOkHttpClient().addInterceptor(interceptor);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://maps.googleapis.com/maps/api/place/")
+                .client(builder.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        service = retrofit.create(RestaurantsService.class);
+    }
+
+    private void configureViews() {
+        viewPager();
+        bottomView();
     }
 
     public void displayToolbar() {
@@ -169,33 +190,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         for (int i = 0; i < restaurantsDataSize; i++) {
             String r = restaurantsData.getValue().get(i).getName();
+            Restaurant data = restaurantsData.getValue().get(i);
             if (!r.toLowerCase().contains(searchText.toLowerCase())) {
 
-                Restaurant data = restaurantsData.getValue().get(i);
                 Restaurant restaurantModified = new Restaurant(
                         data.getName(),
                         data.getLatitude(),
                         data.getLongitude(),
                         data.getAddress(),
                         data.getPhoto(),
-                        SearchStatus.DO_NOT_DISPLAY);
+                        SearchStatus.DO_NOT_DISPLAY,
+                        restaurantsData.getValue().get(i).getOpening_hours_List(),  // not changed
+                        data.getPlaceid()
+                );
 
                 restaurantsData.getValue().set(i, (restaurantModified));
             } else {
-                Restaurant data = restaurantsData.getValue().get(i);
                 Restaurant restaurantModified = new Restaurant(
                         data.getName(),
                         data.getLatitude(),
                         data.getLongitude(),
                         data.getAddress(),
                         data.getPhoto(),
-                        SearchStatus.DEFAULT);
+                        SearchStatus.DEFAULT,
+                        restaurantsData.getValue().get(i).getOpening_hours_List(), // not changed
+                        data.getPlaceid()
+                );
 
                 restaurantsData.getValue().set(i, (restaurantModified));
             }
         }
     }
-
 
     private void closeKeyboard() {
         View view = getCurrentFocus();
@@ -227,20 +252,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    private void retrofit() {
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder builder = UnsafeOkHttpClient.getUnsafeOkHttpClient().addInterceptor(interceptor);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://maps.googleapis.com/maps/api/place/")
-                .client(builder.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        service = retrofit.create(RestaurantsService.class);
-    }
-
     public void findRestaurantsNearCoordinates(double latitude, double longitude) {
         String locationRequest = latitude + "," + longitude;
 
@@ -264,6 +275,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    public void findDetailsRestaurants() {
+
+        for (int restau = 0; restau < restaurantsData.getValue().size(); restau++) {
+            String placeid = restaurantsData.getValue().get(restau).getPlaceid();
+
+            service.detailsRestaurants(placeid).enqueue(new Callback<DetailsResponse>() {
+
+                @Override
+                public void onResponse(Call<DetailsResponse> call, Response<DetailsResponse> response) {
+
+                    Log.i("tag_getdetailrestau", "ok");
+                    // getDetailRestaurants(response);
+                }
+
+                @Override
+                public void onFailure(Call<DetailsResponse> call, Throwable t) {
+
+                }
+
+            });
+        }
+    }
+
+
     private void getDataRestaurants(Response<ListRestaurantResponse> response) {
 
         ArrayList newRestaurants = new ArrayList();
@@ -274,9 +309,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         for (int i = 0; i < sizeRestaurantsData; i++) {
 
             RestaurantResponse res = response.body().getResults().get(i);
+            ArrayList<String> opening_hours_List = null;
 
-            Restaurant restaurant = new Restaurant(res.getRestaurant(), res.getLatitude(), res.getLongitude(),
-                    res.getAddress(), res.getPhoto(), SearchStatus.DEFAULT);
+            Restaurant restaurant = new Restaurant(res.getName(), res.getLatitude(), res.getLongitude(),
+                    res.getAddress(), res.getPhoto(), SearchStatus.DEFAULT, opening_hours_List, res.getPlaceid());
             newRestaurants.add(i, restaurant);
 
             Log.i("tag_response_name", restaurant.getName());
@@ -286,12 +322,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Log.i("tag_response_photo", String.valueOf(restaurant.getPhoto()));
             Log.i("tag_response_search", String.valueOf(restaurant.getSearchStatus()));
         }
-
-
         restaurantsData.setValue(newRestaurants);
-
-
     }
+
+   /* private void getDetailRestaurants(Response<DetailsResponse> response) {
+
+
+        ArrayList<String> opening_hours_List = new ArrayList<>();
+
+
+
+        int sizeDetailsData = response.size();
+        response.get(0);
+        for (int restau = 0; restau < sizeDetailsData; restau++) {
+
+            String opening_of_this_day = null;
+            for (int day = 0; day < 6; day++) {
+                opening_of_this_day = response.get(restau)
+                        .getOpening_hours().get(day).toString();
+            }
+            opening_hours_List.set(restau, opening_of_this_day);
+
+            Restaurant res = restaurantsData.getValue().get(restau);
+
+            Restaurant restaurant = new Restaurant(
+                    res.getName(),
+                    res.getLatitude(),
+                    res.getLongitude(),
+                    res.getAddress(),
+                    res.getPhoto(),
+                    res.getSearchStatus(),
+                    opening_hours_List,
+                    res.getPlaceid()
+            );
+
+            newRestaurants.add(restau, restaurant);
+        }
+        restaurantsData.setValue(newRestaurants);
+    }*/
+
 
     private void drawerLayout() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -301,12 +370,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void navigationView() {
         navigationView.setNavigationItemSelectedListener(this);
-    }
-
-
-    private void configureViews() {
-        viewPager();
-        bottomView();
     }
 
     private void firebaseUI() {
@@ -436,6 +499,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toast toast = Toast.makeText(this, getString(message), Toast.LENGTH_LONG);
         toast.show();
     }
+
 
 
 }

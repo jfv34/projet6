@@ -51,21 +51,61 @@ public class ListFragment extends Fragment {
 
         List<String> name = new ArrayList<>();
         List<String> address = new ArrayList<>();
+        List<String> photo = new ArrayList<>();
+        List<Double> latitude = new ArrayList<>();
+        List<Double> longitude = new ArrayList<>();
 
         if (!restaurants.isEmpty()) {
 
             for (int i = 0; i < restaurants.size(); i++) {
                 name.add(restaurants.get(i).getName());
-
-               address.add(restaurants.get(i).getAddress());
+                address.add(restaurants.get(i).getAddress());
+                photo.add(restaurants.get(i).getPhoto());
+                latitude.add(restaurants.get(i).getLatitude());
+                longitude.add(restaurants.get(i).getLongitude());
             }
 
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
-            RecyclerView.Adapter adapter = new ListRestaurantsAdapter(name, address);
+
+
+            RecyclerView.Adapter adapter = new ListRestaurantsAdapter(name, address, photo,
+                    latitude, longitude);
             recyclerView.setAdapter(adapter);
         }
     }
+
+    /*private void getDataDetails(Response<ListDetailsResponse> response) {
+
+        ArrayList newDetails = new ArrayList();
+        Log.i("tag_newDetails", "getDataDetail");
+
+        int sizeDetailsData = response.body().results.size();
+
+        ArrayList<DetailRestaurant> detailRestaurantList = new ArrayList<DetailRestaurant>();
+        for (int restaurantId = 0; restaurantId < sizeDetailsData; restaurantId++) {
+
+            ArrayList<String> daysList = new ArrayList<>();
+            for (int day = 0; day < 6; day++) {
+                String opening_of_this_day = response.body().getResults().get(restaurantId)
+                        .getOpening_hours().get(day).toString();
+                daysList.set(day, opening_of_this_day);
+            }
+            detailRestaurantList.set(restaurantId,daysList);
+
+                Log.i("tag_response_name", restaurant.getName());
+                Log.i("tag_response_lat", String.valueOf(restaurant.getLatitude()));
+                Log.i("tag_response_long", String.valueOf(restaurant.getLongitude()));
+                Log.i("tag_response_addres", String.valueOf(restaurant.getAddress()));
+                Log.i("tag_response_photo", String.valueOf(restaurant.getPhoto()));
+                Log.i("tag_response_search", String.valueOf(restaurant.getSearchStatus()));
+            }
+
+
+            restaurantsData.setValue(newRestaurants);
+
+
+        }*/
 }
