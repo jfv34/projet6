@@ -94,7 +94,6 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
 
     void displayRestaurants(ArrayList<Restaurant> restaurants, String textSearched) {
         ((MainActivity) getActivity()).hideRestaurantsNotSearched(textSearched);
-        Log.i("tag_display_restau", "ok");
 
         if (googleMap != null) {
             googleMap.clear();
@@ -141,7 +140,6 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                         previousLatitude = latitude;
                         previousLongitude = longitude;
                         ((MainActivity) getActivity()).findRestaurantsNearCoordinates(latitude, longitude);
-                        //((MainActivity) getActivity()).findDetailsRestaurants();
 
                         ArrayList<Restaurant> restaurants = ((MainActivity) getActivity()).restaurantsData.getValue();
 

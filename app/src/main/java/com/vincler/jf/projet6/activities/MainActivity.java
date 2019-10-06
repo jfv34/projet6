@@ -56,7 +56,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int RC_SIGN_IN = 123;
+    private final int RC_SIGN_IN = 123;
 
     RestaurantsService service;
     public MutableLiveData<ArrayList<Restaurant>> restaurantsData = new MutableLiveData<>(new ArrayList<>());
@@ -169,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 String restaurant = v.getText().toString();
-                Log.i("tag_text", restaurant);
                 closeKeyboard();
                 displayToolbar();
 

@@ -29,7 +29,7 @@ public class RestaurantResponse {
     @SerializedName("lng")
     public double longitude;
 
-    @SerializedName("html_attributions")
+    @SerializedName("photo_reference")
     public String photo;
 
     @SerializedName("rating")
@@ -54,7 +54,6 @@ public class RestaurantResponse {
         return restaurantName;
     }
 
-
     public double getLatitude() {
 
         return geometryResponse.locationResponse.latitude;
@@ -72,13 +71,9 @@ public class RestaurantResponse {
     public String getPhoto() {
 
         if ((photosResponse) != null) {
-            return photosResponse.get(0).photo_html_response.get(0).toString();
+            return photosResponse.get(0).photo_reference_response;
         }
         return "";
-    }
-
-    public String getType() {
-        return typesListResponse.get(0).toString();
     }
 
     public String getPlaceid() {

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,39 +77,6 @@ public class ListFragment extends Fragment {
                     rating, latitude, longitude);
             recyclerView.setAdapter(adapter);
 
-
         }
     }
-
-    /*private void getDataDetails(Response<ListDetailsResponse> response) {
-
-        ArrayList newDetails = new ArrayList();
-        Log.i("tag_newDetails", "getDataDetail");
-
-        int sizeDetailsData = response.body().results.size();
-
-        ArrayList<DetailRestaurant> detailRestaurantList = new ArrayList<DetailRestaurant>();
-        for (int restaurantId = 0; restaurantId < sizeDetailsData; restaurantId++) {
-
-            ArrayList<String> daysList = new ArrayList<>();
-            for (int day = 0; day < 6; day++) {
-                String opening_of_this_day = response.body().getResults().get(restaurantId)
-                        .getOpening_hours().get(day).toString();
-                daysList.set(day, opening_of_this_day);
-            }
-            detailRestaurantList.set(restaurantId,daysList);
-
-                Log.i("tag_response_name", restaurant.getName());
-                Log.i("tag_response_lat", String.valueOf(restaurant.getLatitude()));
-                Log.i("tag_response_long", String.valueOf(restaurant.getLongitude()));
-                Log.i("tag_response_addres", String.valueOf(restaurant.getAddress()));
-                Log.i("tag_response_photo", String.valueOf(restaurant.getPhoto()));
-                Log.i("tag_response_search", String.valueOf(restaurant.getSearchStatus()));
-            }
-
-
-            restaurantsData.setValue(newRestaurants);
-
-
-        }*/
 }

@@ -1,5 +1,7 @@
 package com.vincler.jf.projet6;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,9 +11,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurantsAdapter.ViewHolder> {
+
+    private final String API_KEY = "AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc";
+    private static final int WIDTH_PHOTO = 50;
+    Context context;
 
     List<String> name;
     List<String> address;
@@ -22,8 +30,11 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+
         public ViewHolder(@NonNull View itemView) {
+
             super(itemView);
+
         }
     }
 
@@ -41,6 +52,9 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     public ViewHolder onCreateViewHolder(ViewGroup parent,
                                          int viewType) {
 
+        this.context = parent.getContext();
+
+
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_restaurant, parent, false);
 
@@ -54,6 +68,8 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         TextView name_tv = holder.itemView.findViewById(R.id.item_restaurant_name_tv);
         TextView address_tv = holder.itemView.findViewById(R.id.item_restaurant_address_tv);
         TextView distance_tv = holder.itemView.findViewById(R.id.item_restaurant_distance_tv);
+        ImageView photo_iv = holder.itemView.findViewById(R.id.item_restaurant_photo_iv);
+
 
         ImageView star1_iv = holder.itemView.findViewById(R.id.item_restaurant_star1_iv);
         ImageView star2_iv = holder.itemView.findViewById(R.id.item_restaurant_star2_iv);
@@ -65,6 +81,22 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         display_address(address_tv, position);
         display_distance(distance_tv, position);
         display_rating(star1_iv, star2_iv, star3_iv, star4_iv, star5_iv, position);
+        display_photo(photo_iv, position);
+    }
+
+    private void display_photo(ImageView photo_iv, int position) {
+
+        String photoRef = photo.get(position);
+        String url = "https://maps.googleapis.com/maps/api/place/photo?"
+                + "maxwidth=" + WIDTH_PHOTO
+                + "&photoreference=" + photoRef
+                + "&key=" + "AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc";
+
+        Log.i("tag_url", url);
+
+        Glide.with(context).load(url).into(photo_iv);
+
+
     }
 
     private void display_rating(ImageView star1_iv, ImageView star2_iv, ImageView star3_iv,
