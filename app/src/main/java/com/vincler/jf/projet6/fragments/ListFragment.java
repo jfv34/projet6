@@ -22,6 +22,8 @@ import java.util.List;
 public class ListFragment extends Fragment {
 
     RecyclerView recyclerView;
+    private Double latitudeUser;
+    private Double longitudeUser;
 
     public static ListFragment newInstance() {
 
@@ -45,6 +47,9 @@ public class ListFragment extends Fragment {
         ((MainActivity) getActivity()).restaurantsData.observe(this, restaurants -> {
             displayRestaurants(restaurants);
         });
+        this.latitudeUser = ((MainActivity) getActivity()).getLatitudeUser();
+        this.longitudeUser = ((MainActivity) getActivity()).getLatitudeUser();
+
     }
 
     private void displayRestaurants(ArrayList<Restaurant> restaurants) {
@@ -74,7 +79,7 @@ public class ListFragment extends Fragment {
 
 
             RecyclerView.Adapter adapter = new ListRestaurantsAdapter(name, address, photo,
-                    rating, latitude, longitude);
+                    rating, latitude, longitude, latitudeUser, longitudeUser);
             recyclerView.setAdapter(adapter);
 
         }

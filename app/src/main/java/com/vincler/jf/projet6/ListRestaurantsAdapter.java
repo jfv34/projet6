@@ -15,16 +15,20 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import static java.lang.Double.parseDouble;
+
 public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurantsAdapter.ViewHolder> {
 
     private final String API_KEY = "AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc";
     private static final int WIDTH_PHOTO = 50;
+    private Double latitudeUser;
+    private Double longitudeUser;
     Context context;
 
     List<String> name;
     List<String> address;
-    List<String> latitude;
-    List<String> longitude;
+    List<Double> latitude;
+    List<Double> longitude;
     List<String> photo;
     List<Double> rating;
 
@@ -39,13 +43,15 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     }
 
     public ListRestaurantsAdapter(List name, List address, List photo, List rating, List latitude,
-                                  List longitude) {
+                                  List longitude, Double latitudeUser, Double longitudeUser) {
         this.name = name;
         this.address = address;
         this.photo = photo;
         this.rating = rating;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.latitudeUser = latitudeUser;
+        this.longitudeUser = longitudeUser;
     }
 
     @Override
@@ -70,7 +76,6 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         TextView distance_tv = holder.itemView.findViewById(R.id.item_restaurant_distance_tv);
         ImageView photo_iv = holder.itemView.findViewById(R.id.item_restaurant_photo_iv);
 
-
         ImageView star1_iv = holder.itemView.findViewById(R.id.item_restaurant_star1_iv);
         ImageView star2_iv = holder.itemView.findViewById(R.id.item_restaurant_star2_iv);
         ImageView star3_iv = holder.itemView.findViewById(R.id.item_restaurant_star3_iv);
@@ -79,7 +84,17 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
         display_name(name_tv, position);
         display_address(address_tv, position);
-        display_distance(distance_tv, position);
+
+
+
+        double longitudeRestaurant = longitude.get(position);
+        double latitudeRestaurant = latitude.get(position);
+
+        if(latitudeUser!=null && longitudeUser!=null){
+            Log.i("tag_latitudeUser",latitudeUser.toString());
+        display_distance(distance_tv, latitudeUser, longitudeUser,
+                latitudeRestaurant, longitudeRestaurant);}
+
         display_rating(star1_iv, star2_iv, star3_iv, star4_iv, star5_iv, position);
         display_photo(photo_iv, position);
     }
@@ -95,8 +110,6 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         Log.i("tag_url", url);
 
         Glide.with(context).load(url).into(photo_iv);
-
-
     }
 
     private void display_rating(ImageView star1_iv, ImageView star2_iv, ImageView star3_iv,
@@ -118,9 +131,13 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         }
     }
 
-    private void display_distance(TextView distance_tv, int position) {
-        String dist = "999m";
-        distance_tv.setText(dist);
+    private void display_distance(TextView distance_tv,
+                                  Double latitudeUser, Double longitudeUser,
+                                  Double latitudeRestaurant, Double longitudeRestaurant) {
+
+        double dist = 0.0;
+        dist = calculateDistance(longitudeUser, latitudeUser, longitudeRestaurant, latitudeRestaurant);
+        distance_tv.setText(String.valueOf(dist));
     }
 
     private void display_address(TextView address_tv, int position) {
@@ -130,6 +147,18 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
     private void display_name(TextView name_tv, int position) {
         name_tv.setText(name.get(position));
+    }
+
+    private double calculateDistance(double fromLong, double fromLat,
+                                     double toLong, double toLat) {
+        double d2r = Math.PI / 180;
+        double dLong = (toLong - fromLong) * d2r;
+        double dLat = (toLat - fromLat) * d2r;
+        double a = Math.pow(Math.sin(dLat / 2.0), 2) + Math.cos(fromLat * d2r)
+                * Math.cos(toLat * d2r) * Math.pow(Math.sin(dLong / 2.0), 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double d = 6367000 * c;
+        return Math.round(d);
     }
 
     @Override

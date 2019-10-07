@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public EditText customEditText;
     private ImageButton searchButton;
     private NavigationView navigationView;
+    private Double latitudeUser;
+    private Double longitudeUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -276,30 +278,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    public void findDetailsRestaurants() {
-
-        for (int restau = 0; restau < restaurantsData.getValue().size(); restau++) {
-            String placeid = restaurantsData.getValue().get(restau).getPlaceid();
-
-            service.detailsRestaurants(placeid).enqueue(new Callback<DetailsResponse>() {
-
-                @Override
-                public void onResponse(Call<DetailsResponse> call, Response<DetailsResponse> response) {
-
-                    Log.i("tag_getdetailrestau", "ok");
-                    // getDetailRestaurants(response);
-                }
-
-                @Override
-                public void onFailure(Call<DetailsResponse> call, Throwable t) {
-
-                }
-
-            });
-        }
-    }
-
-
     private void getDataRestaurants(Response<ListRestaurantResponse> response) {
 
         ArrayList newRestaurants = new ArrayList();
@@ -319,43 +297,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         restaurantsData.setValue(newRestaurants);
     }
-
-   /* private void getDetailRestaurants(Response<DetailsResponse> response) {
-
-
-        ArrayList<String> opening_hours_List = new ArrayList<>();
-
-
-
-        int sizeDetailsData = response.size();
-        response.get(0);
-        for (int restau = 0; restau < sizeDetailsData; restau++) {
-
-            String opening_of_this_day = null;
-            for (int day = 0; day < 6; day++) {
-                opening_of_this_day = response.get(restau)
-                        .getOpening_hours().get(day).toString();
-            }
-            opening_hours_List.set(restau, opening_of_this_day);
-
-            Restaurant res = restaurantsData.getValue().get(restau);
-
-            Restaurant restaurant = new Restaurant(
-                    res.getName(),
-                    res.getLatitude(),
-                    res.getLongitude(),
-                    res.getAddress(),
-                    res.getPhoto(),
-                    res.getSearchStatus(),
-                    opening_hours_List,
-                    res.getPlaceid()
-            );
-
-            newRestaurants.add(restau, restaurant);
-        }
-        restaurantsData.setValue(newRestaurants);
-    }*/
-
 
     private void drawerLayout() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -495,7 +436,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toast.show();
     }
 
+    public void setLatitudeAndLongitudeUser(Double latitude, Double longitude){
+        this.latitudeUser = latitude;
+        this.longitudeUser = longitude;
+        Log.i("tag_transmis",latitude.toString());
+    }
 
+    public Double getLatitudeUser(){
+        if(latitudeUser!=null){Log.i("tag_get",latitudeUser.toString());}
+        return latitudeUser;
+    }
+
+    public Double getLongitudeUser(){
+        return longitudeUser;
+    }
 
 }
 
