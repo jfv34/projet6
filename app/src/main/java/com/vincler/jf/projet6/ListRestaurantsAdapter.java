@@ -15,11 +15,14 @@ import com.apptakk.http_request.HttpRequest;
 import com.apptakk.http_request.HttpRequestTask;
 import com.apptakk.http_request.HttpResponse;
 import com.bumptech.glide.Glide;
+import com.google.gson.JsonObject;
+import com.vincler.jf.projet6.models.Opening_hours;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurantsAdapter.ViewHolder> {
@@ -66,10 +69,8 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
         this.context = parent.getContext();
 
-
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_restaurant, parent, false);
-
 
         return new ViewHolder(v);
     }
@@ -102,7 +103,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         //https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJY1FiPRC6j4ARzhKBypjO7eg&fields=opening_hours/weekday_text&language=fr&key=AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc
         String urlOpeningHours = "https://maps.googleapis.com/maps/api/place/details/json?placeid="
                 + placeId.get(position)
-                + "&fields=opening_hours/weekday_text"
+                + "&fields=opening_hours"
                 + "&language=" + language
                 + "&key=" + API_KEY;
         Log.i("tag_url_hours", urlOpeningHours);
@@ -121,33 +122,29 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
                         }
                     }
                 }).execute();
-
-
     }
 
     private void parseJson(HttpResponse response) {
         String body = response.body;
-        JSONArray weekDayText_Json;
+        ArrayList<Opening_hours> opening_hours_List = new ArrayList<Opening_hours>();
 
-        Log.i("tag_json",body);
         try {
             JSONObject bodyJson = new JSONObject(body);
             JSONObject result_Json = bodyJson.getJSONObject("result");
             JSONObject openingHours_Json = result_Json.getJSONObject("opening_hours");
-            weekDayText_Json = openingHours_Json.getJSONArray("weekday_text");
-            parseOpeningDay(weekDayText_Json);
+            JSONArray periods_Json = openingHours_Json.getJSONArray("periods");
+
+            for (int day = 0; day < 7; day++) {
+         //       JsonObject day_Json = periods_Json.get(0).
+            }
+
+            Log.i("tag_json", periods_Json.toString());
+
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
     }
-
-    private void parseOpeningDay(JSONArray weekDayText_json) {
-
-    }
-
 
     private void display_photo(ImageView photo_iv, int position) {
 
