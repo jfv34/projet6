@@ -187,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         int restaurantsDataSize = restaurantsData.getValue().size();
-        Log.i("tag_search", searchText);
 
         for (int i = 0; i < restaurantsDataSize; i++) {
             String r = restaurantsData.getValue().get(i).getName();
@@ -263,8 +262,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onResponse(Call<ListRestaurantResponse> call, Response<ListRestaurantResponse> response) {
 
-
-                Log.i("tag_response", "ok");
                 if (!response.body().getResults().isEmpty()) {
                     getDataRestaurants(response);
                 }
@@ -272,7 +269,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onFailure(Call<ListRestaurantResponse> call, Throwable t) {
-                Log.i("tag_response", "onFailure");
                 t.printStackTrace();
             }
         });
@@ -281,7 +277,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void getDataRestaurants(Response<ListRestaurantResponse> response) {
 
         ArrayList newRestaurants = new ArrayList();
-        Log.i("tag_newRestau", "getDataRestau");
 
         int sizeRestaurantsData = response.body().results.size();
 
@@ -377,8 +372,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .load(firebaseUser.getPhotoUrl())
                     .into(imageView);
         }
-
-
     }
 
     @Override
@@ -435,22 +428,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toast toast = Toast.makeText(this, getString(message), Toast.LENGTH_LONG);
         toast.show();
     }
-
-    public void setLatitudeAndLongitudeUser(Double latitude, Double longitude){
-        this.latitudeUser = latitude;
-        this.longitudeUser = longitude;
-        Log.i("tag_transmis",latitude.toString());
-    }
-
-    public Double getLatitudeUser(){
-        if(latitudeUser!=null){Log.i("tag_get",latitudeUser.toString());}
-        return latitudeUser;
-    }
-
-    public Double getLongitudeUser(){
-        return longitudeUser;
-    }
-
 }
 
 

@@ -139,7 +139,6 @@ public class MapFragment extends Fragment implements LocationListener, OnMapRead
                     if (latitude != previousLatitude && longitude != previousLongitude) {
                         previousLatitude = latitude;
                         previousLongitude = longitude;
-                        ((MainActivity) getActivity()).setLatitudeAndLongitudeUser(latitude, longitude);
                         ((MainActivity) getActivity()).findRestaurantsNearCoordinates(latitude, longitude);
 
                         ArrayList<Restaurant> restaurants = ((MainActivity) getActivity()).restaurantsData.getValue();

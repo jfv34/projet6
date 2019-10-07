@@ -11,18 +11,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.apptakk.http_request.HttpRequest;
+import com.apptakk.http_request.HttpRequestTask;
+import com.apptakk.http_request.HttpResponse;
 import com.bumptech.glide.Glide;
 
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import static java.lang.Double.parseDouble;
+import java.util.List;
 
 public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurantsAdapter.ViewHolder> {
 
     private final String API_KEY = "AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc";
+    private String language = "fr";
     private static final int WIDTH_PHOTO = 50;
-    private Double latitudeUser;
-    private Double longitudeUser;
     Context context;
 
     List<String> name;
@@ -31,6 +35,9 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     List<Double> longitude;
     List<String> photo;
     List<Double> rating;
+    List<String> placeId;
+    private Double latitudeUser;
+    private Double longitudeUser;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -43,15 +50,14 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     }
 
     public ListRestaurantsAdapter(List name, List address, List photo, List rating, List latitude,
-                                  List longitude, Double latitudeUser, Double longitudeUser) {
+                                  List longitude, List placeId) {
         this.name = name;
         this.address = address;
         this.photo = photo;
         this.rating = rating;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.latitudeUser = latitudeUser;
-        this.longitudeUser = longitudeUser;
+        this.placeId = placeId;
     }
 
     @Override
@@ -74,6 +80,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         TextView name_tv = holder.itemView.findViewById(R.id.item_restaurant_name_tv);
         TextView address_tv = holder.itemView.findViewById(R.id.item_restaurant_address_tv);
         TextView distance_tv = holder.itemView.findViewById(R.id.item_restaurant_distance_tv);
+        TextView openingHours_tv = holder.itemView.findViewById(R.id.item_restaurant_opening_hours_tv);
         ImageView photo_iv = holder.itemView.findViewById(R.id.item_restaurant_photo_iv);
 
         ImageView star1_iv = holder.itemView.findViewById(R.id.item_restaurant_star1_iv);
@@ -84,20 +91,63 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
         display_name(name_tv, position);
         display_address(address_tv, position);
-
-
-
-        double longitudeRestaurant = longitude.get(position);
-        double latitudeRestaurant = latitude.get(position);
-
-        if(latitudeUser!=null && longitudeUser!=null){
-            Log.i("tag_latitudeUser",latitudeUser.toString());
-        display_distance(distance_tv, latitudeUser, longitudeUser,
-                latitudeRestaurant, longitudeRestaurant);}
-
         display_rating(star1_iv, star2_iv, star3_iv, star4_iv, star5_iv, position);
         display_photo(photo_iv, position);
+        display_distance(distance_tv, position, latitudeUser, longitudeUser);
+        display_openingHours(openingHours_tv, position, language);
     }
+
+    private void display_openingHours(TextView openingHours_tv, int position, String language) {
+
+        //https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJY1FiPRC6j4ARzhKBypjO7eg&fields=opening_hours/weekday_text&language=fr&key=AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc
+        String urlOpeningHours = "https://maps.googleapis.com/maps/api/place/details/json?placeid="
+                + placeId.get(position)
+                + "&fields=opening_hours/weekday_text"
+                + "&language=" + language
+                + "&key=" + API_KEY;
+        Log.i("tag_url_hours", urlOpeningHours);
+
+
+        new HttpRequestTask(
+                new HttpRequest(urlOpeningHours, HttpRequest.POST, "{ \"some\": \"data\" }"),
+                new HttpRequest.Handler() {
+                    @Override
+                    public void response(HttpResponse response) {
+                        if (response.code == 200) {
+                            Log.d(this.getClass().toString(), "Request successful!");
+                            parseJson(response);
+                        } else {
+                            Log.e(this.getClass().toString(), "Request unsuccessful: " + response);
+                        }
+                    }
+                }).execute();
+
+
+    }
+
+    private void parseJson(HttpResponse response) {
+        String body = response.body;
+        JSONArray weekDayText_Json;
+
+        Log.i("tag_json",body);
+        try {
+            JSONObject bodyJson = new JSONObject(body);
+            JSONObject result_Json = bodyJson.getJSONObject("result");
+            JSONObject openingHours_Json = result_Json.getJSONObject("opening_hours");
+            weekDayText_Json = openingHours_Json.getJSONArray("weekday_text");
+            parseOpeningDay(weekDayText_Json);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void parseOpeningDay(JSONArray weekDayText_json) {
+
+    }
+
 
     private void display_photo(ImageView photo_iv, int position) {
 
@@ -131,13 +181,15 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         }
     }
 
-    private void display_distance(TextView distance_tv,
-                                  Double latitudeUser, Double longitudeUser,
-                                  Double latitudeRestaurant, Double longitudeRestaurant) {
+    private void display_distance(TextView distance_tv, int position,
+                                  Double latitudeUser, Double longitudeUser) {
 
         double dist = 0.0;
-        dist = calculateDistance(longitudeUser, latitudeUser, longitudeRestaurant, latitudeRestaurant);
-        distance_tv.setText(String.valueOf(dist));
+        if (latitudeUser != null && longitudeUser != null) {
+            dist = calculateDistance(longitudeUser, latitudeUser,
+                    longitude.get(position), latitude.get(position));
+            distance_tv.setText(String.valueOf(dist));
+        }
     }
 
     private void display_address(TextView address_tv, int position) {
