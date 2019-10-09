@@ -12,12 +12,4 @@ public class DetailsResponse {
 
     @SerializedName("weekday_text")
     public ArrayList weekday_textList;
-
-    @SerializedName("opening_hours")
-    public Open_hoursResponse opening_hoursResponse;
-
-    public ArrayList getOpening_hours() {
-
-        return opening_hoursResponse.weekday_textList;
-    }
 }

@@ -1,12 +1,12 @@
-package com.vincler.jf.projet6;
+package com.vincler.jf.projet6.ui.main;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.vincler.jf.projet6.fragments.ListFragment;
-import com.vincler.jf.projet6.fragments.MapFragment;
-import com.vincler.jf.projet6.fragments.WorkmatesFragment;
+import com.vincler.jf.projet6.ui.list.ListFragment;
+import com.vincler.jf.projet6.ui.map.MapFragment;
+import com.vincler.jf.projet6.ui.workmates.WorkmatesFragment;
 
 public class PageAdapter extends FragmentPagerAdapter {
 

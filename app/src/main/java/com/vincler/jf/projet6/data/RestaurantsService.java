@@ -16,12 +16,9 @@ public interface RestaurantsService {
             @Query("radius") String radius
     );
 
-    @GET("details/json?fields=opening_hours,photos&key=AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc")
-    Call<DetailsResponse> detailsRestaurants(@Query("placeid") String placeid);
+  //  @GET("details/json?fields=opening_hours,photos&key=AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc")
+   // Call<DetailsResponse> detailsRestaurants(@Query("placeid") String placeid);
 
-/*    @GET("details/json?maxwidth=200&key=AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc")
-    Call<PhotoResponse> photoRestaurants(@Query("photoreference") String photoreference
-    );*/
 
 
 }

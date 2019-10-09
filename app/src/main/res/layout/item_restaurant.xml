@@ -89,7 +89,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_photo_iv" />
 
-
     <ImageView
         android:id="@+id/item_restaurant_star2_iv"
         android:layout_width="wrap_content"
@@ -129,13 +128,12 @@
     <ImageView
         android:id="@+id/item_restaurant_photo_iv"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/restau"
+        android:layout_height="0dp"
         android:layout_marginEnd="5dp"
-        app:layout_constraintWidth_percent="0.20"
+        android:src="@drawable/restau"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintWidth_percent="0.20" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

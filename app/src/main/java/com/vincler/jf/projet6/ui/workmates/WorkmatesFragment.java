@@ -1,4 +1,4 @@
-package com.vincler.jf.projet6.fragments;
+package com.vincler.jf.projet6.ui.workmates;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.vincler.jf.projet6.ListWorkmatesAdapter;
 import com.vincler.jf.projet6.R;
 
 

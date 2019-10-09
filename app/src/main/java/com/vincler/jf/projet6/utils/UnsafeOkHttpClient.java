@@ -1,4 +1,4 @@
-package com.vincler.jf.projet6;
+package com.vincler.jf.projet6.utils;
 
 import java.security.cert.CertificateException;
 

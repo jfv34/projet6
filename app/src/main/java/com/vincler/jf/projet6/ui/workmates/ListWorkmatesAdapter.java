@@ -1,4 +1,4 @@
-package com.vincler.jf.projet6;
+package com.vincler.jf.projet6.ui.workmates;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.vincler.jf.projet6.R;
 
 public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdapter.ViewHolder> {
 
