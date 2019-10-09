@@ -1,7 +1,5 @@
 package com.vincler.jf.projet6.models;
 
-import java.util.ArrayList;
-
 public class Restaurant {
 
     private String name;
@@ -11,11 +9,11 @@ public class Restaurant {
     private String photo;
     private double rating;
     private boolean isVisible;
-    private ArrayList<String> opening_hours_List;
+    private String  isOpenNowList;
     private String placeid;
 
     public Restaurant(String name, double latitude, double longitude, String address, String photo,
-                      Double rating, boolean isVisible, ArrayList<String> opening_hours_List, String placeid) {
+                      Double rating, boolean isVisible, String isOpenNowList, String placeid) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -23,7 +21,7 @@ public class Restaurant {
         this.photo = photo;
         this.rating = rating;
         this.isVisible = isVisible;
-        this.opening_hours_List = opening_hours_List;
+        this.isOpenNowList = isOpenNowList;
         this.placeid = placeid;
     }
 
@@ -59,7 +57,8 @@ public class Restaurant {
         return isVisible;
     }
 
-    public ArrayList<String> getOpening_hours_List() {
-        return opening_hours_List;
+    public String getIsOpenNow() {
+        return isOpenNowList;
     }
+
 }

@@ -91,9 +91,8 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                     for (int i = 0; i < sizeRestaurantsData; i++) {
 
                         RestaurantResponse res = response.body().getResults().get(i);
-                        ArrayList<String> opening_hours_List = null;
 
-                        Restaurant restaurant = new Restaurant(res.getName(), res.getLatitude(), res.getLongitude(), res.getAddress(), res.getPhoto(), res.getRating(), true, opening_hours_List, res.getPlaceid());
+                        Restaurant restaurant = new Restaurant(res.getName(), res.getLatitude(), res.getLongitude(), res.getAddress(), res.getPhoto(), res.getRating(), true, res.getIsOpenNow(), res.getPlaceid());
                         newRestaurants.add(i, restaurant);
                     }
 
@@ -107,7 +106,7 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
             }
         });
 
-        /*if (latitude != previousLatitude && longitude != previousLongitude) {
+        if (latitude != previousLatitude && longitude != previousLongitude) {
                         previousLatitude = latitude;
                         previousLongitude = longitude;
                         ((MainActivity) getActivity()).findRestaurantsNearCoordinates(latitude, longitude);
@@ -117,7 +116,7 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                         if (restaurants != null) {
                             displayRestaurants(restaurants, "");
                         }
-                    }*/
+                    }
     }
 
     @Override

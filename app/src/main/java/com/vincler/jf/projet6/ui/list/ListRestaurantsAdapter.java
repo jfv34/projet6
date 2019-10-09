@@ -1,6 +1,8 @@
 package com.vincler.jf.projet6.ui.list;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.location.Location;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,14 +14,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.LatLng;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.Restaurant;
 
 import java.util.List;
 
+import static com.vincler.jf.projet6.utils.DistanceUtils.calculateDistance;
+
 public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurantsAdapter.ViewHolder> {
 
     private static final int WIDTH_PHOTO = 50;
+    private static final String API_KEY = "AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc";
     Context context;
 
     List<Restaurant> restaurants;
@@ -62,7 +68,27 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         display_address(address_tv, position);
         display_rating(star1_iv, star2_iv, star3_iv, star4_iv, star5_iv, position);
         display_photo(photo_iv, position);
+        display_opening(openingHours_tv, position);
+
         //display_distance(distance_tv, position, latitudeUser, longitudeUser);
+    }
+
+    private void display_opening(TextView openingHours_tv, int position) {
+
+        String opening;
+        switch (restaurants.get(position).getIsOpenNow()) {
+
+            case "true":
+                opening = context.getString(R.string.ouvert);
+                break;
+            case "false":
+                opening = context.getString(R.string.ferme);
+                openingHours_tv.setTextColor(Color.RED);
+                break;
+            default:
+                opening = "";
+        }
+        openingHours_tv.setText(opening);
     }
 
     private void display_photo(ImageView photo_iv, int position) {
@@ -70,7 +96,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         String url = "https://maps.googleapis.com/maps/api/place/photo?"
                 + "maxwidth=" + WIDTH_PHOTO
                 + "&photoreference=" + photoRef
-                + "&key=" + "AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc";
+                + "&key=" + API_KEY;
 
         Log.i("tag_url", url);
 
@@ -101,11 +127,13 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         }
     }
 
-    private void display_distance(TextView distance_tv, int position, Double latitudeUser, Double longitudeUser) {
+    private void display_distance(TextView distance_tv, int position, Double latitudeUser,
+                                  Double longitudeUser) {
         double dist;
         if (latitudeUser != null && longitudeUser != null) {
-           /* dist = calculateDistance(longitudeUser, latitudeUser, longitude.get(position), latitude.get(position));
-            distance_tv.setText(String.valueOf(dist));*/
+           dist = calculateDistance(longitudeUser, latitudeUser, restaurants.get(position).getLongitude(),
+                   restaurants.get(position).getLatitude());
+            distance_tv.setText(String.valueOf(dist));
         }
     }
 

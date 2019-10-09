@@ -38,7 +38,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                     data.getPhoto(),
                     data.getRating(),
                     r.toLowerCase().contains(query.toLowerCase()),
-                    restaurants.get(i).getOpening_hours_List(),
+                    restaurants.get(i).getIsOpenNow(),
                     data.getPlaceid()
             ));
         }

@@ -1,6 +1,7 @@
 package com.vincler.jf.projet6.models.googleMapResponse;
 
 import com.google.gson.annotations.SerializedName;
+import com.vincler.jf.projet6.models.OpeningHoursResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,8 @@ import java.util.List;
 public class RestaurantResponse {
 
     public RestaurantResponse(String restaurantName, double latitude, double longitude, String address,
-                              String photo, Double rating, ArrayList typesListResponse, String placeid) {
+                              String photo, Double rating, ArrayList typesListResponse, String placeid,
+                              ArrayList isOpenNowList) {
         this.restaurantName = restaurantName;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -17,6 +19,7 @@ public class RestaurantResponse {
         this.rating = rating;
         this.typesListResponse = typesListResponse;
         this.placeid = placeid;
+        this.isOpenNowList = isOpenNowList;
 
     }
 
@@ -50,6 +53,12 @@ public class RestaurantResponse {
     @SerializedName("place_id")
     public String placeid;
 
+    @SerializedName("opening_hours")
+    public OpeningHoursResponse openingHoursResponse;
+
+    @SerializedName("open_now")
+    public ArrayList isOpenNowList;
+
     public String getName() {
         return restaurantName;
     }
@@ -79,6 +88,15 @@ public class RestaurantResponse {
     public String getPlaceid() {
         return placeid;
     }
+
+    public String getIsOpenNow(){
+
+        if ((openingHoursResponse) != null) {
+            return openingHoursResponse.isOpenNow.toString();
+        }
+       return "";
+    }
+
 
     public Double getRating() {
         return rating;
