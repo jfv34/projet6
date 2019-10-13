@@ -24,17 +24,14 @@ public class PageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: //Page number 1
+            case 0:
                 return MapFragment.newInstance();
-            case 1: //Page number 2
+            case 1:
                 return ListFragment.newInstance();
-            case 2: //Page number 3
+            case 2:
                 return WorkmatesFragment.newInstance();
             default:
                 return null;
         }
     }
-
-
 }
-

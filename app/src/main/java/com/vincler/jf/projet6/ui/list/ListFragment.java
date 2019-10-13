@@ -32,7 +32,6 @@ public class ListFragment extends Fragment {
         recyclerView = rootView.findViewById(R.id.fragment_restaurant_recyclerView);
 
         return rootView;
-
     }
 
     @Override

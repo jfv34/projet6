@@ -2,9 +2,14 @@ package com.vincler.jf.projet6.ui.main;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.vincler.jf.projet6.models.Restaurant;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivityPresenter implements MainActivityContract.Presenter {
 
@@ -45,4 +50,14 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
         restaurantsData.setValue(result);
     }
-}
+
+    @Override
+    public List<AuthUI.IdpConfig> firebase(FirebaseUser user){
+
+         return Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build(),
+                new AuthUI.IdpConfig.TwitterBuilder().build()
+        );
+}}

@@ -10,6 +10,7 @@ import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.models.googleMapResponse.ListRestaurantResponse;
 import com.vincler.jf.projet6.models.googleMapResponse.RestaurantResponse;
+import com.vincler.jf.projet6.ui.main.MainActivity;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
 import java.util.ArrayList;
@@ -105,18 +106,6 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                 t.printStackTrace();
             }
         });
-
-        if (latitude != previousLatitude && longitude != previousLongitude) {
-                        previousLatitude = latitude;
-                        previousLongitude = longitude;
-                        ((MainActivity) getActivity()).findRestaurantsNearCoordinates(latitude, longitude);
-
-                        ArrayList<Restaurant> restaurants = ((MainActivity) getActivity()).restaurantsData.getValue();
-
-                        if (restaurants != null) {
-                            displayRestaurants(restaurants, "");
-                        }
-                    }
     }
 
     @Override
@@ -145,4 +134,6 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
     public void onProviderDisabled(String provider) {
 
     }
+
+
 }

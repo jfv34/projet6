@@ -6,6 +6,7 @@ import android.location.LocationListener;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import com.vincler.jf.projet6.models.Restaurant;
 
@@ -27,5 +28,6 @@ public interface MapFragmentContract {
         void stopFollowUser();
 
         void searchRestaurants(double latitude, double longitude);
+
     }
 }

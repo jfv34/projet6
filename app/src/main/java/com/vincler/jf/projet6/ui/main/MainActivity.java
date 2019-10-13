@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -30,6 +31,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.api.UserHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -201,12 +203,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
 
-            List<AuthUI.IdpConfig> providers = Arrays.asList(
-                    new AuthUI.IdpConfig.EmailBuilder().build(),
-                    new AuthUI.IdpConfig.GoogleBuilder().build(),
-                    new AuthUI.IdpConfig.FacebookBuilder().build(),
-                    new AuthUI.IdpConfig.TwitterBuilder().build()
-            );
+            List<AuthUI.IdpConfig> providers = presenter.firebase(user);
 
             startActivityForResult(
                     AuthUI.getInstance()
@@ -216,7 +213,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                             .setLogo(R.drawable.logo)
                             .build(),
                     RC_SIGN_IN);
+
+
+
         } else {
+
             displayUserInNavDrawer();
         }
     }
@@ -228,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 toast(R.string.connectActivity_toast_successful);
+
                 displayUserInNavDrawer();
             } else {
                 toast(R.string.connectActivity_toast_failed);
@@ -255,6 +257,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
             Glide.with(this)
                     .load(firebaseUser.getPhotoUrl())
                     .into(imageView);
+
+
+            Log.i("tag_user","ok");
+            Log.i("tag_user_Uid",firebaseUser.getUid());
+            Log.i("tag_user_name",firebaseUser.getDisplayName());
+            UserHelper.createUser(firebaseUser.getUid(), firebaseUser.getDisplayName(),
+                    firebaseUser.getEmail(), firebaseUser.getPhotoUrl(),
+                    firebaseUser.getPhoneNumber(), restaurantChoice);
+
         }
     }
 

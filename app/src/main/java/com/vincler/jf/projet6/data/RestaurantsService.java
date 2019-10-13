@@ -13,12 +13,6 @@ public interface RestaurantsService {
             @Query("location") String location,
             @Query("radius") String radius
     );
-
-  //  @GET("details/json?fields=opening_hours,photos&key=AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc")
-   // Call<DetailsResponse> detailsRestaurants(@Query("placeid") String placeid);
-
-
-
 }
 
 

@@ -1,7 +1,6 @@
 package com.vincler.jf.projet6.models.googleMapResponse;
 
 import com.google.gson.annotations.SerializedName;
-import com.vincler.jf.projet6.models.OpeningHoursResponse;
 
 import java.util.ArrayList;
 import java.util.List;

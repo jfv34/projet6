@@ -91,7 +91,6 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
 
                 this.googleMap = googleMap;
                 googleMap.setMyLocationEnabled(true);
-                //updatesMapDisplay(previousLatitude, previousLongitude);
 
                 googleMap.setOnMarkerClickListener(marker -> {
                     String id = marker.getId();
