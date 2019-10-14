@@ -85,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:src="@drawable/icon_star_icon"
+        android:src="@drawable/icon_star_yellow_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_photo_iv" />
 
@@ -94,7 +94,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:src="@drawable/icon_star_icon"
+        android:src="@drawable/icon_star_yellow_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_star1_iv" />
 
@@ -103,7 +103,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:src="@drawable/icon_star_icon"
+        android:src="@drawable/icon_star_yellow_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_star2_iv" />
 
@@ -112,7 +112,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:src="@drawable/icon_star_icon"
+        android:src="@drawable/icon_star_yellow_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_star3_iv" />
 
@@ -121,7 +121,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:src="@drawable/icon_star_icon"
+        android:src="@drawable/icon_star_yellow_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/item_restaurant_star4_iv" />
 

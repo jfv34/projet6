@@ -2,8 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/activity_restaurant_photo_iv"
@@ -15,7 +14,7 @@
 
 
     <FrameLayout
-        android:id="@+id/activity_restaurant_name_and_rating_constraintlayout"
+        android:id="@+id/activity_restaurant_name_and_rating_framelayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#F4511E"
@@ -31,8 +30,8 @@
                 android:id="@+id/activity_restaurant_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:textColor="#ffffff"
                 android:textSize="22sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="18dp"
-                android:src="@drawable/icon_star_icon"
+                android:src="@drawable/icon_star_yellow_icon"
                 app:layout_constraintStart_toEndOf="@id/activity_restaurant_name_tv"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="18dp"
-                android:src="@drawable/icon_star_icon"
+                android:src="@drawable/icon_star_yellow_icon"
                 app:layout_constraintStart_toEndOf="@id/activity_restaurant_star1_iv"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="7dp"
                 android:layout_marginTop="18dp"
-                android:src="@drawable/icon_star_icon"
+                android:src="@drawable/icon_star_yellow_icon"
                 app:layout_constraintStart_toEndOf="@id/activity_restaurant_star2_iv"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -75,8 +74,8 @@
                 android:id="@+id/activity_restaurant_address_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="5dp"
-              android:layout_marginStart="10dp"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -87,12 +86,78 @@
     </FrameLayout>
 
     <ImageView
+        android:id="@+id/activity_restaurant_phone_iv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_call_24px"
+        app:layout_constraintEnd_toStartOf="@id/activity_restaurant_star_orange_iv"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/activity_restaurant_name_and_rating_framelayout" />
+
+    <ImageView
+        android:id="@+id/activity_restaurant_star_orange_iv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:padding="3dp"
+        android:src="@drawable/icon_star_orange_icon"
+        app:layout_constraintEnd_toStartOf="@id/activity_restaurant_website_iv"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintStart_toEndOf="@id/activity_restaurant_phone_iv"
+        app:layout_constraintTop_toBottomOf="@id/activity_restaurant_name_and_rating_framelayout" />
+
+    <ImageView
+        android:id="@+id/activity_restaurant_website_iv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/ic_public_24px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.05"
+        app:layout_constraintStart_toEndOf="@id/activity_restaurant_star_orange_iv"
+        app:layout_constraintTop_toBottomOf="@id/activity_restaurant_name_and_rating_framelayout" />
+
+    <TextView
+        android:id="@+id/activity_restaurant_call_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/activity_restaurant_name_and_rating_constraintlayout"
-        app:layout_constraintStart_toStartOf="parent"
-        android:src="@drawable/ic_call_24px"
-        />
+        android:layout_marginTop="10dp"
+        android:text="CALL"
+        android:textColor="#F4511E"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/activity_restaurant_like_tv"
+        app:layout_constraintStart_toStartOf="@id/activity_restaurant_phone_iv"
+        app:layout_constraintTop_toBottomOf="@id/activity_restaurant_phone_iv" />
+
+
+    <TextView
+        android:id="@+id/activity_restaurant_like_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="LIKE"
+        android:textColor="#F4511E"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/activity_restaurant_website_tv"
+        app:layout_constraintStart_toEndOf="@id/activity_restaurant_call_tv"
+        app:layout_constraintTop_toBottomOf="@id/activity_restaurant_phone_iv" />
+
+    <TextView
+        android:id="@+id/activity_restaurant_website_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="WEBSITE"
+        android:textColor="#F4511E"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/activity_restaurant_like_tv"
+        app:layout_constraintTop_toBottomOf="@id/activity_restaurant_phone_iv" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
