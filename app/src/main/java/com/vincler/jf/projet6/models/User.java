@@ -1,29 +1,26 @@
 package com.vincler.jf.projet6.models;
 
+import android.net.Uri;
+
 public class User {
 
-    private String userId;
+    private String uid;
     private String userName;
     private String email;
-    private String photoUrl;
     private String phoneNumber;
     private String restaurantChoice;
 
-    public User() {
-    }
-
-    public User(String uid, String username) {
-        this.userId = userId;
+    public User(String uid, String userName, String email, String phoneNumber, String restaurantChoice) {
+        this.uid = uid;
         this.userName = userName;
         this.email = email;
-        this.photoUrl = photoUrl;
         this.phoneNumber = phoneNumber;
         this.restaurantChoice = restaurantChoice;
     }
 
     // --- GETTERS ---
-    public String getUserId() {
-        return userId;
+    public String getUid() {
+        return uid;
     }
 
     public String getUsername() {
@@ -35,35 +32,26 @@ public class User {
         return email;
     }
 
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public String getRestaurantChoicer() {
+    public String getRestaurantChoice() {
         return restaurantChoice;
     }
 
     // --- SETTERS ---
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    public void setUserName(String userName) {
+    public void setUsername(String userName) {
         this.userName = userName;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
-    }
-
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;

@@ -5,9 +5,8 @@ import android.app.Activity;
 import android.location.LocationListener;
 
 import androidx.lifecycle.MutableLiveData;
-
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.vincler.jf.projet6.models.Restaurant;
 
 import java.util.ArrayList;
@@ -28,6 +27,8 @@ public interface MapFragmentContract {
         void stopFollowUser();
 
         void searchRestaurants(double latitude, double longitude);
+
+        ArrayList<String> restaurantChoice(Marker marker, ArrayList<Restaurant> data);
 
     }
 }

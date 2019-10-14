@@ -25,7 +25,7 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
     public ListWorkmatesAdapter(String[] name) {
         this.name = name;
         this.address = address;
-}
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,
@@ -41,11 +41,7 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         TextView name_tv = holder.itemView.findViewById(R.id.item_workmates_tv);
-
-
         name_tv.setText(name[position]);
-
-
     }
 
     @Override

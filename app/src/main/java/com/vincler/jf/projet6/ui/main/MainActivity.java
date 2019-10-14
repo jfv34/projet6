@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -33,7 +32,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserHelper;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainActivityContract.View, NavigationView.OnNavigationItemSelectedListener {
@@ -214,8 +212,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                             .build(),
                     RC_SIGN_IN);
 
-
-
         } else {
 
             displayUserInNavDrawer();
@@ -258,14 +254,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                     .load(firebaseUser.getPhotoUrl())
                     .into(imageView);
 
-
-            Log.i("tag_user","ok");
-            Log.i("tag_user_Uid",firebaseUser.getUid());
-            Log.i("tag_user_name",firebaseUser.getDisplayName());
-            UserHelper.createUser(firebaseUser.getUid(), firebaseUser.getDisplayName(),
-                    firebaseUser.getEmail(), firebaseUser.getPhotoUrl(),
-                    firebaseUser.getPhoneNumber(), restaurantChoice);
-
+            presenter.createUserInFirestore(firebaseUser);
         }
     }
 

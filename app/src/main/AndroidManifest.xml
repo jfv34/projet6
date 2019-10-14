@@ -26,6 +26,8 @@
 
 
         </activity>
+        <activity android:name=".ui.restaurant.RestaurantActivity" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBIr_Z4aE3uGusLp7sbRW0nNQCrhFehsKs" />

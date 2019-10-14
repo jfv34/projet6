@@ -3,12 +3,12 @@ package com.vincler.jf.projet6.ui.map;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.ui.main.MainActivity;
+import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 
 import java.util.ArrayList;
 
@@ -93,8 +94,15 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
                 googleMap.setMyLocationEnabled(true);
 
                 googleMap.setOnMarkerClickListener(marker -> {
-                    String id = marker.getId();
-                    Log.i("tag_marckerClick", "CLICK " + id);
+
+                    ArrayList<Restaurant> data = getLiveData().getValue();
+                    ArrayList<String> ar = presenter.restaurantChoice(marker, data);
+
+                    if (ar != null) {
+                        Intent intent = new Intent(getActivity(), RestaurantActivity.class);
+                        intent.putStringArrayListExtra("restaurant", ar);
+                        startActivityForResult(intent, 1234);
+                    }
                     return false;
                 });
 
@@ -107,6 +115,7 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
             });
         }
     }
+
 
     private BitmapDescriptor bitmapDescriptorFromVector(Context context, int drawable) {
         Drawable background = ContextCompat.getDrawable(context, drawable);

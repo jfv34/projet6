@@ -21,6 +21,8 @@ public interface MainActivityContract {
 
         void filterRestaurants(String query);
 
-        List<AuthUI.IdpConfig> firebase(FirebaseUser user);
+        List<AuthUI.IdpConfig> firebase(FirebaseUser firebaseUser);
+
+        void createUserInFirestore(FirebaseUser firebaseUser);
     }
 }

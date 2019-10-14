@@ -6,11 +6,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.models.googleMapResponse.ListRestaurantResponse;
 import com.vincler.jf.projet6.models.googleMapResponse.RestaurantResponse;
-import com.vincler.jf.projet6.ui.main.MainActivity;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
 import java.util.ArrayList;
@@ -45,11 +45,8 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
         service = retrofit.create(RestaurantsService.class);
     }
 
-    private static final int ZOOM_MAP = 16;
     private LocationManager locationManager;
     public static boolean locationFocusedOnUser = true;
-    private double previousLatitude;
-    private double previousLongitude;
     RestaurantsService service;
 
     @Override
@@ -71,7 +68,9 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
 
     @Override
     public void stopLocate() {
-        locationManager.removeUpdates(this);
+        if (locationManager != null) {
+            locationManager.removeUpdates(this);
+        }
     }
 
     @Override
@@ -135,5 +134,29 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
 
     }
 
+    @Override
+    public ArrayList<String> restaurantChoice(Marker marker, ArrayList<Restaurant> data) {
+        LatLng latLng = marker.getPosition();
+        Restaurant restaurant = null;
+        int restauId = -1;
 
+        for (int i = 0; i < data.size(); i++) {
+            Double lat = data.get(i).getLatitude();
+            Double lg = data.get(i).getLongitude();
+            LatLng latlongTest = new LatLng(lat, lg);
+            if (latlongTest.equals(latLng)) {
+                restauId = i;
+            }
+        }
+        if (restauId != -1) {
+            Restaurant r = data.get(restauId);
+
+            ArrayList<String> ar = new ArrayList<String>();
+            ar.add(r.getName());
+            ar.add(r.getAddress());
+            ar.add(r.getPhoto());
+
+            return ar;
+        } else return null;
+    }
 }
