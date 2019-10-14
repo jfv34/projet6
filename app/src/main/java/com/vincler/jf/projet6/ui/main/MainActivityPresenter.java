@@ -70,8 +70,9 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         UserHelper.createUser(firebaseUser.getUid(), firebaseUser.getDisplayName(),
                 firebaseUser.getEmail(),
                 firebaseUser.getPhoneNumber(), restaurantChoice);
-
     }
 
-
+    public MutableLiveData<ArrayList<Restaurant>> getRestaurantsData() {
+        return restaurantsData;
+    }
 }

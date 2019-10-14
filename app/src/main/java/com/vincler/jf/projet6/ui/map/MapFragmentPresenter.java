@@ -1,5 +1,6 @@
 package com.vincler.jf.projet6.ui.map;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.location.Location;
 import android.location.LocationManager;
@@ -49,6 +50,7 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
     public static boolean locationFocusedOnUser = true;
     RestaurantsService service;
 
+    @SuppressLint("MissingPermission")
     @Override
     public void startLocate(Activity activity) {
         locationManager = (LocationManager) activity.getSystemService(LOCATION_SERVICE);
@@ -137,7 +139,6 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
     @Override
     public ArrayList<String> restaurantChoice(Marker marker, ArrayList<Restaurant> data) {
         LatLng latLng = marker.getPosition();
-        Restaurant restaurant = null;
         int restauId = -1;
 
         for (int i = 0; i < data.size(); i++) {

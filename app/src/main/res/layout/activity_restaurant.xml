@@ -159,5 +159,4 @@
         app:layout_constraintStart_toEndOf="@id/activity_restaurant_like_tv"
         app:layout_constraintTop_toBottomOf="@id/activity_restaurant_phone_iv" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>
