@@ -121,8 +121,9 @@
 
     <TextView
         android:id="@+id/activity_restaurant_call_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_marginTop="10dp"
         android:text="CALL"
         android:textColor="#F4511E"
@@ -135,8 +136,9 @@
 
     <TextView
         android:id="@+id/activity_restaurant_like_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_marginTop="10dp"
         android:text="LIKE"
         android:textColor="#F4511E"
@@ -148,7 +150,8 @@
 
     <TextView
         android:id="@+id/activity_restaurant_website_tv"
-        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="WEBSITE"
