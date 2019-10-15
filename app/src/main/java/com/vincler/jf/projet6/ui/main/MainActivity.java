@@ -30,8 +30,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vincler.jf.projet6.R;
-import com.vincler.jf.projet6.api.UserHelper;
+import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainActivityContract.View, NavigationView.OnNavigationItemSelectedListener {
@@ -171,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         int id = item.getItemId();
         switch (id) {
             case R.id.activity_main_drawer_1:
-
+                restaurantActivityIntent();
                 break;
             case R.id.activity_main_drawer_2:
 
@@ -185,6 +186,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         drawerLayout.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    private void restaurantActivityIntent() {
+
+        ArrayList<String> ar = new ArrayList<>();
+
+        // ar.add...  name
+        // ar.add...  adress
+        // ar.add...  photo
+
+        Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
+        intent.putStringArrayListExtra("restaurant", ar);
+        startActivity(intent);
     }
 
     private void drawerLayout() {
@@ -232,6 +246,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
             }
         }
     }
+
 
     private void disconnectUser() {
         AuthUI.getInstance()

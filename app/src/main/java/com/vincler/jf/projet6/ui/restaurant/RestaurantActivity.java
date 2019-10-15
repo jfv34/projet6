@@ -28,6 +28,7 @@ public class RestaurantActivity extends Activity {
         context = getApplicationContext();
 
         ArrayList<String> restaurant = intent.getStringArrayListExtra("restaurant");
+
         String name = restaurant.get(0);
         String address = restaurant.get(1);
         String photoRef = restaurant.get(2);
