@@ -79,25 +79,18 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
     public void searchRestaurants(double latitude, double longitude) {
 
         String locationRequest = latitude + "," + longitude;
-
         service.listRestaurants(locationRequest, "1000").enqueue(new Callback<ListRestaurantResponse>() {
 
             @Override
             public void onResponse(Call<ListRestaurantResponse> call, Response<ListRestaurantResponse> response) {
                 if (!response.body().getResults().isEmpty()) {
-
                     ArrayList newRestaurants = new ArrayList();
-
                     int sizeRestaurantsData = response.body().results.size();
-
                     for (int i = 0; i < sizeRestaurantsData; i++) {
-
                         RestaurantResponse res = response.body().getResults().get(i);
-
                         Restaurant restaurant = new Restaurant(res.getName(), res.getLatitude(), res.getLongitude(), res.getAddress(), res.getPhoto(), res.getRating(), true, res.getIsOpenNow(), res.getPlaceid());
                         newRestaurants.add(i, restaurant);
                     }
-
                     view.getLiveData().setValue(newRestaurants);
                 }
             }
@@ -136,8 +129,7 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
 
     }
 
-    @Override
-    public ArrayList<String> restaurantChoice(Marker marker, ArrayList<Restaurant> data) {
+    public ArrayList<String> restaurantChosenByClickOnMarker(Marker marker, ArrayList<Restaurant> data) {
         LatLng latLng = marker.getPosition();
         int restauId = -1;
 

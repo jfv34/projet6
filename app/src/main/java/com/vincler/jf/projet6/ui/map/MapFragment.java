@@ -96,12 +96,12 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
                 googleMap.setOnMarkerClickListener(marker -> {
 
                     ArrayList<Restaurant> data = getLiveData().getValue();
-                    ArrayList<String> ar = presenter.restaurantChoice(marker, data);
+                    ArrayList<String> ar = presenter.restaurantChosenByClickOnMarker(marker, data);
 
                     if (ar != null) {
                         Intent intent = new Intent(getActivity(), RestaurantActivity.class);
                         intent.putStringArrayListExtra("restaurant", ar);
-                        startActivityForResult(intent, 1234);
+                        startActivity(intent);
                     }
                     return false;
                 });

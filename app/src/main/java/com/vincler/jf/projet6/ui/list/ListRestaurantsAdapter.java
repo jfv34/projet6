@@ -1,8 +1,8 @@
 package com.vincler.jf.projet6.ui.list;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
-import android.location.Location;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.model.LatLng;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.vincler.jf.projet6.utils.DistanceUtils.calculateDistance;
@@ -57,7 +58,8 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         TextView distance_tv = holder.itemView.findViewById(R.id.item_restaurant_distance_tv);
         TextView openingHours_tv = holder.itemView.findViewById(R.id.item_restaurant_opening_hours_tv);
         ImageView photo_iv = holder.itemView.findViewById(R.id.item_restaurant_photo_iv);
-
+        ImageView workmatesIcon_iv = holder.itemView.findViewById(R.id.item_restaurant_workmates_iv);
+        TextView workmatesNumber_tv = holder.itemView.findViewById(R.id.item_restaurant_numberOfWorkmates_tv);
         ImageView star1_iv = holder.itemView.findViewById(R.id.item_restaurant_star1_iv);
         ImageView star2_iv = holder.itemView.findViewById(R.id.item_restaurant_star2_iv);
         ImageView star3_iv = holder.itemView.findViewById(R.id.item_restaurant_star3_iv);
@@ -69,8 +71,44 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         display_rating(star1_iv, star2_iv, star3_iv, star4_iv, star5_iv, position);
         display_photo(photo_iv, position);
         display_opening(openingHours_tv, position);
-
         //display_distance(distance_tv, position, latitudeUser, longitudeUser);
+
+        listenerClickOnRestaurant(holder, position);
+
+    }
+
+    private void listenerClickOnRestaurant(ViewHolder holder, int position) {
+        int[] view = {R.id.item_restaurant_name_tv,
+                R.id.item_restaurant_address_tv,
+                R.id.item_restaurant_address_tv,
+                R.id.item_restaurant_distance_tv,
+                R.id.item_restaurant_opening_hours_tv,
+                R.id.item_restaurant_photo_iv,
+                R.id.item_restaurant_workmates_iv,
+                R.id.item_restaurant_numberOfWorkmates_tv,
+                R.id.item_restaurant_star1_iv,
+                R.id.item_restaurant_star2_iv,
+                R.id.item_restaurant_star3_iv,
+                R.id.item_restaurant_star4_iv,
+                R.id.item_restaurant_star5_iv};
+
+        for (int i : view) {
+            View viewNum = holder.itemView.findViewById(i);
+            viewNum.setOnClickListener(v -> restaurantActivityIntent(position));
+        }
+    }
+
+    private void restaurantActivityIntent(int position) {
+
+        ArrayList<String> ar = new ArrayList<>();
+        Restaurant restau = restaurants.get(position);
+        ar.add(restau.getName());
+        ar.add(restau.getAddress());
+        ar.add(restau.getPhoto());
+
+        Intent intent = new Intent(context.getApplicationContext(), RestaurantActivity.class);
+        intent.putStringArrayListExtra("restaurant", ar);
+        context.startActivity(intent);
     }
 
     private void display_opening(TextView openingHours_tv, int position) {
@@ -131,8 +169,8 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
                                   Double longitudeUser) {
         double dist;
         if (latitudeUser != null && longitudeUser != null) {
-           dist = calculateDistance(longitudeUser, latitudeUser, restaurants.get(position).getLongitude(),
-                   restaurants.get(position).getLatitude());
+            dist = calculateDistance(longitudeUser, latitudeUser, restaurants.get(position).getLongitude(),
+                    restaurants.get(position).getLatitude());
             distance_tv.setText(String.valueOf(dist));
         }
     }
