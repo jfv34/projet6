@@ -141,12 +141,12 @@
                     android:layout_marginTop="10dp"
                     android:src="@drawable/ic_call_24px"
                     app:layout_constraintBottom_toTopOf="@id/activity_restaurant_call_tv"
-                    app:layout_constraintEnd_toStartOf="@id/activity_restaurant_star_orange_iv"
+                    app:layout_constraintEnd_toStartOf="@id/activity_restaurant_like_iv"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
-                    android:id="@+id/activity_restaurant_star_orange_iv"
+                    android:id="@+id/activity_restaurant_like_iv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -163,7 +163,7 @@
                     android:layout_marginTop="10dp"
                     android:src="@drawable/ic_public_24px"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/activity_restaurant_star_orange_iv"
+                    app:layout_constraintStart_toEndOf="@id/activity_restaurant_like_iv"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView

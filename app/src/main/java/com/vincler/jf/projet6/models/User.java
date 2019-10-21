@@ -1,7 +1,5 @@
 package com.vincler.jf.projet6.models;
 
-import android.net.Uri;
-
 public class User {
 
     private String uid;

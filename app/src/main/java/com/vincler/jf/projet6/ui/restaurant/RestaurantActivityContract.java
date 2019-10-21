@@ -10,6 +10,8 @@ public interface RestaurantActivityContract {
 
     interface Presenter  {
 
+        void likeRestaurant(String uid, String latLongRestaurant);
 
+        String getUid();
     }
 }

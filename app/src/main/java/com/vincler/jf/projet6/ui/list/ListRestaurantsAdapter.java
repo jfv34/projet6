@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.model.LatLng;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
@@ -79,8 +80,8 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
     private void listenerClickOnRestaurant(ViewHolder holder, int position) {
 
-            View view = holder.itemView.findViewById(R.id.item_restaurant);
-            view.setOnClickListener(v -> restaurantActivityIntent(position));
+        View view = holder.itemView.findViewById(R.id.item_restaurant);
+        view.setOnClickListener(v -> restaurantActivityIntent(position));
 
     }
 
@@ -88,9 +89,15 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
         ArrayList<String> ar = new ArrayList<>();
         Restaurant restau = restaurants.get(position);
+
+        Double lat = restau.getLatitude();
+        Double lg = restau.getLongitude();
+        LatLng latLong = new LatLng(lat, lg);
+
         ar.add(restau.getName());
         ar.add(restau.getAddress());
         ar.add(restau.getPhoto());
+        ar.add(String.valueOf(latLong));
 
         Intent intent = new Intent(context.getApplicationContext(), RestaurantActivity.class);
         intent.putStringArrayListExtra("restaurant", ar);
