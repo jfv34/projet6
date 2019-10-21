@@ -78,24 +78,10 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     }
 
     private void listenerClickOnRestaurant(ViewHolder holder, int position) {
-        int[] view = {R.id.item_restaurant_name_tv,
-                R.id.item_restaurant_address_tv,
-                R.id.item_restaurant_address_tv,
-                R.id.item_restaurant_distance_tv,
-                R.id.item_restaurant_opening_hours_tv,
-                R.id.item_restaurant_photo_iv,
-                R.id.item_restaurant_workmates_iv,
-                R.id.item_restaurant_numberOfWorkmates_tv,
-                R.id.item_restaurant_star1_iv,
-                R.id.item_restaurant_star2_iv,
-                R.id.item_restaurant_star3_iv,
-                R.id.item_restaurant_star4_iv,
-                R.id.item_restaurant_star5_iv};
 
-        for (int i : view) {
-            View viewNum = holder.itemView.findViewById(i);
-            viewNum.setOnClickListener(v -> restaurantActivityIntent(position));
-        }
+            View view = holder.itemView.findViewById(R.id.item_restaurant);
+            view.setOnClickListener(v -> restaurantActivityIntent(position));
+
     }
 
     private void restaurantActivityIntent(int position) {
