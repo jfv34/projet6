@@ -6,7 +6,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.vincler.jf.projet6.models.User;
 
-public class UserHelper {
+public class RestaurantFirebase {
 
     private static final String COLLECTION_NAME = "users";
 
@@ -23,24 +23,24 @@ public class UserHelper {
         User userToCreate = new User(uid, username, email, phoneNumber, restaurantChoice);
 
 
-        return UserHelper.getUsersCollection().document(uid).set(userToCreate);
+        return RestaurantFirebase.getUsersCollection().document(uid).set(userToCreate);
     }
 
     // --- GET ---
 
     public static Task<DocumentSnapshot> getUser(String uid) {
-        return UserHelper.getUsersCollection().document(uid).get();
+        return RestaurantFirebase.getUsersCollection().document(uid).get();
     }
 
     // --- UPDATE ---
 
     public static Task<Void> updateUsername(String username, String uid) {
-        return UserHelper.getUsersCollection().document(uid).update("username", username);
+        return RestaurantFirebase.getUsersCollection().document(uid).update("username", username);
     }
 
     // --- DELETE ---
 
     public static Task<Void> deleteUser(String uid) {
-        return UserHelper.getUsersCollection().document(uid).delete();
+        return RestaurantFirebase.getUsersCollection().document(uid).delete();
     }
 }

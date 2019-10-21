@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseUser;
-import com.vincler.jf.projet6.api.UserHelper;
+import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.Restaurant;
 
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
         String restaurantChoice = "";
 
-        UserHelper.createUser(firebaseUser.getUid(), firebaseUser.getDisplayName(),
+        UserFirebase.createUser(firebaseUser.getUid(), firebaseUser.getDisplayName(),
                 firebaseUser.getEmail(),
                 firebaseUser.getPhoneNumber(), restaurantChoice);
     }
