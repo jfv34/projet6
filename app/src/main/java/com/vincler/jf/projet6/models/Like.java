@@ -1,11 +1,11 @@
 package com.vincler.jf.projet6.models;
 
-public class LikeRestaurant {
+public class Like {
 
     private String uid;
     private String latLongRestaurant;
 
-    public LikeRestaurant(String uid, String latLongRestaurant) {
+    public Like(String uid, String latLongRestaurant) {
         this.uid = uid;
         this.latLongRestaurant = latLongRestaurant;
     }

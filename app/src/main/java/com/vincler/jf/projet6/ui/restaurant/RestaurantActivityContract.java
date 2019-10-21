@@ -12,6 +12,8 @@ public interface RestaurantActivityContract {
 
         void likeRestaurant(String uid, String latLongRestaurant);
 
-        String getUid();
+        String getUidFirebase();
+
+        byte rating();
     }
 }
