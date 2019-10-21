@@ -30,6 +30,8 @@ public class RestaurantActivity extends Activity implements RestaurantActivityCo
         Intent intent = getIntent();
         context = getApplicationContext();
 
+        WorkmatesInRestaurantFragment.newInstance();
+
         ArrayList<String> restaurant = intent.getStringArrayListExtra("restaurant");
 
         uid = presenter.getUidFirebase();
@@ -78,8 +80,6 @@ public class RestaurantActivity extends Activity implements RestaurantActivityCo
 
         Intent callPhone = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+ phoneNumber));
         startActivity(callPhone);
-
-
     }
 
     private void clickWebSite() {
