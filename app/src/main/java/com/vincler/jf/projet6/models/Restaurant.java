@@ -1,6 +1,11 @@
 package com.vincler.jf.projet6.models;
 
-public class Restaurant {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.vincler.jf.projet6.utils.KeysUtils;
+
+public class Restaurant implements Parcelable {
 
     private String name;
     private double latitude;
@@ -61,4 +66,20 @@ public class Restaurant {
         return isOpenNowList;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
+
+    public String getMapsPhotoUrl(){
+        return  "https://maps.googleapis.com/maps/api/place/photo?"
+                + "maxwidth=" + KeysUtils.WIDTH_PHOTO
+                + "&photoreference=" + getPhoto()
+                + "&key=" + KeysUtils.API_KEY;
+    }
 }

@@ -44,4 +44,11 @@ public class MainActivityPresenterTest {
         Assertions.assertThat(presenter.restaurantsData.getValue().get(1).isVisible()).isTrue();
 
     }
+
+    @Test
+    public void When_() {
+
+
+    }
+
 }

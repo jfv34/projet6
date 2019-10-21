@@ -82,25 +82,14 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
         View view = holder.itemView.findViewById(R.id.item_restaurant);
         view.setOnClickListener(v -> restaurantActivityIntent(position));
-
     }
 
     private void restaurantActivityIntent(int position) {
 
-        ArrayList<String> ar = new ArrayList<>();
         Restaurant restau = restaurants.get(position);
 
-        Double lat = restau.getLatitude();
-        Double lg = restau.getLongitude();
-        LatLng latLong = new LatLng(lat, lg);
-
-        ar.add(restau.getName());
-        ar.add(restau.getAddress());
-        ar.add(restau.getPhoto());
-        ar.add(String.valueOf(latLong));
-
         Intent intent = new Intent(context.getApplicationContext(), RestaurantActivity.class);
-        intent.putStringArrayListExtra("restaurant", ar);
+        intent.putExtra("restaurant",restau);
         context.startActivity(intent);
     }
 

@@ -2,31 +2,28 @@ package com.vincler.jf.projet6.models;
 
 public class Like {
 
-    private String uid;
-    private String latLongRestaurant;
+    private String user_uid;
+    private String restaurant_uid;
 
-    public Like(String uid, String latLongRestaurant) {
-        this.uid = uid;
-        this.latLongRestaurant = latLongRestaurant;
+    public Like(String user_uid, String restaurant_uid) {
+        this.user_uid = user_uid;
+        this.restaurant_uid = restaurant_uid;
     }
 
-    // --- GETTERS ---
-    public String getUid() {
-        return uid;
+    public String getUser_uid() {
+        return user_uid;
     }
 
-    public String getLatLongRestaurant() {
-        return latLongRestaurant;
+    public void setUser_uid(String user_uid) {
+        this.user_uid = user_uid;
     }
 
-
-    // --- SETTERS ---
-    public void setUid(String uid) {
-        this.uid = uid;
+    public String getRestaurant_uid() {
+        return restaurant_uid;
     }
 
-    public void setLatLongRestaurant(String latLongRestaurant) {
-        this.latLongRestaurant = latLongRestaurant;
+    public void setRestaurant_uid(String restaurant_uid) {
+        this.restaurant_uid = restaurant_uid;
     }
 }
 

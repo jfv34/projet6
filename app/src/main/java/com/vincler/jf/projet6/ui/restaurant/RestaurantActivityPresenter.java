@@ -4,9 +4,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.vincler.jf.projet6.api.LikeFirebase;
-
-import java.util.Objects;
+import com.vincler.jf.projet6.api.LikesFirebase;
 
 public class RestaurantActivityPresenter implements RestaurantActivityContract.Presenter {
 
@@ -17,11 +15,11 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     }
 
     @Override
-    public void likeRestaurant(String uid, String latLongRestaurant) {
+    public void likeRestaurant(String user_uid, String restaurant_uid) {
 
-        LikeFirebase.createLike(uid, latLongRestaurant);
-        Log.i("tag_uid", uid);
-        Log.i("tag_latlongRestaurant", latLongRestaurant);
+        LikesFirebase.createLike(user_uid, restaurant_uid);
+        Log.i("tag_uid", user_uid);
+        Log.i("tag_latlongRestaurant", restaurant_uid);
     }
 
     @Override
@@ -34,7 +32,7 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     @Override
     public byte rating() {
 
-        //String t = Objects.requireNonNull(LikeFirebase.getLike());
+        //String t = Objects.requireNonNull(LikesFirebase.getLike());
 
         //Log.i("tag_document",t);
 

@@ -190,15 +190,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     private void restaurantActivityIntent() {
 
-        ArrayList<String> ar = new ArrayList<>();
-
-        // ar.add...  name
-        // ar.add...  adress
-        // ar.add...  photo
-
-        Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
+     /*   Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
         intent.putStringArrayListExtra("restaurant", ar);
-        startActivity(intent);
+        startActivity(intent);*/
     }
 
     private void drawerLayout() {

@@ -30,7 +30,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                                          int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_workmates_in_this_restaurant, parent, false);
+                .inflate(R.layout.item_restaurantworkmate, parent, false);
 
         return new ViewHolder(v);
     }
