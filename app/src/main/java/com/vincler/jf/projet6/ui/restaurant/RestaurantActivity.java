@@ -2,6 +2,7 @@ package com.vincler.jf.projet6.ui.restaurant;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -91,7 +92,6 @@ public class RestaurantActivity extends Activity implements RestaurantActivityCo
             public void onResponse(Call<DetailsResponse> call, Response<DetailsResponse> response) {
 
                 phoneNumber = response.body().getPhoneNumber();
-                Log.i("phoneNumber1",phoneNumber+"***");
                 webSite = response.body().getWebSite();
 
             }
@@ -101,12 +101,11 @@ public class RestaurantActivity extends Activity implements RestaurantActivityCo
 
             }
         });
-        Log.i("phoneNumber2",phoneNumber+"***");
-
     }
 
     private void clickWebSite() {
-
+        Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(webSite));
+        startActivity(intent);
     }
 
     private void clickLike(Restaurant restaurant) {
