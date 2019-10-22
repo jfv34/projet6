@@ -15,5 +15,7 @@ public interface RestaurantActivityContract {
         String getUidFirebase();
 
         byte rating();
+
+        String phoneNumber(String placeid);
     }
 }

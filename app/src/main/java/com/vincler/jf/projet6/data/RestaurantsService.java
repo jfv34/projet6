@@ -15,7 +15,7 @@ public interface RestaurantsService {
             @Query("radius") String radius
     );
 
-    @GET("details/json?fields=website,international_phone_number,language=fr&key=AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc")
+    @GET("details/json?fields=website,international_phone_number&language=fr&key=AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc")
     Call<DetailsResponse> listDetails(
             @Query("placeid") String placeid
     );

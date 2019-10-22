@@ -44,12 +44,15 @@ public class RestaurantActivity extends Activity implements RestaurantActivityCo
         name_tv.setText(restaurant.getName());
         address_tv.setText(restaurant.getAddress());
 
+        String placeid = restaurant.getPlaceid();
+        String phoneNumber = presenter.phoneNumber(placeid);
+
         like_iv.setOnClickListener(v -> clickLike(restaurant));
         like_tv.setOnClickListener(v -> clickLike(restaurant));
         webSite_iv.setOnClickListener(v -> clickWebSite());
         webSite_tv.setOnClickListener(v -> clickWebSite());
-        call_iv.setOnClickListener(v -> IntentUtils.callNumber(this, ""));
-        call_tv.setOnClickListener(v -> IntentUtils.callNumber(this, ""));
+        call_iv.setOnClickListener(v -> IntentUtils.callNumber(this, phoneNumber));
+        call_tv.setOnClickListener(v -> IntentUtils.callNumber(this, phoneNumber));
 
         byte rating = presenter.rating();
     }

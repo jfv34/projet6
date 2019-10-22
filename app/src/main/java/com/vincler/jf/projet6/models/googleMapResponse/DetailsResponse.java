@@ -19,11 +19,14 @@ public class DetailsResponse {
     public String webSite;
 
     public String getPhoneNumber() {
-        return resultDetailsResponse.phoneNumber;
+        if(resultDetailsResponse!=null){
+        return resultDetailsResponse.phoneNumber;}else return "";
     }
 
     public String getWebSite() {
-        return resultDetailsResponse.website;
+        if (resultDetailsResponse != null) {
+            return resultDetailsResponse.website;
+        }else return "";
     }
 
 }
