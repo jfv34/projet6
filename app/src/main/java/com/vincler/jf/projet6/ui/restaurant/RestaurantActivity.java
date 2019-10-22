@@ -10,13 +10,26 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Details;
 import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.googleMapResponse.DetailsResponse;
 import com.vincler.jf.projet6.utils.IntentUtils;
+import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestaurantActivity extends Activity implements RestaurantActivityContract.View {
 
     private RestaurantActivityContract.Presenter presenter = new RestaurantActivityPresenter(this);
+    String phoneNumber;
+    String webSite;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,17 +59,50 @@ public class RestaurantActivity extends Activity implements RestaurantActivityCo
         address_tv.setText(restaurant.getAddress());
 
         String placeid = restaurant.getPlaceid();
-
-        Details details = presenter.retrofit(placeid);
+        retrofit(placeid);
 
         like_iv.setOnClickListener(v -> clickLike(restaurant));
         like_tv.setOnClickListener(v -> clickLike(restaurant));
         webSite_iv.setOnClickListener(v -> clickWebSite());
         webSite_tv.setOnClickListener(v -> clickWebSite());
-        call_iv.setOnClickListener(v -> IntentUtils.callNumber(this, details.getPhoneNumber()));
-        call_tv.setOnClickListener(v -> IntentUtils.callNumber(this, details.getPhoneNumber()));
+        call_iv.setOnClickListener(v -> IntentUtils.callNumber(this,phoneNumber));
+        call_tv.setOnClickListener(v -> IntentUtils.callNumber(this, phoneNumber));
 
         byte rating = presenter.rating();
+    }
+
+    private void retrofit(String placeid) {
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder builder = UnsafeOkHttpClient.getUnsafeOkHttpClient().addInterceptor(interceptor);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://maps.googleapis.com/maps/api/place/")
+                .client(builder.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        RestaurantsService service = retrofit.create(RestaurantsService.class);
+
+        service.listDetails(placeid).enqueue(new Callback<DetailsResponse>() {
+
+
+            @Override
+            public void onResponse(Call<DetailsResponse> call, Response<DetailsResponse> response) {
+
+                phoneNumber = response.body().getPhoneNumber();
+                Log.i("phoneNumber1",phoneNumber+"***");
+                webSite = response.body().getWebSite();
+
+            }
+
+            @Override
+            public void onFailure(Call<DetailsResponse> call, Throwable t) {
+
+            }
+        });
+        Log.i("phoneNumber2",phoneNumber+"***");
+
     }
 
     private void clickWebSite() {
