@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vincler.jf.projet6.api.LikesFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
+import com.vincler.jf.projet6.models.Details;
 import com.vincler.jf.projet6.models.googleMapResponse.DetailsResponse;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
@@ -20,6 +21,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestaurantActivityPresenter implements RestaurantActivityContract.Presenter {
 
     private RestaurantActivityContract.View view;
+    private String phoneNumber;
+    private String webSite;
 
     public RestaurantActivityPresenter(RestaurantActivityContract.View view) {
         this.view = view;
@@ -47,7 +50,7 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     }
 
     @Override
-    public String phoneNumber(String placeid) {
+    public Details retrofit(String placeid) {
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -62,10 +65,14 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         RestaurantsService service = retrofit.create(RestaurantsService.class);
 
         service.listDetails(placeid).enqueue(new Callback<DetailsResponse>() {
+
+
             @Override
             public void onResponse(Call<DetailsResponse> call, Response<DetailsResponse> response) {
-                Log.i("detailResponsephone", response.body().getPhoneNumber());
-                Log.i("detailResponseweb", response.body().getWebSite());
+
+                phoneNumber = response.body().getPhoneNumber();
+                Log.i("phoneNumber1",phoneNumber+"***");
+                webSite = response.body().getWebSite();
 
             }
 
@@ -74,7 +81,9 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
             }
         });
+        Log.i("phoneNumber2",phoneNumber+"***");
 
-        return null;
+        return new Details(phoneNumber,webSite);
+
     }
 }

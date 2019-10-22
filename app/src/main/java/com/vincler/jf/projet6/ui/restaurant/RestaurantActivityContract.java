@@ -1,6 +1,7 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
 
+import com.vincler.jf.projet6.models.Details;
 
 public interface RestaurantActivityContract {
 
@@ -16,6 +17,6 @@ public interface RestaurantActivityContract {
 
         byte rating();
 
-        String phoneNumber(String placeid);
+        Details retrofit(String placeid);
     }
 }

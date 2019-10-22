@@ -3,13 +3,14 @@ package com.vincler.jf.projet6.ui.restaurant;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.models.Details;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.utils.IntentUtils;
 
@@ -45,18 +46,18 @@ public class RestaurantActivity extends Activity implements RestaurantActivityCo
         address_tv.setText(restaurant.getAddress());
 
         String placeid = restaurant.getPlaceid();
-        String phoneNumber = presenter.phoneNumber(placeid);
+
+        Details details = presenter.retrofit(placeid);
 
         like_iv.setOnClickListener(v -> clickLike(restaurant));
         like_tv.setOnClickListener(v -> clickLike(restaurant));
         webSite_iv.setOnClickListener(v -> clickWebSite());
         webSite_tv.setOnClickListener(v -> clickWebSite());
-        call_iv.setOnClickListener(v -> IntentUtils.callNumber(this, phoneNumber));
-        call_tv.setOnClickListener(v -> IntentUtils.callNumber(this, phoneNumber));
+        call_iv.setOnClickListener(v -> IntentUtils.callNumber(this, details.getPhoneNumber()));
+        call_tv.setOnClickListener(v -> IntentUtils.callNumber(this, details.getPhoneNumber()));
 
         byte rating = presenter.rating();
     }
-
 
     private void clickWebSite() {
 
