@@ -130,7 +130,7 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
 
     }
 
-    public ArrayList<String> restaurantChosenByClickOnMarker(Marker marker, ArrayList<Restaurant> data) {
+    public Restaurant restaurantChosenByClickOnMarker(Marker marker, ArrayList<Restaurant> data) {
         LatLng latLng = marker.getPosition();
         int restauId = -1;
 
@@ -143,19 +143,7 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
             }
         }
         if (restauId != -1) {
-            Restaurant r = data.get(restauId);
-
-            Double lat = data.get(restauId).getLatitude();
-            Double lg = data.get(restauId).getLongitude();
-            LatLng latlong = new LatLng(lat, lg);
-
-            ArrayList<String> ar = new ArrayList<String>();
-            ar.add(r.getName());
-            ar.add(r.getAddress());
-            ar.add(r.getPhoto());
-            ar.add(String.valueOf(latlong));
-
-            return ar;
+            return data.get(restauId);
         } else return null;
     }
 }

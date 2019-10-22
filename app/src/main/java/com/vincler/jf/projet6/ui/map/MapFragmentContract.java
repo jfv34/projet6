@@ -28,7 +28,7 @@ public interface MapFragmentContract {
 
         void searchRestaurants(double latitude, double longitude);
 
-        ArrayList<String> restaurantChosenByClickOnMarker(Marker marker, ArrayList<Restaurant> data);
+        Restaurant restaurantChosenByClickOnMarker(Marker marker, ArrayList<Restaurant> data);
 
     }
 }

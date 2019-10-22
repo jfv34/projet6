@@ -30,6 +30,30 @@ public class Restaurant implements Parcelable {
         this.placeid = placeid;
     }
 
+    protected Restaurant(Parcel in) {
+        name = in.readString();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
+        address = in.readString();
+        photo = in.readString();
+        rating = in.readDouble();
+        isVisible = in.readByte() != 0;
+        isOpenNowList = in.readString();
+        placeid = in.readString();
+    }
+
+    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
+        @Override
+        public Restaurant createFromParcel(Parcel in) {
+            return new Restaurant(in);
+        }
+
+        @Override
+        public Restaurant[] newArray(int size) {
+            return new Restaurant[size];
+        }
+    };
+
     public String getName() {
         return name;
     }
@@ -73,7 +97,15 @@ public class Restaurant implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(name);
+        dest.writeDouble(latitude);
+        dest.writeDouble(longitude);
+        dest.writeString(address);
+        dest.writeString(photo);
+        dest.writeDouble(rating);
+        dest.writeByte((byte) (isVisible ? 1 : 0));
+        dest.writeString(isOpenNowList);
+        dest.writeString(placeid);
     }
 
     public String getMapsPhotoUrl(){
