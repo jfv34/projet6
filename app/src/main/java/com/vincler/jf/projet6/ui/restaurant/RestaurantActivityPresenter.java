@@ -32,8 +32,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     public void likeRestaurant(String user_uid, String restaurant_uid) {
 
         LikesFirebase.createLike(user_uid, restaurant_uid);
-        Log.i("tag_uid", user_uid);
-        Log.i("tag_latlongRestaurant", restaurant_uid);
     }
 
     @Override
