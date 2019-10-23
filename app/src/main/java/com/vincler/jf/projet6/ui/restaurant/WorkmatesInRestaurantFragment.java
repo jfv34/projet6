@@ -1,6 +1,7 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ public class WorkmatesInRestaurantFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        Log.i("tag_fragment","ok");
 
         String[] data = new String[6];
         data[0] = "text one";

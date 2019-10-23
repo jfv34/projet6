@@ -1,20 +1,22 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.data.RestaurantsService;
-import com.vincler.jf.projet6.models.Details;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.models.googleMapResponse.DetailsResponse;
+import com.vincler.jf.projet6.ui.list.ListRestaurantsAdapter;
 import com.vincler.jf.projet6.utils.IntentUtils;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
@@ -26,20 +28,29 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RestaurantActivity extends Activity implements RestaurantActivityContract.View {
+public class RestaurantActivity extends FragmentActivity implements RestaurantActivityContract.View {
 
     private RestaurantActivityContract.Presenter presenter = new RestaurantActivityPresenter(this);
     String phoneNumber;
     String webSite;
+    RecyclerView recyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
-        Intent intent = getIntent();
-        WorkmatesInRestaurantFragment.newInstance();
 
+        recyclerView=findViewById(R.id.fragment_workmatesInRestaurant_recyclerView);
+
+
+
+   /*     FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.attach(WorkmatesInRestaurantFragment.newInstance());
+        fragmentTransaction.commit();*/
+
+        Intent intent = getIntent();
         Restaurant restaurant = intent.getParcelableExtra("restaurant");
 
         ImageView photo_iv = findViewById(R.id.activity_restaurant_photo_iv);
@@ -70,6 +81,20 @@ public class RestaurantActivity extends Activity implements RestaurantActivityCo
         call_tv.setOnClickListener(v -> IntentUtils.callNumber(this, phoneNumber));
 
         byte rating = presenter.rating();
+
+
+
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        String[] data = new String[40];
+        for(int i=0;i<40;i++){
+            data[i]= "text number "+ i;
+        }
+
+        RecyclerView.Adapter adapter = new RestaurantAdapter(data);
+        recyclerView.setAdapter(adapter);
+
     }
 
     private void retrofit(String placeid) {

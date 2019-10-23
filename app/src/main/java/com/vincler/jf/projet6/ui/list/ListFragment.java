@@ -46,7 +46,7 @@ public class ListFragment extends Fragment {
     private void displayRestaurants(ArrayList<Restaurant> restaurants) {
         if (!restaurants.isEmpty()) {
 
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
