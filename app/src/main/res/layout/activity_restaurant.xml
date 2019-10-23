@@ -21,6 +21,7 @@
             app:layout_scrollFlags="scroll">
 
             <ImageView
+                android:transitionName="profile"
                 android:id="@+id/activity_restaurant_photo_iv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

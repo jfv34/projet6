@@ -1,5 +1,6 @@
 package com.vincler.jf.projet6.ui.list;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -11,12 +12,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.maps.model.LatLng;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.ui.main.MainActivity;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 
 import java.util.ArrayList;
@@ -74,23 +78,29 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         display_opening(openingHours_tv, position);
         //display_distance(distance_tv, position, latitudeUser, longitudeUser);
 
-        listenerClickOnRestaurant(holder, position);
+        listenerClickOnRestaurant(holder, position, photo_iv);
 
     }
 
-    private void listenerClickOnRestaurant(ViewHolder holder, int position) {
+    private void listenerClickOnRestaurant(ViewHolder holder, int position, View photo_iv) {
 
         View view = holder.itemView.findViewById(R.id.item_restaurant);
-        view.setOnClickListener(v -> restaurantActivityIntent(position));
+        view.setOnClickListener(v -> restaurantActivityIntent(position, photo_iv));
     }
 
-    private void restaurantActivityIntent(int position) {
+    private void restaurantActivityIntent(int position, View photo_iv) {
 
         Restaurant restau = restaurants.get(position);
 
         Intent intent = new Intent(context.getApplicationContext(), RestaurantActivity.class);
         intent.putExtra("restaurant",restau);
-        context.startActivity(intent);
+        intent.putExtra("profile",ViewCompat.getTransitionName(photo_iv));
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation((Activity)context,photo_iv, ViewCompat.getTransitionName(photo_iv));
+        context.startActivity(intent, options.toBundle());
+
+        //context.startActivity(intent);
     }
 
     private void display_opening(TextView openingHours_tv, int position) {
@@ -120,7 +130,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
         Log.i("tag_url", url);
 
-        Glide.with(context).load(url).into(photo_iv);
+        Glide.with(context).load(url).dontTransform().into(photo_iv);
     }
 
     private void display_rating(
