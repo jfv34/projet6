@@ -1,5 +1,7 @@
 package com.vincler.jf.projet6.models;
 
+import android.net.Uri;
+
 public class User {
 
     private String uid;
@@ -7,13 +9,16 @@ public class User {
     private String email;
     private String phoneNumber;
     private String restaurantChoice;
+    private String photoUserUrl;
 
-    public User(String uid, String userName, String email, String phoneNumber, String restaurantChoice) {
+    public User(String uid, String userName, String email, String phoneNumber,
+                String restaurantChoice, String photoUserUrl) {
         this.uid = uid;
         this.userName = userName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.restaurantChoice = restaurantChoice;
+        this.photoUserUrl = photoUserUrl;
     }
 
     // --- GETTERS ---
@@ -38,6 +43,10 @@ public class User {
         return restaurantChoice;
     }
 
+    public String getPhotoUserUrl() {
+        return photoUserUrl;
+    }
+
     // --- SETTERS ---
     public void setUid(String uid) {
         this.uid = uid;
@@ -58,6 +67,11 @@ public class User {
     public void setRestaurantChoice(String restaurantChoice) {
         this.restaurantChoice = restaurantChoice;
     }
+
+    public void setPhotoUserUrl(String photoUserUrl) {
+        this.photoUserUrl = photoUserUrl;
+    }
+
 }
 
 

@@ -16,7 +16,6 @@ import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.models.googleMapResponse.DetailsResponse;
-import com.vincler.jf.projet6.ui.list.ListRestaurantsAdapter;
 import com.vincler.jf.projet6.utils.IntentUtils;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
@@ -42,13 +41,6 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         setContentView(R.layout.activity_restaurant);
 
         recyclerView=findViewById(R.id.fragment_workmatesInRestaurant_recyclerView);
-
-
-
-   /*     FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.attach(WorkmatesInRestaurantFragment.newInstance());
-        fragmentTransaction.commit();*/
 
         Intent intent = getIntent();
         Restaurant restaurant = intent.getParcelableExtra("restaurant");

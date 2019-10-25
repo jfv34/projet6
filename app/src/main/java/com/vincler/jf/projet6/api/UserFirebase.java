@@ -1,5 +1,7 @@
 package com.vincler.jf.projet6.api;
 
+import android.net.Uri;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -19,9 +21,9 @@ public class UserFirebase {
     // --- CREATE ---
 
     public static Task<Void> createUser(String uid, String username, String email,
-                                        String phoneNumber, String restaurantChoice) {
-        User userToCreate = new User(uid, username, email, phoneNumber, restaurantChoice);
-
+                                        String phoneNumber, String restaurantChoice,
+                                        String photoUserUrl) {
+        User userToCreate = new User(uid, username, email, phoneNumber, restaurantChoice, photoUserUrl);
 
         return UserFirebase.getUsersCollection().document(uid).set(userToCreate);
     }
