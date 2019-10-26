@@ -10,9 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.models.User;
+
+import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
 
+    private List<User> users;
     private String[] name;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -22,7 +26,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         }
     }
 
-    public RestaurantAdapter(String[] name) {
+    public RestaurantAdapter(List users, String[] name) {
+        this.users = users;
         this.name = name;
     }
 

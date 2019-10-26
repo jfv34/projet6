@@ -3,6 +3,8 @@ package com.vincler.jf.projet6.ui.restaurant;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,8 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.models.googleMapResponse.DetailsResponse;
@@ -33,6 +37,7 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
     String phoneNumber;
     String webSite;
     RecyclerView recyclerView;
+    boolean visibleIconInFAB = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,11 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         ImageView call_iv = findViewById(R.id.activity_restaurant_call_iv);
         TextView webSite_tv = findViewById(R.id.activity_restaurant_website_tv);
         ImageView webSite_iv = findViewById(R.id.activity_restaurant_website_iv);
+        FloatingActionButton restaurantChoice_visible_fab = findViewById(R.id.activity_restaurant_visibleIcon_fab);
+        FloatingActionButton restaurantChoice_invisible_fab = findViewById(R.id.activity_restaurant_invisibleIcon_fab);
+
+
+        floatingButton_listener(restaurantChoice_visible_fab, restaurantChoice_invisible_fab);
 
         Glide.with(this).
                 load(restaurant.getMapsPhotoUrl()).
@@ -74,20 +84,52 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
 
         byte rating = presenter.rating();
 
-
-
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         String[] data = new String[40];
-        for(int i=0;i<40;i++){
+        for (int i = 0; i < 40; i++) {
             data[i]= "text number "+ i;
         }
+        UserFirebase userFirebase = new UserFirebase();
 
-        RecyclerView.Adapter adapter = new RestaurantAdapter(data);
-        recyclerView.setAdapter(adapter);
+        //RecyclerView.Adapter adapter = new RestaurantAdapter(users);
+        //recyclerView.setAdapter(adapter);
 
     }
+
+
+    private void floatingButton_listener(FloatingActionButton restaurantChoice_visible_fab,
+                                         FloatingActionButton restaurantChoice_invisible_fab) {
+        restaurantChoice_visible_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("tag_fab", "click1");
+                if (visibleIconInFAB == true) {
+                    visibleIconInFAB = false;
+                    Log.i("tag_fab_visibility", "false");
+                    restaurantChoice_visible_fab.hide();
+                    restaurantChoice_invisible_fab.show();
+
+                }
+            }
+        });
+
+        restaurantChoice_invisible_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("tag_fab", "click2");
+                if (visibleIconInFAB == false) {
+
+                    visibleIconInFAB = true;
+                    Log.i("tag_fab_visibility", "true");
+                    restaurantChoice_visible_fab.show();
+                    restaurantChoice_invisible_fab.hide();
+                }
+            }
+        });
+    }
+
 
     private void retrofit(String placeid) {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
