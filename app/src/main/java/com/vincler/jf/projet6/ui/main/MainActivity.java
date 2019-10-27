@@ -30,9 +30,9 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainActivityContract.View, NavigationView.OnNavigationItemSelectedListener {
@@ -187,10 +187,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     private void restaurantActivityIntent() {
 
-     /*   Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
-        intent.putStringArrayListExtra("restaurant", ar);
-        startActivity(intent);*/
+        String uid = getUidFirebase();
+        String restaurantChoice = getRestaurantChoice(uid);
+
+
+
+
+
+
+        Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
+        // Restaurant restaurant = new Restaurant(       )
+        // intent.putExtra("restaurant", restaurant);
+        startActivity(intent);
     }
+
+    private String getRestaurantChoice(String uid) {
+        Object restaurantChoice = UserFirebase.getUser(uid).getResult().get("restaurantChoice");
+        return restaurantChoice != null? restaurantChoice.toString() : "";
+
+    }
+
+    public String getUidFirebase() {
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        return user != null ? user.getUid() : "";
+    }
+
+
+
+
 
     private void drawerLayout() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

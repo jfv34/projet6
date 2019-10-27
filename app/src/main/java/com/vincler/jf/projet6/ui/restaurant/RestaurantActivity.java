@@ -7,19 +7,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.api.LunchesFirebase;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Restaurant;
@@ -121,6 +120,8 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
                 if (visibleIconInFAB) {
                     visibleIconInFAB = false;
                     UserFirebase.updateRestaurantChoice("", uid);
+                    LunchesFirebase.deleteLunch(uid);
+
                     restaurantChoice_visible_fab.hide();
                     restaurantChoice_invisible_fab.show();
 
@@ -135,6 +136,7 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
                 if (!visibleIconInFAB) {
                     visibleIconInFAB = true;
                     UserFirebase.updateRestaurantChoice(placeId, uid);
+                    LunchesFirebase.createLunches(uid, placeId);
                     restaurantChoice_visible_fab.show();
                     restaurantChoice_invisible_fab.hide();
                 }

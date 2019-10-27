@@ -69,7 +69,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
             public void onResponse(Call<DetailsResponse> call, Response<DetailsResponse> response) {
 
                 phoneNumber = response.body().getPhoneNumber();
-                Log.i("phoneNumber1",phoneNumber+"***");
                 webSite = response.body().getWebSite();
 
             }
@@ -79,7 +78,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
             }
         });
-        Log.i("phoneNumber2",phoneNumber+"***");
 
         return new Details(phoneNumber,webSite);
 
