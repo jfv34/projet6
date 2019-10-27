@@ -46,8 +46,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     public EditText customEditText;
     private ImageButton searchButton;
     private NavigationView navigationView;
-    private Double latitudeUser;
-    private Double longitudeUser;
     public MainActivityContract.Presenter presenter = new MainActivityPresenter(this);
 
     @Override
@@ -67,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         configureViews();
         displayToolbar();
         firebaseUI();
-
     }
 
     private void configureViews() {
@@ -241,7 +238,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         }
     }
 
-
     private void disconnectUser() {
         AuthUI.getInstance()
                 .signOut(this)
@@ -318,6 +314,3 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         toast.show();
     }
 }
-
-
-

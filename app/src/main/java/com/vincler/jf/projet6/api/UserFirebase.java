@@ -1,20 +1,10 @@
 package com.vincler.jf.projet6.api;
 
-import android.net.Uri;
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.models.User;
-
-import static com.firebase.ui.auth.AuthUI.TAG;
 
 public class UserFirebase {
 
@@ -67,6 +57,10 @@ public class UserFirebase {
 
     public static Task<Void> updateUsername(String username, String uid) {
         return UserFirebase.getUsersCollection().document(uid).update("username", username);
+    }
+
+    public static Task<Void> updateRestaurantChoice(String restaurantChoice, String uid) {
+        return UserFirebase.getUsersCollection().document(uid).update("restaurantChoice", restaurantChoice);
     }
 
     // --- DELETE ---

@@ -3,18 +3,22 @@ package com.vincler.jf.projet6.ui.restaurant;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
@@ -38,6 +42,8 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
     String webSite;
     RecyclerView recyclerView;
     boolean visibleIconInFAB = false;
+    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    String uid = firebaseUser != null ? firebaseUser.getUid() : null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,9 +68,6 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         FloatingActionButton restaurantChoice_visible_fab = findViewById(R.id.activity_restaurant_visibleIcon_fab);
         FloatingActionButton restaurantChoice_invisible_fab = findViewById(R.id.activity_restaurant_invisibleIcon_fab);
 
-
-        floatingButton_listener(restaurantChoice_visible_fab, restaurantChoice_invisible_fab);
-
         Glide.with(this).
                 load(restaurant.getMapsPhotoUrl()).
                 into(photo_iv);
@@ -72,8 +75,8 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         name_tv.setText(restaurant.getName());
         address_tv.setText(restaurant.getAddress());
 
-        String placeid = restaurant.getPlaceid();
-        retrofit(placeid);
+        String placeId = restaurant.getPlaceid();
+        retrofit(placeId);
 
         like_iv.setOnClickListener(v -> clickLike(restaurant));
         like_tv.setOnClickListener(v -> clickLike(restaurant));
@@ -91,23 +94,33 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         for (int i = 0; i < 40; i++) {
             data[i]= "text number "+ i;
         }
-        UserFirebase userFirebase = new UserFirebase();
 
         //RecyclerView.Adapter adapter = new RestaurantAdapter(users);
         //recyclerView.setAdapter(adapter);
 
+        Task<DocumentSnapshot> t = UserFirebase.getUser(uid);
+        t.addOnCompleteListener(task -> {
+            String restaurantChoice = t.getResult().get("restaurantChoice").toString();
+            if (restaurantChoice.equals(placeId)) {
+                visibleIconInFAB = true;
+                restaurantChoice_visible_fab.show();
+                restaurantChoice_invisible_fab.hide();
+            }
+        });
+
+        floatingButton_listener(placeId, restaurantChoice_visible_fab, restaurantChoice_invisible_fab);
     }
 
 
-    private void floatingButton_listener(FloatingActionButton restaurantChoice_visible_fab,
+    private void floatingButton_listener(String placeId, FloatingActionButton restaurantChoice_visible_fab,
                                          FloatingActionButton restaurantChoice_invisible_fab) {
         restaurantChoice_visible_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("tag_fab", "click1");
-                if (visibleIconInFAB == true) {
+
+                if (visibleIconInFAB) {
                     visibleIconInFAB = false;
-                    Log.i("tag_fab_visibility", "false");
+                    UserFirebase.updateRestaurantChoice("", uid);
                     restaurantChoice_visible_fab.hide();
                     restaurantChoice_invisible_fab.show();
 
@@ -118,11 +131,10 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         restaurantChoice_invisible_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("tag_fab", "click2");
-                if (visibleIconInFAB == false) {
 
+                if (!visibleIconInFAB) {
                     visibleIconInFAB = true;
-                    Log.i("tag_fab_visibility", "true");
+                    UserFirebase.updateRestaurantChoice(placeId, uid);
                     restaurantChoice_visible_fab.show();
                     restaurantChoice_invisible_fab.hide();
                 }

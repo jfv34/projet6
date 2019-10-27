@@ -100,7 +100,6 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
                 makeSceneTransitionAnimation((Activity)context,photo_iv, ViewCompat.getTransitionName(photo_iv));
         context.startActivity(intent, options.toBundle());
 
-        //context.startActivity(intent);
     }
 
     private void display_opening(TextView openingHours_tv, int position) {
