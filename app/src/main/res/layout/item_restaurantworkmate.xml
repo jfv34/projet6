@@ -11,7 +11,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_width="100dp"
-        android:layout_height="70dp"
+        android:layout_height="60dp"
         android:layout_margin="5dp"
         android:src="@drawable/ic_perm_identity_24px" />
 
@@ -19,6 +19,7 @@
         android:id="@+id/item_workmates_in_this_restaurant-name_tv"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
         android:layout_marginStart="10dp"
