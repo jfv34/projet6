@@ -18,5 +18,9 @@ public interface RestaurantActivityContract {
         byte rating();
 
         Details retrofit(String placeid);
+
+
+        void dislikeRestaurant(String currentUserUid, String placeid);
     }
+
 }

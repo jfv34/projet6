@@ -30,8 +30,15 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
     @Override
     public void likeRestaurant(String user_uid, String restaurant_uid) {
-
+        Log.i("tag_like", "create");
         LikesFirebase.createLike(user_uid, restaurant_uid);
+    }
+
+    @Override
+    public void dislikeRestaurant(String user_uid, String restaurant_uid) {
+        Log.i("tag_like", "delete " + restaurant_uid);
+        LikesFirebase.deleteLike(user_uid, restaurant_uid);
+
     }
 
     @Override
@@ -82,4 +89,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         return new Details(phoneNumber,webSite);
 
     }
+
+
 }

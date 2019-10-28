@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,11 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.R;
-import com.vincler.jf.projet6.api.LunchesFirebase;
+import com.vincler.jf.projet6.api.LikesFirebase;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Restaurant;
@@ -29,6 +27,7 @@ import com.vincler.jf.projet6.utils.IntentUtils;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -45,8 +44,7 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
     String webSite;
     RecyclerView recyclerView;
     boolean visibleIconInFAB = false;
-    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-    String uid = firebaseUser != null ? firebaseUser.getUid() : null;
+    String currentUserUid = presenter.getUidFirebase();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,12 +79,14 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         String placeId = restaurant.getPlaceid();
         retrofit(placeId);
 
-        like_iv.setOnClickListener(v -> clickLike(restaurant));
-        like_tv.setOnClickListener(v -> clickLike(restaurant));
+        like_iv.setOnClickListener(v -> clickLikeOrNot(like_tv, restaurant));
+        like_tv.setOnClickListener(v -> clickLikeOrNot(like_tv, restaurant));
         webSite_iv.setOnClickListener(v -> clickWebSite());
         webSite_tv.setOnClickListener(v -> clickWebSite());
         call_iv.setOnClickListener(v -> IntentUtils.callNumber(this,phoneNumber));
         call_tv.setOnClickListener(v -> IntentUtils.callNumber(this, phoneNumber));
+
+        isRestaurantLike(restaurant.getPlaceid(), like_tv);
 
         byte rating = presenter.rating();
 
@@ -107,7 +107,7 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         RecyclerView.Adapter adapter = new RestaurantAdapter(users, context);
         recyclerView.setAdapter(adapter);
 
-        Task<DocumentSnapshot> t = UserFirebase.getUser(uid);
+        Task<DocumentSnapshot> t = UserFirebase.getUser(currentUserUid);
         t.addOnCompleteListener(task -> {
             String restaurantChoice = t.getResult().get("restaurantChoice").toString();
             if (restaurantChoice.equals(placeId)) {
@@ -117,41 +117,68 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
             }
         });
 
-        floatingButton_listener(placeId, restaurantChoice_visible_fab, restaurantChoice_invisible_fab,
-                restaurant);
+        floatingButton_listener(placeId, restaurantChoice_visible_fab, restaurantChoice_invisible_fab);
     }
 
 
-    private void floatingButton_listener(String placeId, FloatingActionButton restaurantChoice_visible_fab,
-                                         FloatingActionButton restaurantChoice_invisible_fab,
-                                         Restaurant restaurant) {
-        restaurantChoice_visible_fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    private void clickWebSite() {
+        Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(webSite));
+        startActivity(intent);
+    }
 
-                if (visibleIconInFAB) {
-                    visibleIconInFAB = false;
-                    UserFirebase.updateRestaurantChoice("", uid);
-                    LunchesFirebase.deleteLunch(uid);
+    private void clickLikeOrNot(TextView like_tv, Restaurant restaurant) {
 
-                    restaurantChoice_visible_fab.hide();
-                    restaurantChoice_invisible_fab.show();
+        if (isRestaurantLike(restaurant.getPlaceid(), like_tv)) {
 
+            presenter.dislikeRestaurant(currentUserUid, restaurant.getPlaceid());
+        } else {
+
+            presenter.likeRestaurant(currentUserUid, restaurant.getPlaceid());
+        }
+
+
+    }
+
+    private boolean isRestaurantLike(String restaurant_uid, TextView like_tv) {
+        AtomicBoolean isLike = new AtomicBoolean(false);
+        Task<QuerySnapshot> like = LikesFirebase.getLikeForRestaurant(currentUserUid, restaurant_uid);
+        like.addOnCompleteListener(task -> {
+                    if (like.getResult() != null && !like.getResult().isEmpty()) {
+                        isLike.set(true);
+                        like_tv.setText(getApplicationContext().getString(R.string.dislike));
+
+                    } else {
+
+                        isLike.set(false);
+                        like_tv.setText(getApplicationContext().getString(R.string.like));
+
+                    }
                 }
+        );
+
+        return isLike.get();
+    }
+
+    private void floatingButton_listener(String placeId, FloatingActionButton restaurantChoice_visible_fab,
+                                         FloatingActionButton restaurantChoice_invisible_fab) {
+        restaurantChoice_visible_fab.setOnClickListener(v -> {
+
+            if (visibleIconInFAB) {
+                visibleIconInFAB = false;
+                UserFirebase.updateRestaurantChoice("", currentUserUid);
+                restaurantChoice_visible_fab.hide();
+                restaurantChoice_invisible_fab.show();
+
             }
         });
 
-        restaurantChoice_invisible_fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        restaurantChoice_invisible_fab.setOnClickListener(v -> {
 
-                if (!visibleIconInFAB) {
-                    visibleIconInFAB = true;
-                    UserFirebase.updateRestaurantChoice(placeId, uid);
-                    LunchesFirebase.createLunches(uid, placeId);
-                    restaurantChoice_visible_fab.show();
-                    restaurantChoice_invisible_fab.hide();
-                }
+            if (!visibleIconInFAB) {
+                visibleIconInFAB = true;
+                UserFirebase.updateRestaurantChoice(placeId, currentUserUid);
+                restaurantChoice_visible_fab.show();
+                restaurantChoice_invisible_fab.hide();
             }
         });
     }
@@ -177,22 +204,11 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
 
                 phoneNumber = response.body().getPhoneNumber();
                 webSite = response.body().getWebSite();
-
             }
 
             @Override
             public void onFailure(Call<DetailsResponse> call, Throwable t) {
-
             }
         });
-    }
-
-    private void clickWebSite() {
-        Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(webSite));
-        startActivity(intent);
-    }
-
-    private void clickLike(Restaurant restaurant) {
-        presenter.likeRestaurant(FirebaseAuth.getInstance().getUid(), restaurant.getPlaceid());
     }
 }

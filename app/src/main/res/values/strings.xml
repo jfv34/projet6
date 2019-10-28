@@ -24,5 +24,7 @@
     <string name="ouvert">Ouvert</string>
     <string name="ferme">Fermé</string>
     <string name="isjoining">is joining!</string>
+    <string name="dislike">DISLIKE</string>
+    <string name="like">LIKE</string>
 
 </resources>
