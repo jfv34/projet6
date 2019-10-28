@@ -23,5 +23,6 @@
     <string name="API_KEY">AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc</string>
     <string name="ouvert">Ouvert</string>
     <string name="ferme">Fermé</string>
+    <string name="isjoining">is joining!</string>
 
 </resources>

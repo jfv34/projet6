@@ -1,9 +1,12 @@
 package com.vincler.jf.projet6.ui.list;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +20,10 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.maps.model.LatLng;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.Restaurant;
-import com.vincler.jf.projet6.ui.main.MainActivity;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.vincler.jf.projet6.utils.DistanceUtils.calculateDistance;
@@ -51,19 +51,19 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         this.context = parent.getContext();
 
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_restaurant, parent, false);
-
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        Location location = getLocation();
+
         TextView name_tv = holder.itemView.findViewById(R.id.item_restaurant_name_tv);
         TextView address_tv = holder.itemView.findViewById(R.id.item_restaurant_address_tv);
         TextView distance_tv = holder.itemView.findViewById(R.id.item_restaurant_distance_tv);
         TextView openingHours_tv = holder.itemView.findViewById(R.id.item_restaurant_opening_hours_tv);
         ImageView photo_iv = holder.itemView.findViewById(R.id.item_restaurant_photo_iv);
-        ImageView workmatesIcon_iv = holder.itemView.findViewById(R.id.item_restaurant_workmates_iv);
         TextView workmatesNumber_tv = holder.itemView.findViewById(R.id.item_restaurant_numberOfWorkmates_tv);
         ImageView star1_iv = holder.itemView.findViewById(R.id.item_restaurant_star1_iv);
         ImageView star2_iv = holder.itemView.findViewById(R.id.item_restaurant_star2_iv);
@@ -76,10 +76,18 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         display_rating(star1_iv, star2_iv, star3_iv, star4_iv, star5_iv, position);
         display_photo(photo_iv, position);
         display_opening(openingHours_tv, position);
-        //display_distance(distance_tv, position, latitudeUser, longitudeUser);
+        display_distance(distance_tv, position, location.getLatitude(), location.getLongitude());
 
         listenerClickOnRestaurant(holder, position, photo_iv);
 
+    }
+
+    private Location getLocation() {
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        @SuppressLint("MissingPermission")
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        return location;
     }
 
     private void listenerClickOnRestaurant(ViewHolder holder, int position, View photo_iv) {
@@ -162,7 +170,8 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         if (latitudeUser != null && longitudeUser != null) {
             dist = calculateDistance(longitudeUser, latitudeUser, restaurants.get(position).getLongitude(),
                     restaurants.get(position).getLatitude());
-            distance_tv.setText(String.valueOf(dist));
+            String text = (int) dist + "m";
+            distance_tv.setText(text);
         }
     }
 
@@ -179,4 +188,6 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     public int getItemCount() {
         return restaurants.size();
     }
+
+
 }

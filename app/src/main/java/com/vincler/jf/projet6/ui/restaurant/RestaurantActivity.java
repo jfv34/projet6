@@ -1,5 +1,6 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,9 +23,12 @@ import com.vincler.jf.projet6.api.LunchesFirebase;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.models.googleMapResponse.DetailsResponse;
 import com.vincler.jf.projet6.utils.IntentUtils;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
+
+import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -89,13 +93,19 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-        String[] data = new String[40];
-        for (int i = 0; i < 40; i++) {
-            data[i]= "text number "+ i;
+
+        ArrayList users = new ArrayList();
+        for (int test = 1; test < 30; test++) {
+            String testName = "TestName" + test;
+            User user = new User("testUid", testName, "testMail",
+                    "testPhoneNumber", "", "");
+
+            users.add(user);
         }
 
-        //RecyclerView.Adapter adapter = new RestaurantAdapter(users);
-        //recyclerView.setAdapter(adapter);
+        Context context = getApplicationContext();
+        RecyclerView.Adapter adapter = new RestaurantAdapter(users, context);
+        recyclerView.setAdapter(adapter);
 
         Task<DocumentSnapshot> t = UserFirebase.getUser(uid);
         t.addOnCompleteListener(task -> {
@@ -107,12 +117,14 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
             }
         });
 
-        floatingButton_listener(placeId, restaurantChoice_visible_fab, restaurantChoice_invisible_fab);
+        floatingButton_listener(placeId, restaurantChoice_visible_fab, restaurantChoice_invisible_fab,
+                restaurant);
     }
 
 
     private void floatingButton_listener(String placeId, FloatingActionButton restaurantChoice_visible_fab,
-                                         FloatingActionButton restaurantChoice_invisible_fab) {
+                                         FloatingActionButton restaurantChoice_invisible_fab,
+                                         Restaurant restaurant) {
         restaurantChoice_visible_fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +155,6 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
             }
         });
     }
-
 
     private void retrofit(String placeid) {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();

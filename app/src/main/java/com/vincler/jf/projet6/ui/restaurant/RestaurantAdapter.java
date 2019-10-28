@@ -1,5 +1,6 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,15 +10,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
 
     private List<User> users;
-    private String[] name;
+    private Context context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -26,9 +29,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         }
     }
 
-    public RestaurantAdapter(List users, String[] name) {
+    public RestaurantAdapter(ArrayList users, Context context) {
         this.users = users;
-        this.name = name;
+        this.context = context;
     }
 
     @Override
@@ -48,12 +51,27 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         TextView name_tv = holder.itemView.findViewById(R.id.item_workmates_in_this_restaurant_name_tv);
 
 
-        //photo_iv.setImageDrawable();
-        name_tv.setText(name[position]);
+        displayPhoto(photo_iv, position);
+        displayText(name_tv, position);
+
+    }
+
+    private void displayText(TextView name_tv, int position) {
+        context.getString(R.string.isjoining);
+        String text = users.get(position).getUsername() + " " + context.getString(R.string.isjoining);
+        name_tv.setText(text);
+    }
+
+    private void displayPhoto(ImageView photo_iv, int position) {
+        String photoUrl = users.get(position).getPhotoUserUrl();
+        if (!photoUrl.isEmpty()) {
+            Glide.with(context).load(photoUrl).dontTransform().into(photo_iv);
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return name.length;
+        return users.size();
     }
 }
