@@ -21,7 +21,9 @@ public interface RestaurantActivityContract {
 
         String getWebSite();
 
-        boolean likeOrNot(Details details);
+        void notFavoritedRestaurant();
+
+        void favoritedRestaurant();
     }
 
 }

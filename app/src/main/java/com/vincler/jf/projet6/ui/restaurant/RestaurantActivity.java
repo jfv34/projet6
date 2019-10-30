@@ -1,6 +1,7 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -25,8 +26,18 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
     private RestaurantActivityContract.Presenter presenter;
 
     RecyclerView recyclerView;
+    TextView address_tv;
+    TextView name_tv;
+    ImageView photo_iv;
     TextView like_tv;
-    FloatingActionButton activity_restaurant_fab;
+    ImageView like_iv;
+    TextView webSite_tv;
+    ImageView webSite_iv;
+    TextView call_tv;
+    ImageView call_iv;
+    FloatingActionButton favorite_fab;
+    boolean isFavorited = false;
+    boolean isLiked = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,17 +51,18 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
 
         presenter = new RestaurantActivityPresenter(this, restaurant);
 
-        ImageView photo_iv = findViewById(R.id.activity_restaurant_photo_iv);
-        TextView name_tv = findViewById(R.id.activity_restaurant_name_tv);
-        TextView address_tv = findViewById(R.id.activity_restaurant_address_tv);
+        photo_iv = findViewById(R.id.activity_restaurant_photo_iv);
+        name_tv = findViewById(R.id.activity_restaurant_name_tv);
+        address_tv = findViewById(R.id.activity_restaurant_address_tv);
         like_tv = findViewById(R.id.activity_restaurant_like_tv);
-        ImageView like_iv = findViewById(R.id.activity_restaurant_like_iv);
-        TextView call_tv = findViewById(R.id.activity_restaurant_call_tv);
-        ImageView call_iv = findViewById(R.id.activity_restaurant_call_iv);
-        TextView webSite_tv = findViewById(R.id.activity_restaurant_website_tv);
-        ImageView webSite_iv = findViewById(R.id.activity_restaurant_website_iv);
+        like_iv = findViewById(R.id.activity_restaurant_like_iv);
+        favorite_fab = findViewById(R.id.activity_restaurant_fab);
+        call_tv = findViewById(R.id.activity_restaurant_call_tv);
+        call_iv = findViewById(R.id.activity_restaurant_call_iv);
+        webSite_tv = findViewById(R.id.activity_restaurant_website_tv);
+        webSite_iv = findViewById(R.id.activity_restaurant_website_iv);
 
-        activity_restaurant_fab = findViewById(R.id.activity_restaurant_fab);
+        favorite_fab.setImageResource(R.drawable.ic_update_24px);
 
         Glide.with(this).
                 load(restaurant.getMapsPhotoUrl()).
@@ -59,17 +71,7 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         name_tv.setText(restaurant.getName());
         address_tv.setText(restaurant.getAddress());
 
-        webSite_iv.setOnClickListener(v -> clickWebSite());
-        webSite_tv.setOnClickListener(v -> clickWebSite());
-
-        call_tv.setOnClickListener(v -> clickPhone());
-        call_tv.setOnClickListener(v -> clickPhone());
-
-
         loadUsers();
-
-        //floatingButton_listener(placeId, restaurantChoice_visible_fab, restaurantChoice_invisible_fab);
-
         presenter.loadRestaurant();
     }
 
@@ -96,20 +98,88 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
 
     @Override
     public void displayDetails(Details details) {
+
+        listener_webSiteButton();
+        listener_callButton();
+        diplay_likeOrNot(details);
+        listener_likeOrNot();
+        display_isfavoritedOrNot_fab(details);
+        listener_isfavoritedOrNot_fab();
+
+        //TODO display users
+    }
+
+    private void listener_isfavoritedOrNot_fab() {
+        favorite_fab.setOnClickListener(v -> {
+            clickFavoriteOrNot();
+        });
+    }
+
+    private void display_isfavoritedOrNot_fab(Details details) {
+        if (details.isFavorited()) {
+            favorite_fab.setImageResource(R.drawable.ic_check_circle_24px);
+            isFavorited = true;
+        } else {
+            favorite_fab.setImageResource(R.drawable.ic_add_24px);
+            isFavorited = false;
+        }
+
+    }
+
+    private void listener_likeOrNot() {
+        like_tv.setOnClickListener(v -> {
+            clickLikeOrDislike();
+        });
+
+        like_iv.setOnClickListener(v -> {
+            clickLikeOrDislike();
+        });
+
+    }
+
+    private void diplay_likeOrNot(Details details) {
         if (details.isLiked()) {
             like_tv.setText(getApplicationContext().getString(R.string.dislike));
         } else {
             like_tv.setText(getApplicationContext().getString(R.string.like));
         }
 
-        activity_restaurant_fab.setOnClickListener(v -> presenter.likeOrNot(details));
+    }
 
-        if(details.isFavorited()){
-            activity_restaurant_fab.setImageResource(R.drawable.ic_check_circle_24px);
-        }else{
-            activity_restaurant_fab.setImageResource(R.drawable.ic_add_24px);
+    private void listener_callButton() {
+        call_iv.setOnClickListener(v -> IntentUtils.callNumber(this, presenter.getPhoneNumber()));
+        call_tv.setOnClickListener(v -> IntentUtils.callNumber(this, presenter.getPhoneNumber()));
+
+    }
+
+    private void listener_webSiteButton() {
+        webSite_iv.setOnClickListener(v -> clickWebSite());
+        webSite_tv.setOnClickListener(v -> clickWebSite());
+    }
+
+
+    private void clickFavoriteOrNot() {
+        if (isFavorited) {
+            isFavorited = false;
+            favorite_fab.setImageResource(R.drawable.ic_add_24px);
+            presenter.notFavoritedRestaurant();
+        } else {
+            isFavorited = true;
+            favorite_fab.setImageResource(R.drawable.ic_check_circle_24px);
+            presenter.favoritedRestaurant();
         }
+    }
 
-        //TODO display users
+
+    private void clickLikeOrDislike() {
+        if (isLiked = true) {
+            isLiked = false;
+            like_tv.setText(getApplicationContext().getString(R.string.dislike));
+            presenter.likeRestaurant();
+        } else {
+            isLiked = true;
+            like_tv.setText(getApplicationContext().getString(R.string.like));
+            presenter.dislikeRestaurant();
+        }
     }
 }

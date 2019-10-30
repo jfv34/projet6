@@ -1,7 +1,5 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
-import android.util.Log;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.vincler.jf.projet6.api.LikesFirebase;
@@ -56,73 +54,30 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         return webSite;
     }
 
-
-   /* @Override
-    public void choice____OrNot(Details details) {
-        if (visibleIconInFAB) {
-            visibleIconInFAB = false;
-            UserFirebase.updateRestaurantChoice("", currentUserUid);
-            restaurantChoice_visible_fab.hide();
-            restaurantChoice_invisible_fab.show();
-        }*/
-
-    @Override
-    public boolean likeOrNot(Details details) {
-        if (details.isLiked()) {
-            dislikeRestaurant();
-        } else {
-            likeRestaurant();
-        }
-        return true;
-    }
-
     @Override
     public void likeRestaurant() {
-        Log.i("tag_like", "create");
         LikesFirebase.createLike(getUserID(), restaurant.getPlaceid());
     }
 
     @Override
     public void dislikeRestaurant() {
-        Log.i("tag_like", "delete " + restaurant.getPlaceid());
         LikesFirebase.deleteLike(getUserID(), restaurant.getPlaceid());
+    }
+
+    @Override
+    public void notFavoritedRestaurant() {
+        UserFirebase.updateRestaurantChoice("", getUserID());
+    }
+
+    @Override
+    public void favoritedRestaurant() {
+        UserFirebase.updateRestaurantChoice(restaurant.getPlaceid(), getUserID());
     }
 
     public String getUserID() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         return user != null ? user.getUid() : "";
     }
-
-
-    /*
-    private void retrofit(String placeid) {
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder builder = UnsafeOkHttpClient.getUnsafeOkHttpClient().addInterceptor(interceptor);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://maps.googleapis.com/maps/api/place/")
-                .client(builder.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        RestaurantsService service = retrofit.create(RestaurantsService.class);
-
-        service.listDetails(placeid).enqueue(new Callback<DetailsResponse>() {
-
-            @Override
-            public void onResponse(Call<DetailsResponse> call, Response<DetailsResponse> response) {
-
-                phoneNumber = response.body().getPhoneNumber();
-                webSite = response.body().getWebSite();
-            }
-
-            @Override
-            public void onFailure(Call<DetailsResponse> call, Throwable t) {
-            }
-        });
-    }
-     */
 
     @Override
     public void loadRestaurant() {
@@ -157,7 +112,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
                             }
                         });
-
                     });
         });
     }
