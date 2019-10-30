@@ -6,21 +6,22 @@ import com.vincler.jf.projet6.models.Details;
 public interface RestaurantActivityContract {
 
     interface View {
-
+        void displayDetails(Details details);
     }
 
     interface Presenter  {
 
-        void likeRestaurant(String uid, String latLongRestaurant);
+        void loadRestaurant();
 
-        String getUidFirebase();
+        void likeRestaurant();
 
-        byte rating();
+        void dislikeRestaurant();
 
-        Details retrofit(String placeid);
+        String getPhoneNumber();
 
+        String getWebSite();
 
-        void dislikeRestaurant(String currentUserUid, String placeid);
+        boolean likeOrNot(Details details);
     }
 
 }

@@ -65,7 +65,6 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
         getLiveData().observe(this, it -> {
             if (googleMap != null) {
                 googleMap.clear();
-
                 for (int i = 0; i < it.size(); i++) {
                     if (it.get(i).isVisible()) {
                         double latitude = it.get(i).getLatitude();

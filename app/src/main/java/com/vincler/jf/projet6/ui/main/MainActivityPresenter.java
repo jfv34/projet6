@@ -31,21 +31,23 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         ArrayList<Restaurant> result = new ArrayList<>();
         ArrayList<Restaurant> restaurants = restaurantsData.getValue();
 
-        for (int i = 0; i < restaurants.size(); i++) {
-            String r = restaurants.get(i).getName();
-            Restaurant data = restaurants.get(i);
+        if (restaurants != null) {
+            for (int i = 0; i < restaurants.size(); i++) {
+                String r = restaurants.get(i).getName();
+                Restaurant data = restaurants.get(i);
 
-            result.add(new Restaurant(
-                    data.getName(),
-                    data.getLatitude(),
-                    data.getLongitude(),
-                    data.getAddress(),
-                    data.getPhoto(),
-                    data.getRating(),
-                    r.toLowerCase().contains(query.toLowerCase()),
-                    restaurants.get(i).getIsOpenNow(),
-                    data.getPlaceid()
-            ));
+                result.add(new Restaurant(
+                        data.getName(),
+                        data.getLatitude(),
+                        data.getLongitude(),
+                        data.getAddress(),
+                        data.getPhoto(),
+                        data.getRating(),
+                        r.toLowerCase().contains(query.toLowerCase()),
+                        restaurants.get(i).getIsOpenNow(),
+                        data.getPlaceid()
+                ));
+            }
         }
 
         restaurantsData.setValue(result);
@@ -74,6 +76,8 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                 firebaseUser.getPhotoUrl().toString()
         );
     }
+
+
 
     public MutableLiveData<ArrayList<Restaurant>> getRestaurantsData() {
         return restaurantsData;
