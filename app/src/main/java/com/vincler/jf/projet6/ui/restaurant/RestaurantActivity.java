@@ -1,9 +1,9 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -140,8 +140,10 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
     private void diplay_likeOrNot(Details details) {
         if (details.isLiked()) {
             like_tv.setText(getApplicationContext().getString(R.string.dislike));
+            isLiked=false;
         } else {
             like_tv.setText(getApplicationContext().getString(R.string.like));
+            isLiked=true;
         }
 
     }
@@ -172,14 +174,16 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
 
 
     private void clickLikeOrDislike() {
-        if (isLiked = true) {
+        if (isLiked) {
             isLiked = false;
             like_tv.setText(getApplicationContext().getString(R.string.dislike));
             presenter.likeRestaurant();
+            Log.i("tag_like", "dislike");
         } else {
             isLiked = true;
             like_tv.setText(getApplicationContext().getString(R.string.like));
             presenter.dislikeRestaurant();
+            Log.i("tag_like", "like");
         }
     }
 }
