@@ -2,9 +2,6 @@ package com.vincler.jf.projet6.api;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -41,20 +38,18 @@ public class UserFirebase {
 
     // --- GET BY RESTAURANTCHOICE ---
 
-    public static void getUsersByRestaurantChoice(String restaurantChoice) {
-        getUsersCollection().document().collection("users")
+    public static Task<QuerySnapshot> getUsersByRestaurantChoice(String restaurantChoice) {
+
+        return getUsersCollection().document().collection("users")
                 .whereEqualTo("restaurantChoice", restaurantChoice)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d("tag_restaurantChoice", document.getId() + " => " + document.getData());
-                            }
-                        } else {
-                            Log.d("restaurantChoice", "Error getting documents: ", task.getException());
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+
                         }
+                    } else {
+                        Log.d("restaurantChoice f", "Error getting documents: ", task.getException());
                     }
                 });
     }

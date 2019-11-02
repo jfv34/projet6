@@ -7,19 +7,26 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.Details;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.utils.IntentUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RestaurantActivity extends FragmentActivity implements RestaurantActivityContract.View {
 
@@ -71,17 +78,30 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         name_tv.setText(restaurant.getName());
         address_tv.setText(restaurant.getAddress());
 
-        loadUsers();
+        loadUsers(restaurant);
         presenter.loadRestaurant();
     }
 
     //TODO move to presenter - inside the details
-    private void loadUsers() {
+    private void loadUsers(Restaurant restaurant) {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
+        Task<QuerySnapshot> x = UserFirebase.getUsersByRestaurantChoice(restaurant.getPlaceid());
+        x.addOnCompleteListener(task -> {
+            if (x.getResult() != null) {
+               List<DocumentSnapshot> i = x.getResult().getDocuments();
+               int zz=1;
+                Log.i("restaurantChoice x", i.toString());
+            } else {
+                Log.i("restaurantChoice x", "null!");
+            }
+        });
+
+
         ArrayList users = new ArrayList();
+
         for (int test = 1; test < 30; test++) {
             String testName = "TestName" + test;
             User user = new User("testUid", testName, "testMail", "testPhoneNumber", "", "");
@@ -145,7 +165,6 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
             like_tv.setText(getApplicationContext().getString(R.string.like));
             isLiked=true;
         }
-
     }
 
     private void listener_callButton() {

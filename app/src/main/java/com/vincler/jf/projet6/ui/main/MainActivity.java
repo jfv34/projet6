@@ -25,10 +25,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
@@ -284,7 +287,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                     .load(firebaseUser.getPhotoUrl())
                     .into(imageView);
 
-            presenter.createUserInFirestore(firebaseUser);
+            Task<DocumentSnapshot> u = UserFirebase.getUser(firebaseUser.getUid());
+            u.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (!u.isSuccessful()) {
+                        presenter.createUserInFirestore(firebaseUser);
+                    }
+                }
+            });
         }
     }
 
