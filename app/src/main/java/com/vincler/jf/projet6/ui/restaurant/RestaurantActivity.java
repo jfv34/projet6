@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,8 +67,24 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         call_iv = findViewById(R.id.activity_restaurant_call_iv);
         webSite_tv = findViewById(R.id.activity_restaurant_website_tv);
         webSite_iv = findViewById(R.id.activity_restaurant_website_iv);
+        NestedScrollView nestedScrollView = findViewById(R.id.activity_restaurant_nestedScrollView);
 
         favorite_fab.setImageResource(R.drawable.ic_update_24px);
+
+
+
+     /*   nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                Log.i("tag_scroll x ", scrollX + "");
+                Log.i("tag_scroll old x ", oldScrollX + "");
+                Log.i("tag_scroll y ", scrollY + "");
+                Log.i("tag_scroll old y ", oldScrollY + "");
+            }});
+*/
+
+
+
 
         Glide.with(this).
                 load(restaurant.getMapsPhotoUrl()).
@@ -93,38 +110,25 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
             if (data.getResult() != null) {
 
                 for (int i = 0; i < data.getResult().size(); i++) {
-                    HashMap ii = (HashMap) data.getResult().getDocuments().get(i).getData();
-                    Log.i("restaurantChoice P ", ii.toString()+"");
-                    result.add(ii);
+                    HashMap h = (HashMap) data.getResult().getDocuments().get(i).getData();
+                    result.add(h);
                 }
-                Log.i("restaurantChoice T ", result.get(0).get("uid").toString());
 
-
-                for (int test = 0; test < result.size(); test++) {
-                    HashMap tt = result.get(test);
+                for (int i = 0; i < result.size(); i++) {
+                    HashMap hm = result.get(i);
                     User user = new User(
-                            tt.get("uid").toString(),
-                            tt.get("username").toString(),
-                            tt.get("email").toString(),
-                            tt.get("phoneNumber").toString(),
-                            tt.get("restaurantChoice").toString(),
-                            tt.get("photoUserUrl").toString());
+                            hm.get("uid").toString(),
+                            hm.get("username").toString(),
+                            hm.get("email").toString(),
+                            hm.get("phoneNumber").toString(),
+                            hm.get("restaurantChoice").toString(),
+                            hm.get("photoUserUrl").toString());
 
                     users.add(user);
                     recyclerView.setAdapter(new RestaurantAdapter(users, this));
                 }
-
-
-
             }
         });
-
-
-
-
-
-
-
     }
 
     private void clickWebSite() {
@@ -221,4 +225,5 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
             Log.i("tag_like", "like");
         }
     }
+
 }

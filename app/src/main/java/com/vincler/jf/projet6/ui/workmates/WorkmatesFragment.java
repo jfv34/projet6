@@ -10,7 +10,16 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.api.UserFirebase;
+import com.vincler.jf.projet6.models.User;
+import com.vincler.jf.projet6.ui.main.MainActivityContract;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class WorkmatesFragment extends Fragment {
@@ -23,29 +32,58 @@ public class WorkmatesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        String[] data = new String[6];
-        data[0] = "text one";
-        data[1] = "text two";
-        data[2] = "text three";
-        data[3] = "text four";
-        data[4] = "text five";
-        data[5] = "text six";
 
-        View rootView = inflater.inflate(R.layout.fragment_workmates, container, false);
-        RecyclerView recyclerView = rootView.findViewById(R.id.fragment_workmates_recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter adapter = new ListWorkmatesAdapter(data);
-        recyclerView.setAdapter(adapter);
+        final View rootView = inflater.inflate(R.layout.fragment_workmates, container, false);
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
-                DividerItemDecoration.VERTICAL));
+        ArrayList<User> users = new ArrayList<>();
+        List<HashMap> result = new ArrayList<>();
+        Task<QuerySnapshot> data = UserFirebase.getUsers();
+        data.addOnCompleteListener(task -> {
+            if (data.getResult() != null) {
 
-        return rootView;
+                for (int i = 0; i < data.getResult().size(); i++) {
+                    HashMap h = (HashMap) data.getResult().getDocuments().get(i).getData();
+                    result.add(h);
+                }
 
-    }
-}
+                for (int i = 0; i < result.size(); i++) {
+                    HashMap hm = result.get(i);
+                    User user = new User(
+                            hm.get("uid").toString(),
+                            hm.get("username").toString(),
+                            hm.get("email").toString(),
+                            hm.get("phoneNumber").toString(),
+                            hm.get("restaurantChoice").toString(),
+                            hm.get("photoUserUrl").toString());
+
+                    users.add(user);
+
+                }
+
+                RecyclerView recyclerView = rootView.findViewById(R.id.fragment_workmates_recyclerview);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recyclerView.setHasFixedSize(true);
+                RecyclerView.Adapter adapter = new ListWorkmatesAdapter(users);
+                recyclerView.setAdapter(adapter);
+
+                recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
+                        DividerItemDecoration.VERTICAL));
+
+            }
+
+
+
+        });
+
+        int s=0;
+        while (rootView==null && s<10) {
+            try {
+                s++;
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+            }
+        }
+    return rootView;
+}}
 
 

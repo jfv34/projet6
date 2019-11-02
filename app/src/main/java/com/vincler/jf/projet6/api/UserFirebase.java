@@ -27,13 +27,13 @@ public class UserFirebase {
                                         String photoUserUrl) {
         User userToCreate = new User(uid, username, email, phoneNumber, restaurantChoice, photoUserUrl);
 
-        return UserFirebase.getUsersCollection().document(uid).set(userToCreate);
+        return getUsersCollection().document(uid).set(userToCreate);
     }
 
     // --- GET ---
 
     public static Task<DocumentSnapshot> getUser(String uid) {
-        return UserFirebase.getUsersCollection().document(uid).get();
+        return getUsersCollection().document(uid).get();
     }
 
     // --- GET BY RESTAURANTCHOICE ---
@@ -42,12 +42,16 @@ public class UserFirebase {
 
         return getUsersCollection()
                 .whereEqualTo("restaurantChoice", restaurantChoice)
-                .get()
-                ;
-
+                .get();
     }
 
+    // --- GET ALL USERS ---
 
+    public static Task<QuerySnapshot> getUsers() {
+
+        return getUsersCollection()
+                .get();
+    }
 
     // --- UPDATE ---
 

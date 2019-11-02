@@ -29,7 +29,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         }
     }
 
-    public RestaurantAdapter(ArrayList users, Context context) {
+    public RestaurantAdapter(List<User> users, Context context) {
         this.users = users;
         this.context = context;
     }
