@@ -68,11 +68,13 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     public void createUserInFirestore(FirebaseUser firebaseUser) {
 
         String restaurantChoice = "";
+        String restaurantName = "";
 
         UserFirebase.createUser(firebaseUser.getUid(), firebaseUser.getDisplayName(),
                 firebaseUser.getEmail(),
                 firebaseUser.getPhoneNumber(),
                 restaurantChoice,
+                restaurantName,
                 firebaseUser.getPhotoUrl().toString()
         );
     }

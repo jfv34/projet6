@@ -7,15 +7,17 @@ public class User {
     private String email;
     private String phoneNumber;
     private String restaurantChoice;
+    private String restaurantName;
     private String photoUserUrl;
 
     public User(String uid, String userName, String email, String phoneNumber,
-                String restaurantChoice, String photoUserUrl) {
+                String restaurantChoice, String restaurantName, String photoUserUrl) {
         this.uid = uid;
         this.userName = userName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.restaurantChoice = restaurantChoice;
+        this.restaurantName = restaurantName;
         this.photoUserUrl = photoUserUrl;
     }
 
@@ -39,6 +41,10 @@ public class User {
 
     public String getRestaurantChoice() {
         return restaurantChoice;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
     }
 
     public String getPhotoUserUrl() {

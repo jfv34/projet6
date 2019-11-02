@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.User;
+import com.vincler.jf.projet6.utils.GetStringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
@@ -56,7 +56,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
     private void displayText(TextView name_tv, int position) {
         String name = users.get(position).getUsername();
-        String firstName = name.substring(0,name.indexOf(" ",0));
+        String firstName = GetStringUtils.getFirstWord(name);
         String text = firstName + " " + context.getString(R.string.isjoining);
         name_tv.setText(text);
     }

@@ -90,8 +90,11 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
             UserFirebase.getUser(getUserID())
                     .addOnCompleteListener(task2 -> {
-                        String restaurantChoice = task2.getResult().get("restaurantChoice").toString();
-                        boolean isFavorited = restaurantChoice.equals(restaurant.getPlaceid());
+                        boolean isFavorited;
+                        if (task2.getResult().get("restaurantChoice") != null) {
+                            String restaurantChoice = task2.getResult().get("restaurantChoice").toString();
+                            isFavorited = restaurantChoice.equals(restaurant.getPlaceid());
+                        } else isFavorited = false;
 
                         service.listDetails(restaurant.getPlaceid()).enqueue(new Callback<DetailsResponse>() {
                             @Override

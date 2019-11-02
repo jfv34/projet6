@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -194,10 +195,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         String restaurantChoice = getRestaurantChoice(uid);
 
 
-
-
-
-
         Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
         // Restaurant restaurant = new Restaurant(       )
         // intent.putExtra("restaurant", restaurant);
@@ -215,10 +212,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         return user != null ? user.getUid() : "";
     }
-
-
-
-
 
     private void drawerLayout() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

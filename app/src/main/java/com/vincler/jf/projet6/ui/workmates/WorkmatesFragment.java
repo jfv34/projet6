@@ -32,7 +32,6 @@ public class WorkmatesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
         final View rootView = inflater.inflate(R.layout.fragment_workmates, container, false);
 
         ArrayList<User> users = new ArrayList<>();
@@ -54,10 +53,10 @@ public class WorkmatesFragment extends Fragment {
                             hm.get("email").toString(),
                             hm.get("phoneNumber").toString(),
                             hm.get("restaurantChoice").toString(),
+                            hm.get("restaurantName").toString(),
                             hm.get("photoUserUrl").toString());
 
                     users.add(user);
-
                 }
 
                 RecyclerView recyclerView = rootView.findViewById(R.id.fragment_workmates_recyclerview);
@@ -68,21 +67,9 @@ public class WorkmatesFragment extends Fragment {
 
                 recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),
                         DividerItemDecoration.VERTICAL));
-
             }
-
-
-
         });
 
-        int s=0;
-        while (rootView==null && s<10) {
-            try {
-                s++;
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-            }
-        }
     return rootView;
 }}
 

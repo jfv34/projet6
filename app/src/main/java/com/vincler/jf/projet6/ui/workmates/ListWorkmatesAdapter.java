@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.User;
+import com.vincler.jf.projet6.utils.GetStringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdapter.ViewHolder> {
@@ -46,7 +46,13 @@ Log.i("tag_workmates","oncreatevewholder");
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         TextView name_tv = holder.itemView.findViewById(R.id.item_workmates_tv);
-        name_tv.setText(users.get(position).getUsername());
+
+        String name = users.get(position).getUsername();
+        String firstname = GetStringUtils.getFirstWord(name);
+        String nameRestaurant = users.get(position).getRestaurantName();
+        String text = firstname + "  " + "is eating at" + " " + nameRestaurant;
+
+        name_tv.setText(text);
     }
 
     @Override

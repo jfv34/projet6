@@ -122,6 +122,7 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
                             hm.get("email").toString(),
                             hm.get("phoneNumber").toString(),
                             hm.get("restaurantChoice").toString(),
+                            hm.get("restaurantName").toString(),
                             hm.get("photoUserUrl").toString());
 
                     users.add(user);
