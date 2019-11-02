@@ -66,12 +66,13 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
     @Override
     public void notFavoritedRestaurant() {
-        UserFirebase.updateRestaurantChoice("", getUserID());
+        UserFirebase.updateRestaurantChoiceId("", getUserID());
     }
 
     @Override
     public void favoritedRestaurant() {
-        UserFirebase.updateRestaurantChoice(restaurant.getPlaceid(), getUserID());
+        UserFirebase.updateRestaurantChoiceId(restaurant.getPlaceid(), getUserID());
+        UserFirebase.updateRestaurantChoiceName(restaurant.getName(), getUserID());
     }
 
     public String getUserID() {

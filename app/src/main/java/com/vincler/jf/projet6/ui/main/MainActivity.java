@@ -282,10 +282,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
             Task<DocumentSnapshot> u = UserFirebase.getUser(firebaseUser.getUid());
             u.addOnCompleteListener(task -> {
-                if (!u.isSuccessful()) {
+                if (!u.isSuccessful() || u.getResult().get("doc")==null) {
                     presenter.createUserInFirestore(firebaseUser);
-                }
-            });
+                } });
         }
     }
 

@@ -58,9 +58,14 @@ public class UserFirebase {
         return UserFirebase.getUsersCollection().document(uid).update("username", username);
     }
 
-    public static Task<Void> updateRestaurantChoice(String restaurantChoice, String uid) {
+    public static Task<Void> updateRestaurantChoiceId(String restaurantChoice, String uid) {
         return UserFirebase.getUsersCollection().document(uid).update("restaurantChoice", restaurantChoice);
     }
+
+    public static Task<Void> updateRestaurantChoiceName(String restaurantName, String uid) {
+        return UserFirebase.getUsersCollection().document(uid).update("restaurantName", restaurantName);
+    }
+
 
     // --- DELETE ---
 
