@@ -40,18 +40,11 @@ public class UserFirebase {
 
     public static Task<QuerySnapshot> getUsersByRestaurantChoice(String restaurantChoice) {
 
-        return getUsersCollection().document().collection("users")
+        return getUsersCollection()
                 .whereEqualTo("restaurantChoice", restaurantChoice)
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        for (QueryDocumentSnapshot document : task.getResult()) {
+                ;
 
-                        }
-                    } else {
-                        Log.d("restaurantChoice f", "Error getting documents: ", task.getException());
-                    }
-                });
     }
 
 

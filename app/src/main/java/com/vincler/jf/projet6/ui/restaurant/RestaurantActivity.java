@@ -7,16 +7,13 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
@@ -26,6 +23,7 @@ import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.utils.IntentUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class RestaurantActivity extends FragmentActivity implements RestaurantActivityContract.View {
@@ -88,27 +86,45 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        Task<QuerySnapshot> x = UserFirebase.getUsersByRestaurantChoice(restaurant.getPlaceid());
-        x.addOnCompleteListener(task -> {
-            if (x.getResult() != null) {
-               List<DocumentSnapshot> i = x.getResult().getDocuments();
-               int zz=1;
-                Log.i("restaurantChoice x", i.toString());
-            } else {
-                Log.i("restaurantChoice x", "null!");
+        ArrayList<User> users = new ArrayList<>();
+        List<HashMap> result = new ArrayList<>();
+        Task<QuerySnapshot> data = UserFirebase.getUsersByRestaurantChoice(restaurant.getPlaceid());
+        data.addOnCompleteListener(task -> {
+            if (data.getResult() != null) {
+
+                for (int i = 0; i < data.getResult().size(); i++) {
+                    HashMap ii = (HashMap) data.getResult().getDocuments().get(i).getData();
+                    Log.i("restaurantChoice P ", ii.toString()+"");
+                    result.add(ii);
+                }
+                Log.i("restaurantChoice T ", result.get(0).get("uid").toString());
+
+
+                for (int test = 0; test < result.size(); test++) {
+                    HashMap tt = result.get(test);
+                    User user = new User(
+                            tt.get("uid").toString(),
+                            tt.get("username").toString(),
+                            tt.get("email").toString(),
+                            tt.get("phoneNumber").toString(),
+                            tt.get("restaurantChoice").toString(),
+                            tt.get("photoUserUrl").toString());
+
+                    users.add(user);
+                    recyclerView.setAdapter(new RestaurantAdapter(users, this));
+                }
+
+
+
             }
         });
 
 
-        ArrayList users = new ArrayList();
 
-        for (int test = 1; test < 30; test++) {
-            String testName = "TestName" + test;
-            User user = new User("testUid", testName, "testMail", "testPhoneNumber", "", "");
-            users.add(user);
-        }
 
-        recyclerView.setAdapter(new RestaurantAdapter(users, this));
+
+
+
     }
 
     private void clickWebSite() {

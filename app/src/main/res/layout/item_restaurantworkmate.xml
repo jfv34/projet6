@@ -16,9 +16,10 @@
         android:src="@drawable/ic_perm_identity_24px" />
 
     <TextView
-        android:id="@+id/item_workmates_in_this_restaurant-name_tv"
+        android:id="@+id/item_restaurantWorkmate_tv"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/item_restaurantWorkmate_iv"
         android:gravity="center_vertical"
         android:layout_width="wrap_content"
         android:layout_height="70dp"
@@ -26,7 +27,6 @@
         android:maxLength="32"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/item_restaurantWorkmate_iv"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

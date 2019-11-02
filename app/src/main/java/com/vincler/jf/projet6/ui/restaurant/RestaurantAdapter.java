@@ -47,8 +47,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        ImageView photo_iv = holder.itemView.findViewById(R.id.item_workmates_photo_iv);
-        TextView name_tv = holder.itemView.findViewById(R.id.item_workmates_in_this_restaurant_name_tv);
+        ImageView photo_iv = holder.itemView.findViewById(R.id.item_restaurantWorkmate_iv);
+        TextView name_tv = holder.itemView.findViewById(R.id.item_restaurantWorkmate_tv);
 
         displayPhoto(photo_iv, position);
         displayText(name_tv, position);

@@ -288,12 +288,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                     .into(imageView);
 
             Task<DocumentSnapshot> u = UserFirebase.getUser(firebaseUser.getUid());
-            u.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (!u.isSuccessful()) {
-                        presenter.createUserInFirestore(firebaseUser);
-                    }
+            u.addOnCompleteListener(task -> {
+                if (!u.isSuccessful()) {
+                    presenter.createUserInFirestore(firebaseUser);
                 }
             });
         }
