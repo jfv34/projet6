@@ -55,8 +55,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     }
 
     private void displayText(TextView name_tv, int position) {
-        context.getString(R.string.isjoining);
-        String text = users.get(position).getUsername() + " " + context.getString(R.string.isjoining);
+        String name = users.get(position).getUsername();
+        String firstName = name.substring(0,name.indexOf(" ",0));
+        String text = firstName + " " + context.getString(R.string.isjoining);
         name_tv.setText(text);
     }
 

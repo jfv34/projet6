@@ -56,7 +56,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:maxLength="25"
-                    android:textColor="#ffffff"
+                    android:textColor="#D7FFFFFF"
                     android:textSize="22sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -103,7 +103,7 @@
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="20dp"
                     android:maxLength="45"
-                    android:textColor="#ffffff"
+                    android:textColor="#D7FFFFFF"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
