@@ -15,7 +15,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.User;
-import com.vincler.jf.projet6.ui.main.MainActivityContract;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,7 +69,7 @@ public class WorkmatesFragment extends Fragment {
             }
         });
 
-    return rootView;
-}}
-
+        return rootView;
+    }
+}
 

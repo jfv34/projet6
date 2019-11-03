@@ -19,14 +19,14 @@ import java.util.ArrayList;
 
 public class ListFragment extends Fragment {
 
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
     public static ListFragment newInstance() {
         return new ListFragment();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_restaurants, container, false);
         recyclerView = rootView.findViewById(R.id.fragment_restaurant_recyclerView);
@@ -45,12 +45,9 @@ public class ListFragment extends Fragment {
 
     private void displayRestaurants(ArrayList<Restaurant> restaurants) {
         if (!restaurants.isEmpty()) {
-
-
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
-
             RecyclerView.Adapter adapter = new ListRestaurantsAdapter(restaurants);
             recyclerView.setAdapter(adapter);
         }

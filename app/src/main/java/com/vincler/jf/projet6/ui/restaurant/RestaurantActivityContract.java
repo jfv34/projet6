@@ -1,7 +1,12 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
 
+import android.content.Context;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.vincler.jf.projet6.models.Details;
+import com.vincler.jf.projet6.models.Restaurant;
 
 public interface RestaurantActivityContract {
 
@@ -12,6 +17,8 @@ public interface RestaurantActivityContract {
     interface Presenter  {
 
         void loadRestaurant();
+
+        void loadUsers(Restaurant restaurant, Context context, RecyclerView recyclerView);
 
         void likeRestaurant();
 

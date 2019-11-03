@@ -2,10 +2,18 @@ package com.vincler.jf.projet6.ui.map;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
+
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.vincler.jf.projet6.data.RestaurantsService;
@@ -131,6 +139,7 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
     }
 
     public Restaurant restaurantChosenByClickOnMarker(Marker marker, ArrayList<Restaurant> data) {
+
         LatLng latLng = marker.getPosition();
         int restauId = -1;
 
@@ -146,4 +155,18 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
             return data.get(restauId);
         } else return null;
     }
+
+    public BitmapDescriptor bitmapDescriptorFromVector(Context context, int drawable) {
+        Drawable background = ContextCompat.getDrawable(context, drawable);
+        assert background != null;
+        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
+        Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        background.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+
+
+
 }

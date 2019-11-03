@@ -19,16 +19,4 @@ public interface RestaurantsService {
     Call<DetailsResponse> listDetails(
             @Query("placeid") String placeid
     );
-
-
-
 }
-
-
-
-
-
-
-
-
-

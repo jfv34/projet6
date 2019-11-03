@@ -1,6 +1,7 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +35,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         this.context = context;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent,
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                          int viewType) {
 
         View v = LayoutInflater.from(parent.getContext())

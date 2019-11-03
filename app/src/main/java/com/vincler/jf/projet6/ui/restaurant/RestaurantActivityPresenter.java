@@ -1,14 +1,26 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
+import android.content.Context;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.api.LikesFirebase;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Details;
 import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.models.googleMapResponse.DetailsResponse;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -67,6 +79,7 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     @Override
     public void notFavoritedRestaurant() {
         UserFirebase.updateRestaurantChoiceId("", getUserID());
+        UserFirebase.updateRestaurantChoiceName("", getUserID());
     }
 
     @Override
@@ -117,6 +130,42 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
                             }
                         });
                     });
+        });
+    }
+
+    public void loadUsers(Restaurant restaurant, Context context, RecyclerView recyclerView) {
+
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(layoutManager);
+
+        ArrayList<User> users = new ArrayList<>();
+        List<HashMap> result = new ArrayList<>();
+        Task<QuerySnapshot> data = UserFirebase.getUsersByRestaurantChoice(restaurant.getPlaceid());
+        data.addOnCompleteListener(task -> {
+            if (data.getResult() != null) {
+
+                for (int i = 0; i < data.getResult().size(); i++) {
+                    HashMap h = (HashMap) data.getResult().getDocuments().get(i).getData();
+                    result.add(h);
+                }
+
+                for (int i = 0; i < result.size(); i++) {
+                    HashMap hm = result.get(i);
+                    User user = new User(
+                            hm.get("uid").toString(),
+                            hm.get("username").toString(),
+                            hm.get("email").toString(),
+                            hm.get("phoneNumber").toString(),
+                            hm.get("restaurantChoice").toString(),
+                            hm.get("restaurantName").toString(),
+                            hm.get("photoUserUrl").toString());
+
+                    users.add(user);
+
+                }
+                recyclerView.setAdapter(new RestaurantAdapter(users, context));
+            }
         });
     }
 }

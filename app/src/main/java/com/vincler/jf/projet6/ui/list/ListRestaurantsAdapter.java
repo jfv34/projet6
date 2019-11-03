@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
+import com.vincler.jf.projet6.utils.KeysUtils;
 
 import java.util.List;
 
@@ -31,10 +32,9 @@ import static com.vincler.jf.projet6.utils.DistanceUtils.calculateDistance;
 public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurantsAdapter.ViewHolder> {
 
     private static final int WIDTH_PHOTO = 50;
-    private static final String API_KEY = "AIzaSyDxfJVIikFlDrFiDOQsfG7cFeQICbmZrtc";
-    Context context;
-
-    List<Restaurant> restaurants;
+    private static final String API_KEY = KeysUtils.API_KEY;
+    private Context context;
+    private List<Restaurant> restaurants;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public ViewHolder(@NonNull View itemView) {
@@ -42,14 +42,14 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         }
     }
 
-    public ListRestaurantsAdapter(List restaurants) {
+    public ListRestaurantsAdapter(List<Restaurant> restaurants) {
         this.restaurants = restaurants;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         this.context = parent.getContext();
-
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_restaurant, parent, false);
         return new ViewHolder(v);
     }
@@ -77,9 +77,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         display_photo(photo_iv, position);
         display_opening(openingHours_tv, position);
         display_distance(distance_tv, position, location.getLatitude(), location.getLongitude());
-
         listenerClickOnRestaurant(holder, position, photo_iv);
-
     }
 
     private Location getLocation() {
@@ -107,7 +105,6 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         ActivityOptionsCompat options = ActivityOptionsCompat.
                 makeSceneTransitionAnimation((Activity)context,photo_iv, ViewCompat.getTransitionName(photo_iv));
         context.startActivity(intent, options.toBundle());
-
     }
 
     private void display_opening(TextView openingHours_tv, int position) {
@@ -188,6 +185,4 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     public int getItemCount() {
         return restaurants.size();
     }
-
-
 }

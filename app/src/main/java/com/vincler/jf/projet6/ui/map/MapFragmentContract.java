@@ -2,9 +2,12 @@ package com.vincler.jf.projet6.ui.map;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.location.LocationListener;
 
 import androidx.lifecycle.MutableLiveData;
+
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.vincler.jf.projet6.models.Restaurant;
@@ -30,5 +33,6 @@ public interface MapFragmentContract {
 
         Restaurant restaurantChosenByClickOnMarker(Marker marker, ArrayList<Restaurant> data);
 
+        BitmapDescriptor bitmapDescriptorFromVector(Context context, int drawable);
     }
 }
