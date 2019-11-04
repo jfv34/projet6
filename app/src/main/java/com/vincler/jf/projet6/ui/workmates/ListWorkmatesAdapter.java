@@ -59,7 +59,8 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
         String name = users.get(position).getUsername();
         String firstname = GetStringUtils.getFirstWord(name);
         String nameRestaurant = users.get(position).getRestaurantName();
-        String text = firstname + " " + "is eating at" + " " + nameRestaurant;
+        String textBeforeCut = firstname + " " + "is eating at" + " " + nameRestaurant;
+        String text = GetStringUtils.getNoCutLastWord(textBeforeCut,60);
         name_tv.setText(text);
     }
 

@@ -55,9 +55,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
-                    android:maxLength="25"
+                    android:maxLength="28"
                     android:textColor="#D7FFFFFF"
-                    android:textSize="22sp"
+                    android:textSize="20sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -66,11 +66,10 @@
                     android:id="@+id/activity_restaurant_star1_iv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="18dp"
                     android:src="@drawable/icon_star_yellow_icon"
                     app:layout_constraintStart_toEndOf="@id/activity_restaurant_name_tv"
-
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <ImageView
@@ -108,7 +107,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/activity_restaurant_name_tv"
-
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,6 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.Details;
 import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.utils.GetStringUtils;
 import com.vincler.jf.projet6.utils.IntentUtils;
 
 public class RestaurantActivity extends FragmentActivity implements RestaurantActivityContract.View {
@@ -79,7 +80,8 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
                 load(restaurant.getMapsPhotoUrl()).
                 into(photo_iv);
 
-        name_tv.setText(restaurant.getName());
+        String name = GetStringUtils.getNoCutLastWord(restaurant.getName(),28);
+        name_tv.setText(name);
         address_tv.setText(restaurant.getAddress());
         presenter.loadRestaurant();
     }

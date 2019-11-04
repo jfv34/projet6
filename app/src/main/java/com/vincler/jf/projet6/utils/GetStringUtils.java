@@ -7,6 +7,15 @@ public class GetStringUtils {
         return text.substring(0, text.indexOf(" ", 0));
     }
 
+    public static String getNoCutLastWord(String textBeforeCut, int maxSize) {
+
+        if (textBeforeCut.length() <= maxSize) {
+            return textBeforeCut;
+        } else {
+            return textBeforeCut.substring(0, textBeforeCut.lastIndexOf(" ", maxSize));
+        }
+    }
+
     public static String random(int size) {
         Random generator = new Random();
         StringBuilder randomStringBuilder = new StringBuilder();

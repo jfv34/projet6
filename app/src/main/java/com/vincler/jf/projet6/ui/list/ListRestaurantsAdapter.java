@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
+import com.vincler.jf.projet6.utils.GetStringUtils;
 import com.vincler.jf.projet6.utils.KeysUtils;
 
 import java.util.List;
@@ -178,7 +179,8 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     }
 
     private void display_name(TextView name_tv, int position) {
-        name_tv.setText(restaurants.get(position).getName());
+        String name = GetStringUtils.getNoCutLastWord(restaurants.get(position).getName(),31);
+        name_tv.setText(name);
     }
 
     @Override

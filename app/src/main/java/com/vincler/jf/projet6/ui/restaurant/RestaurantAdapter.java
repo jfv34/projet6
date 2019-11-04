@@ -61,6 +61,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         String firstName = GetStringUtils.getFirstWord(name);
         String text = firstName + " " + context.getString(R.string.isjoining);
         name_tv.setText(text);
+
     }
 
     private void displayPhoto(ImageView photo_iv, int position) {
