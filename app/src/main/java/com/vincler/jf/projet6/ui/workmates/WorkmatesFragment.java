@@ -61,7 +61,7 @@ public class WorkmatesFragment extends Fragment {
                 RecyclerView recyclerView = rootView.findViewById(R.id.fragment_workmates_recyclerview);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 recyclerView.setHasFixedSize(true);
-                RecyclerView.Adapter adapter = new ListWorkmatesAdapter(users);
+                RecyclerView.Adapter adapter = new ListWorkmatesAdapter(users, getContext());
                 recyclerView.setAdapter(adapter);
 
                 recyclerView.addItemDecoration(new DividerItemDecoration(getContext(),

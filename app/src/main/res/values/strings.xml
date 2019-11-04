@@ -26,5 +26,7 @@
     <string name="isjoining">is joining!</string>
     <string name="dislike">DISLIKE</string>
     <string name="like">LIKE</string>
+    <string name="hasntdecidedyet">hasn\'t decided yet</string>
+    <string name="iseatingat">is eating at</string>
 
 </resources>
