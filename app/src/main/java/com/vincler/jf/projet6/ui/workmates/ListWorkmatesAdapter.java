@@ -1,6 +1,6 @@
 package com.vincler.jf.projet6.ui.workmates;
 
-import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.User;
-import com.vincler.jf.projet6.ui.main.MainActivity;
 import com.vincler.jf.projet6.utils.GetStringUtils;
 
 import java.util.List;
@@ -59,8 +58,14 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
         String name = users.get(position).getUsername();
         String firstname = GetStringUtils.getFirstWord(name);
         String nameRestaurant = users.get(position).getRestaurantName();
-        String textBeforeCut = firstname + " " + "is eating at" + " " + nameRestaurant;
-        String text = GetStringUtils.getNoCutLastWord(textBeforeCut,60);
+        String text;
+        if (nameRestaurant.isEmpty()) {
+            text = firstname + " " + "hasn't decided yet";
+        } else {
+            String textBeforeCut = firstname + " " + "is eating at" + " " + nameRestaurant;
+            text = GetStringUtils.getNoCutLastWord(textBeforeCut, 60);
+            name_tv.setTypeface(name_tv.getTypeface(), Typeface.BOLD);
+        }
         name_tv.setText(text);
     }
 
