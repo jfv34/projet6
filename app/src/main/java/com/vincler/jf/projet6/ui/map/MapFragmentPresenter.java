@@ -165,8 +165,4 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
         background.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
-
-
-
-
 }

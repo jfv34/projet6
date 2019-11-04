@@ -41,6 +41,17 @@ public class RestaurantActivityPresenterTest {
 
     @Test
     public void When_() {
+        RestaurantActivityContract.View view = new RestaurantActivityContract.View(){
+            @Override
+            public void displayDetails(Details details) {
+
+            }
+        };
+        RestaurantActivityPresenter presenter = new RestaurantActivityPresenter(view,
+                new Restaurant("test", 112.2, 26262,
+                "test", "test", 1.2, true, "test",
+                "test"));
+
 
 
     }
