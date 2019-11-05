@@ -1,36 +1,41 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
 
-import android.content.Context;
-
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.vincler.jf.projet6.models.Details;
 import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.User;
+
+import java.util.ArrayList;
 
 public interface RestaurantActivityContract {
 
     interface View {
         void displayDetails(Details details);
+
+        void displayFavorite(boolean isFavorited);
+
+        void displayLike(boolean isLiked);
+
+        void displayUsers(ArrayList<User> users);
+
+        void displayRestaurant(Restaurant restaurant);
     }
 
     interface Presenter  {
 
         void loadRestaurant();
 
-        void loadUsers(Restaurant restaurant, Context context, RecyclerView recyclerView);
+        void loadDetails();
 
-        void likeRestaurant();
+        void loadUsers();
 
-        void dislikeRestaurant();
+        void toggleLike();
 
         String getPhoneNumber();
 
         String getWebSite();
 
-        void notFavoritedRestaurant();
-
-        void favoritedRestaurant();
+        void toggleFavorite();
     }
 
 }

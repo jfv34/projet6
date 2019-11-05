@@ -2,6 +2,7 @@ package com.vincler.jf.projet6;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.ui.main.MainActivityContract;
 import com.vincler.jf.projet6.ui.main.MainActivityPresenter;
@@ -22,6 +23,15 @@ public class MainActivityPresenterTest {
     public void When_query_is_not_nul_restaurant_are_filtered() {
 
         MainActivityContract.View view = new MainActivityContract.View() {
+            @Override
+            public void displayUserInformation(FirebaseUser user) {
+
+            }
+
+            @Override
+            public void startLogin() {
+
+            }
         };
         MainActivityPresenter presenter = new MainActivityPresenter(view);
 
@@ -37,7 +47,7 @@ public class MainActivityPresenterTest {
 
         restaurantArrayList.add(0, restaurant1);
         restaurantArrayList.add(1, restaurant2);
-        presenter.getRestaurantsData().setValue(restaurantArrayList);
+        presenter.getLiveData().setValue(restaurantArrayList);
         presenter.filterRestaurants("TEST_FILTER");
 
         Assertions.assertThat(presenter.restaurantsData.getValue().get(0).isVisible()).isFalse();

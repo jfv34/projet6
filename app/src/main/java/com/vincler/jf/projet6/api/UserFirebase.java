@@ -13,18 +13,14 @@ public class UserFirebase {
 
     // --- COLLECTION REFERENCE ---
 
-    public static CollectionReference getUsersCollection() {
+    private static CollectionReference getUsersCollection() {
         return FirebaseFirestore.getInstance().collection(COLLECTION_NAME);
     }
 
     // --- CREATE ---
 
-    public static Task<Void> createUser(String uid, String username, String email,
-                                        String phoneNumber, String restaurantChoice,
-                                        String restaurantName, String photoUserUrl) {
-        User userToCreate = new User(uid, username, email, phoneNumber, restaurantChoice,
-                restaurantName, photoUserUrl);
-
+    public static Task<Void> createUser(String uid, String username, String email, String phoneNumber, String photoUserUrl) {
+        User userToCreate = new User(uid, username, email, phoneNumber, "", "", photoUserUrl);
         return getUsersCollection().document(uid).set(userToCreate);
     }
 

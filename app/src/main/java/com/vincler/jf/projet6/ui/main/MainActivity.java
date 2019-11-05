@@ -25,16 +25,15 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainActivityContract.View, NavigationView.OnNavigationItemSelectedListener {
@@ -66,7 +65,27 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
         configureViews();
         displayToolbar();
-        firebaseUI();
+
+        presenter.loadUser();
+    }
+
+    @Override
+    public void startLogin() {
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build(),
+                new AuthUI.IdpConfig.TwitterBuilder().build()
+        );
+
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .setTheme(R.style.LoginTheme)
+                        .setLogo(R.drawable.logo)
+                        .build(),
+                RC_SIGN_IN);
     }
 
     private void configureViews() {
@@ -189,23 +208,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     private void restaurantActivityIntent() {
 
-        String uid = getUidFirebase();
-        String restaurantChoice = getRestaurantChoice(uid);
+        String uid = presenter.getUidFirebase();
+        String restaurantChoice = presenter.getRestaurantChoice(uid);
         Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
         // Restaurant restaurant = new Restaurant(       )
         // intent.putExtra("restaurant", restaurant);
         startActivity(intent);
-    }
-
-    private String getRestaurantChoice(String uid) {
-        Object restaurantChoice = UserFirebase.getUser(uid).getResult().get("restaurantChoice");
-        return restaurantChoice != null? restaurantChoice.toString() : "";
-    }
-
-    public String getUidFirebase() {
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        return user != null ? user.getUid() : "";
     }
 
     private void drawerLayout() {
@@ -218,27 +226,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void firebaseUI() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-
-            List<AuthUI.IdpConfig> providers = presenter.firebase(user);
-
-            startActivityForResult(
-                    AuthUI.getInstance()
-                            .createSignInIntentBuilder()
-                            .setAvailableProviders(providers)
-                            .setTheme(R.style.LoginTheme)
-                            .setLogo(R.drawable.logo)
-                            .build(),
-                    RC_SIGN_IN);
-
-        } else {
-
-            displayUserInNavDrawer();
-        }
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -246,8 +233,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 toast(R.string.connectActivity_toast_successful);
-
-                displayUserInNavDrawer();
+                presenter.loadUser();
             } else {
                 toast(R.string.connectActivity_toast_failed);
             }
@@ -260,27 +246,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                 .addOnCompleteListener(task -> recreate());
     }
 
-    private void displayUserInNavDrawer() {
+    @Override
+    public void displayUserInformation(FirebaseUser user) {
         View headerLayout = navigationView.inflateHeaderView(R.layout.activity_main_nav_header);
 
         TextView viewName = headerLayout.findViewById(R.id.nav_header_name_and_surname_tv);
         TextView viewMail = headerLayout.findViewById(R.id.nav_header_mail_tv);
         ImageView imageView = headerLayout.findViewById(R.id.nav_header_iv);
 
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (firebaseUser != null) {
-            viewName.setText(firebaseUser.getDisplayName());
-            viewMail.setText(firebaseUser.getEmail());
-            Glide.with(this)
-                    .load(firebaseUser.getPhotoUrl())
-                    .into(imageView);
-
-            Task<DocumentSnapshot> u = UserFirebase.getUser(firebaseUser.getUid());
-            u.addOnCompleteListener(task -> {
-                if (!u.isSuccessful() || u.getResult().get("doc")==null) {
-                    presenter.createUserInFirestore(firebaseUser);
-                } });
-        }
+        viewName.setText(user.getDisplayName());
+        viewMail.setText(user.getEmail());
+        Glide.with(this)
+                .load(user.getPhotoUrl())
+                .into(imageView);
     }
 
     @Override
@@ -293,7 +271,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     private void viewPager() {
-
         viewPager.setAdapter(new PageAdapter(getSupportFragmentManager()));
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

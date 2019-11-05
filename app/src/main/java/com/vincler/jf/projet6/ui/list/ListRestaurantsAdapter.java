@@ -37,8 +37,8 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     private Context context;
     private List<Restaurant> restaurants;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        public ViewHolder(@NonNull View itemView) {
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
         }
     }
@@ -132,8 +132,6 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
                 + "maxwidth=" + WIDTH_PHOTO
                 + "&photoreference=" + photoRef
                 + "&key=" + API_KEY;
-
-        Log.i("tag_url", url);
 
         Glide.with(context).load(url).dontTransform().into(photo_iv);
     }

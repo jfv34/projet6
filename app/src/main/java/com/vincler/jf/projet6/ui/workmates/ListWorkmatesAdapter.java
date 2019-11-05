@@ -2,6 +2,7 @@ package com.vincler.jf.projet6.ui.workmates;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +75,7 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
         String firstname = GetStringUtils.getFirstWord(name);
         String nameRestaurant = users.get(position).getRestaurantName();
 
+        //name_tv.setEllipsize(TextUtils.TruncateAt.END);
         String text;
         if (nameRestaurant.isEmpty()) {
             text = getDefaultText(firstname);

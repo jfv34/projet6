@@ -1,14 +1,13 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -16,42 +15,34 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.Details;
 import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.utils.GetStringUtils;
 import com.vincler.jf.projet6.utils.IntentUtils;
+
+import java.util.ArrayList;
 
 public class RestaurantActivity extends FragmentActivity implements RestaurantActivityContract.View {
 
     private RestaurantActivityContract.Presenter presenter;
 
-    Context context;
-    RecyclerView recyclerView;
-    TextView address_tv;
-    TextView name_tv;
-    ImageView photo_iv;
-    TextView like_tv;
-    ImageView like_iv;
-    TextView webSite_tv;
-    ImageView webSite_iv;
-    TextView call_tv;
-    ImageView call_iv;
-    FloatingActionButton favorite_fab;
-    Restaurant restaurant;
-    boolean isFavorited = false;
-    boolean isLiked = false;
+    private RecyclerView recyclerView;
+    private TextView address_tv;
+    private TextView name_tv;
+    private ImageView photo_iv;
+    private TextView like_tv;
+    private ImageView like_iv;
+    private TextView webSite_tv;
+    private ImageView webSite_iv;
+    private TextView call_tv;
+    private ImageView call_iv;
+    private FloatingActionButton favorite_fab;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
-        context = getBaseContext();
         recyclerView = findViewById(R.id.fragment_workmatesInRestaurant_recyclerView);
-
-        Intent intent = getIntent();
-        restaurant = intent.getParcelableExtra("restaurant");
-
-        presenter = new RestaurantActivityPresenter(this, restaurant);
-
         photo_iv = findViewById(R.id.activity_restaurant_photo_iv);
         name_tv = findViewById(R.id.activity_restaurant_name_tv);
         address_tv = findViewById(R.id.activity_restaurant_address_tv);
@@ -62,9 +53,8 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         call_iv = findViewById(R.id.activity_restaurant_call_iv);
         webSite_tv = findViewById(R.id.activity_restaurant_website_tv);
         webSite_iv = findViewById(R.id.activity_restaurant_website_iv);
-        NestedScrollView nestedScrollView = findViewById(R.id.activity_restaurant_nestedScrollView);
 
-        favorite_fab.setImageResource(R.drawable.ic_update_24px);
+        //NestedScrollView nestedScrollView = findViewById(R.id.activity_restaurant_nestedScrollView);
 
      /*   nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -76,14 +66,14 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
             }});
 */
 
-        Glide.with(this).
-                load(restaurant.getMapsPhotoUrl()).
-                into(photo_iv);
+        presenter = new RestaurantActivityPresenter(
+                this,
+                getIntent().getParcelableExtra("restaurant")
+        );
 
-        String name = GetStringUtils.getNoCutLastWord(restaurant.getName(),28);
-        name_tv.setText(name);
-        address_tv.setText(restaurant.getAddress());
         presenter.loadRestaurant();
+        presenter.loadDetails();
+        presenter.loadUsers();
     }
 
     private void clickWebSite() {
@@ -92,86 +82,57 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
     }
 
     @Override
+    public void displayRestaurant(Restaurant restaurant) {
+        Glide.with(this).
+                load(restaurant.getMapsPhotoUrl()).
+                into(photo_iv);
+
+        //TODO Ellipsize
+        String name = GetStringUtils.getNoCutLastWord(restaurant.getName(), 28);
+        name_tv.setText(name);
+        address_tv.setText(restaurant.getAddress());
+    }
+
+    @Override
     public void displayDetails(Details details) {
-
-        listener_webSiteButton();
-        listener_callButton();
-        diplay_likeOrNot(details);
-        listener_likeOrNot();
-        display_isfavoritedOrNot_fab(details);
-        listener_isfavoritedOrNot_fab();
-        presenter.loadUsers(restaurant, context, recyclerView);
-    }
-
-    private void listener_isfavoritedOrNot_fab() {
-        favorite_fab.setOnClickListener(v -> {
-            clickFavoriteOrNot();
-        });
-    }
-
-    private void display_isfavoritedOrNot_fab(Details details) {
-        if (details.isFavorited()) {
-            favorite_fab.setImageResource(R.drawable.ic_check_circle_24px);
-            isFavorited = true;
-        } else {
-            favorite_fab.setImageResource(R.drawable.ic_add_24px);
-            isFavorited = false;
-        }
-    }
-
-    private void listener_likeOrNot() {
-        like_tv.setOnClickListener(v -> {
-            clickLikeOrDislike();
-        });
-
-        like_iv.setOnClickListener(v -> {
-            clickLikeOrDislike();
-        });
-    }
-
-    private void diplay_likeOrNot(Details details) {
-        if (details.isLiked()) {
-            like_tv.setText(getApplicationContext().getString(R.string.dislike));
-            isLiked=false;
-        } else {
-            like_tv.setText(getApplicationContext().getString(R.string.like));
-            isLiked=true;
-        }
-    }
-
-    private void listener_callButton() {
-        call_iv.setOnClickListener(v -> IntentUtils.callNumber(this, presenter.getPhoneNumber()));
-        call_tv.setOnClickListener(v -> IntentUtils.callNumber(this, presenter.getPhoneNumber()));
-    }
-
-    private void listener_webSiteButton() {
         webSite_iv.setOnClickListener(v -> clickWebSite());
         webSite_tv.setOnClickListener(v -> clickWebSite());
+
+        call_iv.setOnClickListener(v -> IntentUtils.callNumber(this, presenter.getPhoneNumber()));
+        call_tv.setOnClickListener(v -> IntentUtils.callNumber(this, presenter.getPhoneNumber()));
+
+        like_tv.setOnClickListener(v -> presenter.toggleLike());
+        like_iv.setOnClickListener(v -> presenter.toggleLike());
+
+        favorite_fab.setOnClickListener(v -> presenter.toggleFavorite());
+
+        displayLike(details.isLiked());
+        displayFavorite(details.isFavorited());
     }
 
-    private void clickFavoriteOrNot() {
+    @Override
+    public void displayFavorite(boolean isFavorited) {
         if (isFavorited) {
-            isFavorited = false;
-            favorite_fab.setImageResource(R.drawable.ic_add_24px);
-            presenter.notFavoritedRestaurant();
-        } else {
-            isFavorited = true;
             favorite_fab.setImageResource(R.drawable.ic_check_circle_24px);
-            presenter.favoritedRestaurant();
+        } else {
+            favorite_fab.setImageResource(R.drawable.ic_add_24px);
         }
-        presenter.loadUsers(restaurant, context, recyclerView);
     }
 
-    private void clickLikeOrDislike() {
+    @Override
+    public void displayLike(boolean isLiked) {
         if (isLiked) {
-            isLiked = false;
-            like_tv.setText(getApplicationContext().getString(R.string.dislike));
-            presenter.likeRestaurant();
+            like_tv.setText(getString(R.string.dislike));
         } else {
-            isLiked = true;
-            like_tv.setText(getApplicationContext().getString(R.string.like));
-            presenter.dislikeRestaurant();
+            like_tv.setText(getString(R.string.like));
         }
-        presenter.loadUsers(restaurant, context, recyclerView);
+    }
+
+    @Override
+    public void displayUsers(ArrayList<User> users) {
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(new RestaurantAdapter(users, this));
     }
 }
