@@ -21,10 +21,6 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     public MutableLiveData<ArrayList<Restaurant>> getLiveData() {
         return restaurantsData;
     }
-    public MutableLiveData<ArrayList<Restaurant>> getRestaurantsData() {
-        return restaurantsData;
-    }
-
     public MainActivityPresenter(MainActivityContract.View view) {
         this.view = view;
     }
