@@ -3,6 +3,7 @@ package com.vincler.jf.projet6.ui.restaurant;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -87,9 +88,7 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
                 load(restaurant.getMapsPhotoUrl()).
                 into(photo_iv);
 
-        //TODO Ellipsize
-        String name = GetStringUtils.getNoCutLastWord(restaurant.getName(), 28);
-        name_tv.setText(name);
+        name_tv.setText(restaurant.getName());
         address_tv.setText(restaurant.getAddress());
     }
 

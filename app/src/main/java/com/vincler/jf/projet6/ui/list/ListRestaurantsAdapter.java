@@ -177,8 +177,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     }
 
     private void display_name(TextView name_tv, int position) {
-        String name = GetStringUtils.getNoCutLastWord(restaurants.get(position).getName(),31);
-        name_tv.setText(name);
+        name_tv.setText(restaurants.get(position).getName());
     }
 
     @Override

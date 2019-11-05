@@ -23,8 +23,8 @@
         android:id="@+id/item_workmates_tv"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:maxLength="64"
         android:lines="2"
+        android:ellipsize="end"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/item_workmates_photo_iv" />
