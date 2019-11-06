@@ -1,16 +1,34 @@
 package com.vincler.jf.projet6.models;
 
 public class Details {
+    private String name;
+    private String address;
+    private String photo;
     private boolean isLiked;
     private boolean isFavorited;
     private String phoneNumber;
     private String webSite;
 
-    public Details(boolean isLiked, boolean isFavorited, String phoneNumber, String webSite) {
+    public Details(String name, String address, String photo, boolean isLiked, boolean isFavorited, String phoneNumber, String webSite) {
+        this.name = name;
+        this.address = address;
+        this.photo = photo;
         this.isLiked = isLiked;
         this.isFavorited = isFavorited;
         this.phoneNumber = phoneNumber;
         this.webSite = webSite;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhoto() {
+        return photo;
     }
 
     public String getPhoneNumber() {

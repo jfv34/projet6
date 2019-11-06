@@ -1,5 +1,7 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
+import android.util.Log;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -8,7 +10,6 @@ import com.vincler.jf.projet6.api.LikesFirebase;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Details;
-import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.models.googleMapResponse.DetailsResponse;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
@@ -28,9 +29,13 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
     private RestaurantActivityContract.View view;
 
-    private Restaurant restaurant;
+    private String restaurantChoiceId;
+    private Details details;
     private String phoneNumber;
     private String webSite;
+    private String name;
+    private String address;
+    private String photo;
 
     private boolean isFavorited = false;
     private boolean isLiked = false;
@@ -48,15 +53,20 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
     RestaurantsService service = retrofit.create(RestaurantsService.class);
 
-    public RestaurantActivityPresenter(RestaurantActivityContract.View view, Restaurant restaurant) {
+    public RestaurantActivityPresenter(RestaurantActivityContract.View view, String restaurantChoiceId) {
         this.view = view;
-        this.restaurant = restaurant;
+        this.restaurantChoiceId = restaurantChoiceId;
     }
 
     @Override
     public void loadRestaurant() {
-        view.displayRestaurant(restaurant);
+
+        Log.i("tag_loadRestaurant", "ok");
+        loadDetails();
+
+
     }
+
 
     @Override
     public String getPhoneNumber() {
@@ -71,9 +81,9 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     @Override
     public void toggleLike() {
         if (isLiked) {
-            LikesFirebase.deleteLike(getUserID(), restaurant.getPlaceid());
+            LikesFirebase.deleteLike(getUserID(), restaurantChoiceId);
         } else {
-            LikesFirebase.createLike(getUserID(), restaurant.getPlaceid());
+            LikesFirebase.createLike(getUserID(), restaurantChoiceId);
         }
 
         isLiked = !isLiked;
@@ -87,8 +97,8 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
             UserFirebase.updateRestaurantChoiceId("", getUserID());
             UserFirebase.updateRestaurantChoiceName("", getUserID());
         } else {
-            UserFirebase.updateRestaurantChoiceId(restaurant.getPlaceid(), getUserID());
-            UserFirebase.updateRestaurantChoiceName(restaurant.getName(), getUserID());
+            UserFirebase.updateRestaurantChoiceId(restaurantChoiceId, getUserID());
+            UserFirebase.updateRestaurantChoiceName(details.getName(), getUserID());
         }
         isFavorited = !isFavorited;
         view.displayFavorite(isFavorited);
@@ -104,45 +114,59 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     public void loadDetails() {
         LikesFirebase.getLikeForRestaurant(
                 getUserID(),
-                restaurant.getPlaceid()
+                restaurantChoiceId
         ).addOnCompleteListener(task1 -> {
-
             isLiked = task1.getResult() != null && !task1.getResult().isEmpty();
-
             UserFirebase.getUser(getUserID())
                     .addOnCompleteListener(task2 -> {
                         if (task2.getResult().get("restaurantChoice") != null) {
                             String restaurantChoice = task2.getResult().get("restaurantChoice").toString();
-                            isFavorited = restaurantChoice.equals(restaurant.getPlaceid());
+                            isFavorited = restaurantChoice.equals(restaurantChoice);
                         } else isFavorited = false;
 
-                        service.listDetails(restaurant.getPlaceid()).enqueue(new Callback<DetailsResponse>() {
+                        service.listDetails(restaurantChoiceId).enqueue(new Callback<DetailsResponse>() {
                             @Override
                             public void onResponse(Call<DetailsResponse> call, Response<DetailsResponse> response) {
                                 phoneNumber = response.body().getPhoneNumber();
                                 webSite = response.body().getWebSite();
+                                name = response.body().getName();
+                                address = response.body().getAddress();
+                                photo = response.body().getPhoto();
+                                details = new Details(
+                                        name,
+                                        address,
+                                        photo,
+                                        isLiked,
+                                        isFavorited,
+                                        phoneNumber,
+                                        webSite);
                                 view.displayDetails(
                                         new Details(
+                                                name,
+                                                address,
+                                                photo,
                                                 isLiked,
                                                 isFavorited,
                                                 phoneNumber,
                                                 webSite)
                                 );
+                                view.displayRestaurant(details);
                             }
 
                             @Override
                             public void onFailure(Call<DetailsResponse> call, Throwable t) {
-
+                                Log.i("tag_onResponse", "failure");
                             }
                         });
                     });
+
         });
     }
 
     @Override
     public void loadUsers() {
         List<HashMap> result = new ArrayList<>();
-        Task<QuerySnapshot> data = UserFirebase.getUsersByRestaurantChoice(restaurant.getPlaceid());
+        Task<QuerySnapshot> data = UserFirebase.getUsersByRestaurantChoice(restaurantChoiceId);
         data.addOnCompleteListener(task -> {
             if (data.getResult() != null) {
 

@@ -97,10 +97,10 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
     private void restaurantActivityIntent(int position, View photo_iv) {
 
-        Restaurant restau = restaurants.get(position);
+        String restaurantsChoiceId = restaurants.get(position).getPlaceid();
 
         Intent intent = new Intent(context.getApplicationContext(), RestaurantActivity.class);
-        intent.putExtra("restaurant",restau);
+        intent.putExtra("restaurantChoiceId",restaurantsChoiceId);
         intent.putExtra("profile",ViewCompat.getTransitionName(photo_iv));
 
         ActivityOptionsCompat options = ActivityOptionsCompat.

@@ -18,7 +18,7 @@ public interface RestaurantActivityContract {
 
         void displayUsers(ArrayList<User> users);
 
-        void displayRestaurant(Restaurant restaurant);
+        void displayRestaurant(Details details);
     }
 
     interface Presenter  {

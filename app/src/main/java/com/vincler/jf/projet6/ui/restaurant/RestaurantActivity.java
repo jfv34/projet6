@@ -3,7 +3,7 @@ package com.vincler.jf.projet6.ui.restaurant;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,9 +15,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.Details;
-import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.models.User;
-import com.vincler.jf.projet6.utils.GetStringUtils;
 import com.vincler.jf.projet6.utils.IntentUtils;
 
 import java.util.ArrayList;
@@ -66,10 +64,9 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
                 Log.i("tag_scroll old y ", oldScrollY + "");
             }});
 */
-
         presenter = new RestaurantActivityPresenter(
                 this,
-                getIntent().getParcelableExtra("restaurant")
+                getIntent().getStringExtra("restaurantChoiceId")
         );
 
         presenter.loadRestaurant();
@@ -83,13 +80,16 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
     }
 
     @Override
-    public void displayRestaurant(Restaurant restaurant) {
-        Glide.with(this).
-                load(restaurant.getMapsPhotoUrl()).
-                into(photo_iv);
+    public void displayRestaurant(Details details) {
 
-        name_tv.setText(restaurant.getName());
-        address_tv.setText(restaurant.getAddress());
+        if (details != null) {
+            name_tv.setText(details.getName());
+            address_tv.setText(details.getAddress());
+
+            Glide.with(this).
+                    load(details.getPhoto()).
+                    into(photo_iv);
+        }
     }
 
     @Override
