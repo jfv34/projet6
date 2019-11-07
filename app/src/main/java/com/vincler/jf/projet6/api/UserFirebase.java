@@ -40,6 +40,7 @@ public class UserFirebase {
                 .get();
     }
 
+
     // --- GET ALL USERS ---
 
     public static Task<QuerySnapshot> getUsers() {

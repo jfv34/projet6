@@ -56,17 +56,15 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     public RestaurantActivityPresenter(RestaurantActivityContract.View view, String restaurantChoiceId) {
         this.view = view;
         this.restaurantChoiceId = restaurantChoiceId;
+        Log.i("tag_restaurantchoice5", restaurantChoiceId);
     }
 
     @Override
     public void loadRestaurant() {
 
-        Log.i("tag_loadRestaurant", "ok");
+        Log.i("tag_restaurantchoice7", restaurantChoiceId);
         loadDetails();
-
-
     }
-
 
     @Override
     public String getPhoneNumber() {

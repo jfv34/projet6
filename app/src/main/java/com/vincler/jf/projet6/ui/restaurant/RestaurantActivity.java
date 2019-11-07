@@ -68,7 +68,6 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
                 this,
                 getIntent().getStringExtra("restaurantChoiceId")
         );
-
         presenter.loadRestaurant();
         presenter.loadDetails();
         presenter.loadUsers();

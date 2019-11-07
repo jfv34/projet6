@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -206,12 +207,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     private void restaurantActivityIntent() {
 
-        String uid = presenter.getUidFirebase();
-        String restaurantChoice = presenter.getRestaurantChoice(uid);
-        Intent intent = new Intent(MainActivity.this, RestaurantActivity.class);
-        // Restaurant restaurant = new Restaurant(       )
-        // intent.putExtra("restaurant", restaurant);
-        startActivity(intent);
+        String restaurantChoiceId = presenter.getRestaurantChoice();
+        if (restaurantChoiceId != null) {
+            Intent intent = new Intent(this, RestaurantActivity.class);
+            intent.putExtra("restaurantChoiceId", restaurantChoiceId);
+            startActivity(intent);
+        } else {
+            Log.i("tag_MainActivity", "restaurantChoiceId is Empty");
+        }
     }
 
     private void drawerLayout() {
