@@ -60,9 +60,9 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
         displayPhoto(position);
         displayText(position);
         item_workmates.setOnClickListener(v -> {
-            String restaurantChoice = users.get(position).getRestaurantChoice();
+            String restaurantChoice = users.get(position).getRestaurantFavoriteId();
             if (!restaurantChoice.isEmpty()) {
-                restaurantActivityIntent(position, users.get(position).getRestaurantChoice());
+                restaurantActivityIntent(position, users.get(position).getRestaurantFavoriteId());
             }
 
         });
@@ -72,7 +72,7 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
 
         String name = users.get(position).getUsername();
         String firstname = GetStringUtils.getFirstWord(name);
-        String nameRestaurant = users.get(position).getRestaurantName();
+        String nameRestaurant = users.get(position).getRestaurantFavoriteName();
 
         String text;
         if (nameRestaurant.isEmpty()) {

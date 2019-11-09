@@ -23,7 +23,7 @@ public interface MainActivityContract {
 
         void loadUser();
 
-        String getRestaurantChoice();
+        String getRestaurantFavoriteId();
 
         String getUidFirebase();
     }

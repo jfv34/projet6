@@ -31,12 +31,12 @@ public class UserFirebase {
     }
 
 
-    // --- GET BY RESTAURANTCHOICE ---
+    // --- GET BY RESTAURANTFAVORITE ---
 
-    public static Task<QuerySnapshot> getUsersByRestaurantChoice(String restaurantChoice) {
+    public static Task<QuerySnapshot> getUsersByRestaurantChoice(String restaurantFavoriteId) {
 
         return getUsersCollection()
-                .whereEqualTo("restaurantChoice", restaurantChoice)
+                .whereEqualTo("restaurantFavoriteId", restaurantFavoriteId)
                 .get();
     }
 
@@ -55,12 +55,12 @@ public class UserFirebase {
         return UserFirebase.getUsersCollection().document(uid).update("username", username);
     }
 
-    public static Task<Void> updateRestaurantChoiceId(String restaurantChoice, String uid) {
-        return UserFirebase.getUsersCollection().document(uid).update("restaurantChoice", restaurantChoice);
+    public static Task<Void> updateRestaurantFavoriteId(String restaurantFavoriteId, String uid) {
+        return UserFirebase.getUsersCollection().document(uid).update("restaurantFavoriteId", restaurantFavoriteId);
     }
 
-    public static Task<Void> updateRestaurantChoiceName(String restaurantName, String uid) {
-        return UserFirebase.getUsersCollection().document(uid).update("restaurantName", restaurantName);
+    public static Task<Void> updateRestaurantFavoriteName(String restaurantFavoriteName, String uid) {
+        return UserFirebase.getUsersCollection().document(uid).update("restaurantFavoriteName", restaurantFavoriteName);
     }
 
 

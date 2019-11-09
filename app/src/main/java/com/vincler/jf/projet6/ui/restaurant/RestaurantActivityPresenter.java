@@ -29,7 +29,7 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
     private RestaurantActivityContract.View view;
 
-    private String restaurantChoiceId;
+    private String restaurantDisplayedId;
     private Details details;
     private String phoneNumber;
     private String webSite;
@@ -53,16 +53,14 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
     RestaurantsService service = retrofit.create(RestaurantsService.class);
 
-    public RestaurantActivityPresenter(RestaurantActivityContract.View view, String restaurantChoiceId) {
+    public RestaurantActivityPresenter(RestaurantActivityContract.View view, String restaurantDisplayedId) {
         this.view = view;
-        this.restaurantChoiceId = restaurantChoiceId;
-        Log.i("tag_restaurantchoice5", restaurantChoiceId);
+        this.restaurantDisplayedId = restaurantDisplayedId;
     }
 
     @Override
     public void loadRestaurant() {
 
-        Log.i("tag_restaurantchoice7", restaurantChoiceId);
         loadDetails();
     }
 
@@ -79,9 +77,9 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     @Override
     public void toggleLike() {
         if (isLiked) {
-            LikesFirebase.deleteLike(getUserID(), restaurantChoiceId);
+            LikesFirebase.deleteLike(getUserID(), restaurantDisplayedId);
         } else {
-            LikesFirebase.createLike(getUserID(), restaurantChoiceId);
+            LikesFirebase.createLike(getUserID(), restaurantDisplayedId);
         }
 
         isLiked = !isLiked;
@@ -92,11 +90,11 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     @Override
     public void toggleFavorite() {
         if (isFavorited) {
-            UserFirebase.updateRestaurantChoiceId("", getUserID());
-            UserFirebase.updateRestaurantChoiceName("", getUserID());
+            UserFirebase.updateRestaurantFavoriteId("", getUserID());
+            UserFirebase.updateRestaurantFavoriteName("", getUserID());
         } else {
-            UserFirebase.updateRestaurantChoiceId(restaurantChoiceId, getUserID());
-            UserFirebase.updateRestaurantChoiceName(details.getName(), getUserID());
+            UserFirebase.updateRestaurantFavoriteId(restaurantDisplayedId, getUserID());
+            UserFirebase.updateRestaurantFavoriteName(details.getName(), getUserID());
         }
         isFavorited = !isFavorited;
         view.displayFavorite(isFavorited);
@@ -112,17 +110,17 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     public void loadDetails() {
         LikesFirebase.getLikeForRestaurant(
                 getUserID(),
-                restaurantChoiceId
+                restaurantDisplayedId
         ).addOnCompleteListener(task1 -> {
             isLiked = task1.getResult() != null && !task1.getResult().isEmpty();
             UserFirebase.getUser(getUserID())
                     .addOnCompleteListener(task2 -> {
-                        if (task2.getResult().get("restaurantChoice") != null) {
-                            String restaurantChoice = task2.getResult().get("restaurantChoice").toString();
-                            isFavorited = restaurantChoice.equals(restaurantChoice);
+                        if (task2.getResult().get("restaurantFavoriteId") != null) {
+                            String restaurantFavoriteId = task2.getResult().get("restaurantFavoriteId").toString();
+                            isFavorited = restaurantDisplayedId.equals(restaurantFavoriteId);
                         } else isFavorited = false;
 
-                        service.listDetails(restaurantChoiceId).enqueue(new Callback<DetailsResponse>() {
+                        service.listDetails(restaurantDisplayedId).enqueue(new Callback<DetailsResponse>() {
                             @Override
                             public void onResponse(Call<DetailsResponse> call, Response<DetailsResponse> response) {
                                 phoneNumber = response.body().getPhoneNumber();
@@ -164,7 +162,7 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     @Override
     public void loadUsers() {
         List<HashMap> result = new ArrayList<>();
-        Task<QuerySnapshot> data = UserFirebase.getUsersByRestaurantChoice(restaurantChoiceId);
+        Task<QuerySnapshot> data = UserFirebase.getUsersByRestaurantChoice(restaurantDisplayedId);
         data.addOnCompleteListener(task -> {
             if (data.getResult() != null) {
 
@@ -182,8 +180,8 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
                             hm.get("username").toString(),
                             hm.get("email").toString(),
                             hm.get("phoneNumber").toString(),
-                            hm.get("restaurantChoice").toString(),
-                            hm.get("restaurantName").toString(),
+                            hm.get("restaurantFavoriteId").toString(),
+                            hm.get("restaurantFavoriteName").toString(),
                             hm.get("photoUserUrl").toString());
 
                     users.add(user);

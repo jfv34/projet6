@@ -86,7 +86,7 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
                     Restaurant restaurant = presenter.restaurantChosenByClickOnMarker(marker, data);
                     if (restaurant != null) {
                         Intent intent = new Intent(getActivity(), RestaurantActivity.class);
-                        intent.putExtra("restaurantChoiceId", restaurant.getPlaceid());
+                        intent.putExtra("restaurantDisplayedId", restaurant.getPlaceid());
                         startActivity(intent);
                     }
                     return false;

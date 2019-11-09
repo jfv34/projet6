@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -207,13 +206,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     private void restaurantActivityIntent() {
 
-        String restaurantChoiceId = presenter.getRestaurantChoice();
-        if (restaurantChoiceId != null) {
+        String restaurantDisplayedId = presenter.getRestaurantFavoriteId();
+        if (restaurantDisplayedId != null) {
             Intent intent = new Intent(this, RestaurantActivity.class);
-            intent.putExtra("restaurantChoiceId", restaurantChoiceId);
+            intent.putExtra("restaurantDisplayedId", restaurantDisplayedId);
             startActivity(intent);
-        } else {
-            Log.i("tag_MainActivity", "restaurantChoiceId is Empty");
         }
     }
 

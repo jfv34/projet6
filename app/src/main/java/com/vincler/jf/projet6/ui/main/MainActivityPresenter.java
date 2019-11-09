@@ -1,7 +1,5 @@
 package com.vincler.jf.projet6.ui.main;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -10,14 +8,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.Restaurant;
-import com.vincler.jf.projet6.models.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class MainActivityPresenter implements MainActivityContract.Presenter {
 
@@ -69,7 +63,6 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         } else {
             view.displayUserInformation(firebaseUser);
 
-            //TODO CHECK IF USER DOES NOT EXIST ALREADY
             Task<DocumentSnapshot> u = UserFirebase.getUser(firebaseUser.getUid());
             u.addOnCompleteListener(task -> {
 
@@ -80,30 +73,28 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                             firebaseUser.getPhoneNumber(),
                             firebaseUser.getPhotoUrl().toString()
                     );
-                }else Log.i("tag_connect",u.getResult().getData().toString()+"");
+                }
             });
         }
     }
 
-    public String getRestaurantChoice() {
+    public String getRestaurantFavoriteId() {
 
         String uid = getUidFirebase();
 
-        final String[] restaurantChoiceId = new String[1];
-        restaurantChoiceId[0] ="";
+        final String[] restaurantFavoriteId = new String[1];
+        restaurantFavoriteId[0] = "";
         Task<DocumentSnapshot> data = UserFirebase.getUser(uid);
 
         data.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (data.getResult() != null) {
-                    restaurantChoiceId[0] = data.getResult().getData().get("restaurantChoice").toString();
-                    Log.i("tag_restaurantchoice1", restaurantChoiceId[0]);
+                    restaurantFavoriteId[0] = data.getResult().getData().get("restaurantFavoriteId").toString();
                 }
             }
         });
-        Log.i("tag_restaurantchoice2", restaurantChoiceId[0]);
-        return restaurantChoiceId[0];
+        return restaurantFavoriteId[0];
     }
 
     public String getUidFirebase() {

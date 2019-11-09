@@ -6,18 +6,18 @@ public class User {
     private String userName;
     private String email;
     private String phoneNumber;
-    private String restaurantChoice;
-    private String restaurantName;
+    private String restaurantFavoriteId;
+    private String restaurantFavoriteName;
     private String photoUserUrl;
 
     public User(String uid, String userName, String email, String phoneNumber,
-                String restaurantChoice, String restaurantName, String photoUserUrl) {
+                String restaurantFavoriteId, String restaurantFavoriteName, String photoUserUrl) {
         this.uid = uid;
         this.userName = userName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.restaurantChoice = restaurantChoice;
-        this.restaurantName = restaurantName;
+        this.restaurantFavoriteId = restaurantFavoriteId;
+        this.restaurantFavoriteName = restaurantFavoriteName;
         this.photoUserUrl = photoUserUrl;
     }
 
@@ -39,12 +39,12 @@ public class User {
         return phoneNumber;
     }
 
-    public String getRestaurantChoice() {
-        return restaurantChoice;
+    public String getRestaurantFavoriteId() {
+        return restaurantFavoriteId;
     }
 
-    public String getRestaurantName() {
-        return restaurantName;
+    public String getRestaurantFavoriteName() {
+        return restaurantFavoriteName;
     }
 
     public String getPhotoUserUrl() {
@@ -68,8 +68,8 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public void setRestaurantChoice(String restaurantChoice) {
-        this.restaurantChoice = restaurantChoice;
+    public void setRestaurantFavorite(String restaurantFavoriteId) {
+        this.restaurantFavoriteId = restaurantFavoriteId;
     }
 
     public void setPhotoUserUrl(String photoUserUrl) {

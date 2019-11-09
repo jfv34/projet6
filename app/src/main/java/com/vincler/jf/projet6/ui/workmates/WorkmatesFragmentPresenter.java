@@ -37,8 +37,8 @@ public class WorkmatesFragmentPresenter implements WorkmatesFragmentContract.Pre
                             hm.get("username").toString(),
                             hm.get("email").toString(),
                             hm.get("phoneNumber").toString(),
-                            hm.get("restaurantChoice").toString(),
-                            hm.get("restaurantName").toString(),
+                            hm.get("restaurantFavoriteId").toString(),
+                            hm.get("restaurantFavoriteName").toString(),
                             hm.get("photoUserUrl").toString());
 
                     users.add(user);

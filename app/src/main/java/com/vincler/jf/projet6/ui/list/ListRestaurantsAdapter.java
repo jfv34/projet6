@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,6 @@ import com.bumptech.glide.Glide;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
-import com.vincler.jf.projet6.utils.GetStringUtils;
 import com.vincler.jf.projet6.utils.KeysUtils;
 
 import java.util.List;
@@ -97,10 +95,10 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
     private void restaurantActivityIntent(int position, View photo_iv) {
 
-        String restaurantsChoiceId = restaurants.get(position).getPlaceid();
+        String restaurantsDisplayedId = restaurants.get(position).getPlaceid();
 
         Intent intent = new Intent(context.getApplicationContext(), RestaurantActivity.class);
-        intent.putExtra("restaurantChoiceId",restaurantsChoiceId);
+        intent.putExtra("restaurantDisplayedId", restaurantsDisplayedId);
         intent.putExtra("profile",ViewCompat.getTransitionName(photo_iv));
 
         ActivityOptionsCompat options = ActivityOptionsCompat.
