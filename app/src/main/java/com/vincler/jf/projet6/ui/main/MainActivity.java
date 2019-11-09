@@ -25,10 +25,13 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 
 import java.util.Arrays;
@@ -206,12 +209,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     private void restaurantActivityIntent() {
 
-        String restaurantDisplayedId = presenter.getRestaurantFavoriteId();
-        if (restaurantDisplayedId != null) {
-            Intent intent = new Intent(this, RestaurantActivity.class);
-            intent.putExtra("restaurantDisplayedId", restaurantDisplayedId);
-            startActivity(intent);
-        }
+        String uid = presenter.getUidFirebase();
+        Task<DocumentSnapshot> data = UserFirebase.getUser(uid);
+
+        data.addOnCompleteListener(task -> {
+            if (data.getResult() != null) {
+                String restaurantDisplayedId = data.getResult().getData().get("restaurantFavoriteId").toString();
+                Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
+                intent.putExtra("restaurantDisplayedId", restaurantDisplayedId);
+                startActivity(intent);
+
+            }
+        });
     }
 
     private void drawerLayout() {

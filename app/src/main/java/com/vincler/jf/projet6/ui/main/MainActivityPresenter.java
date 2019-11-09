@@ -1,5 +1,7 @@
 package com.vincler.jf.projet6.ui.main;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
@@ -78,24 +80,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         }
     }
 
-    public String getRestaurantFavoriteId() {
 
-        String uid = getUidFirebase();
-
-        final String[] restaurantFavoriteId = new String[1];
-        restaurantFavoriteId[0] = "";
-        Task<DocumentSnapshot> data = UserFirebase.getUser(uid);
-
-        data.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (data.getResult() != null) {
-                    restaurantFavoriteId[0] = data.getResult().getData().get("restaurantFavoriteId").toString();
-                }
-            }
-        });
-        return restaurantFavoriteId[0];
-    }
 
     public String getUidFirebase() {
 

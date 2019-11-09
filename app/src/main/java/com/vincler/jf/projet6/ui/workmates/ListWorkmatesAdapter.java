@@ -1,6 +1,7 @@
 package com.vincler.jf.projet6.ui.workmates;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.User;
+import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 import com.vincler.jf.projet6.utils.GetStringUtils;
 
 import java.util.List;
@@ -60,9 +62,9 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
         displayPhoto(position);
         displayText(position);
         item_workmates.setOnClickListener(v -> {
-            String restaurantChoice = users.get(position).getRestaurantFavoriteId();
-            if (!restaurantChoice.isEmpty()) {
-                restaurantActivityIntent(position, users.get(position).getRestaurantFavoriteId());
+            String restaurantClicked = users.get(position).getRestaurantFavoriteId();
+            if (!restaurantClicked.isEmpty()) {
+                restaurantActivityIntent(position, restaurantClicked);
             }
 
         });
@@ -111,13 +113,13 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
         }
     }
 
-    private void restaurantActivityIntent(int position, String restaurantChoice) {
+    private void restaurantActivityIntent(int position, String restaurantDisplayedId) {
 
         Log.i("tag_restaurantIntent", "click");
-        /*Intent intent = new Intent(context.getApplicationContext(), RestaurantActivity.class);
-        intent.putExtra("restaurant",restau);
+        Intent intent = new Intent(context.getApplicationContext(), RestaurantActivity.class);
+        intent.putExtra("restaurantDisplayedId", restaurantDisplayedId);
 
-        context.startActivity(intent);*/
+        context.startActivity(intent);
     }
 
     @Override
