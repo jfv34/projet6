@@ -80,11 +80,13 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
 
     private void markers(double latitude, double longitude, String restaurantId) {
 
-        isFavorited = false;
-        Log.i("tag_favorite", "restore False");
+
         Task<QuerySnapshot> data = UserFirebase.getUsers();
 
         data.addOnCompleteListener(task -> {
+
+            isFavorited = false;
+
             if (data.getResult() != null) {
                 for (int i = 0; i < data.getResult().size(); i++) {
                     HashMap h = (HashMap) data.getResult().getDocuments().get(i).getData();
@@ -92,14 +94,8 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
                     if (restaurantId.equals(h.get("restaurantFavoriteId").toString())) {
                         isFavorited = true;
                     }
-
-                    Log.i("tag_favorite_in_map    ", restaurantId + "*");
-                    Log.i("tag_favorite_firestore ", h.get("restaurantFavoriteId").toString() + "*");
-                    Log.i("tag_favorite_isfavori  ", isFavorited + "");
                 }
             }
-
-            Log.i("tag_favorite_return ", isFavorited + "");
 
             int drawable;
             if (isFavorited) {
