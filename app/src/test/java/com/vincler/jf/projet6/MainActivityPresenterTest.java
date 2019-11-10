@@ -55,10 +55,6 @@ public class MainActivityPresenterTest {
 
     }
 
-    @Test
-    public void When_() {
 
-
-    }
 
 }

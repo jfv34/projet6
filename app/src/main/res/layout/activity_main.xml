@@ -8,8 +8,6 @@
     android:layout_height="match_parent"
     tools:openDrawer="start">
 
-
-
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,8 +36,4 @@
 
     <include layout="@layout/navigation"></include>
 
-
 </androidx.drawerlayout.widget.DrawerLayout>
-
-
-

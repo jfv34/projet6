@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +23,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.ui.main.MainActivity;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -35,6 +40,7 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
 
     private static final int PERMISSIONS_REQUEST_CODE = 123;
     private GoogleMap googleMap;
+    private boolean isFavorited = false;
     private MapFragmentContract.Presenter presenter = new MapFragmentPresenter(this);
 
     @Override
@@ -61,17 +67,52 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
                     if (it.get(i).isVisible()) {
                         double latitude = it.get(i).getLatitude();
                         double longitude = it.get(i).getLongitude();
-                        markers(latitude, longitude, R.drawable.icon_marker_red);
+                        String restaurantId = it.get(i).getPlaceid();
+
+                        markers(latitude, longitude, restaurantId);
+
                     }
                 }
             }
         });
     }
 
-    private void markers(double latitude, double longitude, int drawable) {
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(latitude, longitude))
-                .icon(presenter.bitmapDescriptorFromVector(requireContext(), drawable)));
+
+    private void markers(double latitude, double longitude, String restaurantId) {
+
+        isFavorited = false;
+        Log.i("tag_favorite", "restore False");
+        Task<QuerySnapshot> data = UserFirebase.getUsers();
+
+        data.addOnCompleteListener(task -> {
+            if (data.getResult() != null) {
+                for (int i = 0; i < data.getResult().size(); i++) {
+                    HashMap h = (HashMap) data.getResult().getDocuments().get(i).getData();
+
+                    if (restaurantId.equals(h.get("restaurantFavoriteId").toString())) {
+                        isFavorited = true;
+                    }
+
+                    Log.i("tag_favorite_in_map    ", restaurantId + "*");
+                    Log.i("tag_favorite_firestore ", h.get("restaurantFavoriteId").toString() + "*");
+                    Log.i("tag_favorite_isfavori  ", isFavorited + "");
+                }
+            }
+
+            Log.i("tag_favorite_return ", isFavorited + "");
+
+            int drawable;
+            if (isFavorited) {
+                drawable = R.drawable.icon_marker_green;
+            } else {
+                drawable = R.drawable.icon_marker_red;
+            }
+
+            googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(latitude, longitude))
+                    .icon(presenter.bitmapDescriptorFromVector(requireContext(), drawable)));
+
+        });
     }
 
     @SuppressLint("MissingPermission")

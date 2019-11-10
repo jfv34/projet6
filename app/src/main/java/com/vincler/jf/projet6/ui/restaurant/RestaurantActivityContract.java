@@ -2,7 +2,6 @@ package com.vincler.jf.projet6.ui.restaurant;
 
 
 import com.vincler.jf.projet6.models.Details;
-import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.models.User;
 
 import java.util.ArrayList;

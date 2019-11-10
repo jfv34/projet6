@@ -40,7 +40,7 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     private boolean isFavorited = false;
     private boolean isLiked = false;
 
-    Retrofit retrofit = new Retrofit.Builder()
+    private Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("https://maps.googleapis.com/maps/api/place/")
             .client(UnsafeOkHttpClient
                     .getUnsafeOkHttpClient()
@@ -51,7 +51,7 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-    RestaurantsService service = retrofit.create(RestaurantsService.class);
+    private RestaurantsService service = retrofit.create(RestaurantsService.class);
 
     public RestaurantActivityPresenter(RestaurantActivityContract.View view, String restaurantDisplayedId) {
         this.view = view;
@@ -155,7 +155,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
                             }
                         });
                     });
-
         });
     }
 

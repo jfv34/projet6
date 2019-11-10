@@ -29,11 +29,8 @@ public class WorkmatesFragment extends Fragment implements WorkmatesFragmentCont
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_workmates, container, false);
 
-        recyclerView = rootView.findViewById(R.id.fragment_workmates_recyclerview);
-
-        return rootView;
+        return inflater.inflate(R.layout.fragment_workmates, container, false);
     }
 
     @Override

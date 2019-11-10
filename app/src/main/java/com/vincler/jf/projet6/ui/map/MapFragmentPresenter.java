@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -16,6 +17,9 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.models.googleMapResponse.ListRestaurantResponse;
@@ -23,6 +27,7 @@ import com.vincler.jf.projet6.models.googleMapResponse.RestaurantResponse;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -144,8 +149,8 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
         int restauId = -1;
 
         for (int i = 0; i < data.size(); i++) {
-            Double lat = data.get(i).getLatitude();
-            Double lg = data.get(i).getLongitude();
+            double lat = data.get(i).getLatitude();
+            double lg = data.get(i).getLongitude();
             LatLng latlongTest = new LatLng(lat, lg);
             if (latlongTest.equals(latLng)) {
                 restauId = i;
@@ -165,4 +170,6 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
         background.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
+
+
 }
