@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,11 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.Restaurant;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 import com.vincler.jf.projet6.utils.KeysUtils;
@@ -34,6 +39,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     private static final String API_KEY = KeysUtils.API_KEY;
     private Context context;
     private List<Restaurant> restaurants;
+    private TextView workmatesNumber_tv;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ViewHolder(@NonNull View itemView) {
@@ -63,7 +69,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         TextView distance_tv = holder.itemView.findViewById(R.id.item_restaurant_distance_tv);
         TextView openingHours_tv = holder.itemView.findViewById(R.id.item_restaurant_opening_hours_tv);
         ImageView photo_iv = holder.itemView.findViewById(R.id.item_restaurant_photo_iv);
-        TextView workmatesNumber_tv = holder.itemView.findViewById(R.id.item_restaurant_numberOfWorkmates_tv);
+        workmatesNumber_tv = holder.itemView.findViewById(R.id.item_restaurant_numberOfWorkmates_tv);
         ImageView star1_iv = holder.itemView.findViewById(R.id.item_restaurant_star1_iv);
         ImageView star2_iv = holder.itemView.findViewById(R.id.item_restaurant_star2_iv);
         ImageView star3_iv = holder.itemView.findViewById(R.id.item_restaurant_star3_iv);
@@ -76,8 +82,10 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         display_photo(photo_iv, position);
         display_opening(openingHours_tv, position);
         display_distance(distance_tv, position, location.getLatitude(), location.getLongitude());
+        display_workmatesNumber(position);
         listenerClickOnRestaurant(holder, position, photo_iv);
     }
+
 
     private Location getLocation() {
         LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -167,6 +175,22 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
             String text = (int) dist + "m";
             distance_tv.setText(text);
         }
+    }
+
+    private void display_workmatesNumber(int position) {
+
+        Task<QuerySnapshot> data = UserFirebase.getUsersByRestaurantFavorite(restaurants.get(position).getPlaceid());
+        data.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (data.getResult() != null && !data.getResult().isEmpty()) {
+                    String number = String.valueOf(data.getResult().size());
+                    String text = "(" + number + ")";
+                    workmatesNumber_tv.setText(text);
+                    Log.i("tag_restaurant ", text);
+                } else workmatesNumber_tv.setText("()");
+            }
+        });
     }
 
     private void display_address(TextView address_tv, int position) {

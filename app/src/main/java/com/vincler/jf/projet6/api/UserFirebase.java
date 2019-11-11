@@ -33,7 +33,7 @@ public class UserFirebase {
 
     // --- GET BY RESTAURANTFAVORITE ---
 
-    public static Task<QuerySnapshot> getUsersByRestaurantChoice(String restaurantFavoriteId) {
+    public static Task<QuerySnapshot> getUsersByRestaurantFavorite(String restaurantFavoriteId) {
 
         return getUsersCollection()
                 .whereEqualTo("restaurantFavoriteId", restaurantFavoriteId)

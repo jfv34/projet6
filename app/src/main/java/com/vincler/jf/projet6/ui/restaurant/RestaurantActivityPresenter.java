@@ -161,7 +161,7 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     @Override
     public void loadUsers() {
         List<HashMap> result = new ArrayList<>();
-        Task<QuerySnapshot> data = UserFirebase.getUsersByRestaurantChoice(restaurantDisplayedId);
+        Task<QuerySnapshot> data = UserFirebase.getUsersByRestaurantFavorite(restaurantDisplayedId);
         data.addOnCompleteListener(task -> {
             if (data.getResult() != null) {
 
