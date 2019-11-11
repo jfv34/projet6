@@ -19,7 +19,5 @@ public class NotificationsActivity extends MainActivity {
         String KEY_PREF_NOTIFICATIONS = "key_pref_notifications";
         sharedPreferences = getApplicationContext().getSharedPreferences(KEY_PREF_NOTIFICATIONS, MODE_PRIVATE);
         editor = sharedPreferences.edit();
-
-
     }
 }
