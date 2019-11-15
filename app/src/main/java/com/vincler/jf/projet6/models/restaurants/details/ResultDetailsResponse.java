@@ -14,7 +14,7 @@ class ResultDetailsResponse {
     @SerializedName("name")
     public String name;
 
-    @SerializedName("photo")
+    @SerializedName("photos")
     public List<PhotosResponse> photosResponse;
 
     @SerializedName("formatted_address")

@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -96,8 +97,9 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                     int sizeRestaurantsData = response.body().results.size();
                     for (int i = 0; i < sizeRestaurantsData; i++) {
                         NearbyRestaurantResponse res = response.body().getResults().get(i);
+                        //Log.i("tag_restau",res.getPhoto());
                         NearbyRestaurant restaurant = new NearbyRestaurant(res.getName(), res.getLatitude(), res.getLongitude(), res.getAddress(),
-                                res.photo, res.getRating(), true, res.getIsOpenNow(), res.getPlaceid());
+                                "for testing", res.getRating(), true, res.getIsOpenNow(), res.getPlaceid());
                         newRestaurants.add(i, restaurant);
                     }
                     view.getLiveData().setValue(newRestaurants);

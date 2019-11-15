@@ -134,12 +134,15 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
     private void display_photo(ImageView photo_iv, int position) {
         String photoRef = restaurants.get(position).getPhoto();
-        String url = "https://maps.googleapis.com/maps/api/place/photo?"
+        /*String url = "https://maps.googleapis.com/maps/api/place/photo?"
                 + "maxwidth=" + WIDTH_PHOTO
                 + "&photoreference=" + photoRef
-                + "&key=" + API_KEY;
-
+                + "&key=" + API_KEY;*/
+String url = restaurants.get(position).getMapsPhotoUrl();
         Glide.with(context).load(url).dontTransform().into(photo_iv);
+        Log.i("tag_ListRestAdapter ","photoref "+photoRef);
+        Log.i("tag_ListRestAdapter ","get "+ restaurants.get(position));
+        Log.i("tag_ListRestAdapter ",photoRef+"");
     }
 
     private void display_rating(
