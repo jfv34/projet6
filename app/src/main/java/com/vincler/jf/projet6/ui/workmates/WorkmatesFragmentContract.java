@@ -10,6 +10,8 @@ public interface WorkmatesFragmentContract {
     interface View {
 
         void displayWorkmates(ArrayList<User> users);
+
+        void onSelectedFromViewPager();
     }
 
     interface Presenter {

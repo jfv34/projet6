@@ -3,7 +3,7 @@ package com.vincler.jf.projet6;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
 import com.google.firebase.auth.FirebaseUser;
-import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.ui.main.MainActivityContract;
 import com.vincler.jf.projet6.ui.main.MainActivityPresenter;
 
@@ -35,13 +35,13 @@ public class MainActivityPresenterTest {
         };
         MainActivityPresenter presenter = new MainActivityPresenter(view);
 
-        ArrayList<Restaurant> restaurantArrayList = new ArrayList<>();
+        ArrayList<NearbyRestaurant> restaurantArrayList = new ArrayList<>();
 
-        Restaurant restaurant1 = new Restaurant("test", 112.2, 26262,
+        NearbyRestaurant restaurant1 = new NearbyRestaurant("test", 112.2, 26262,
                 "test", "test", 1.2, true, "test",
                 "test");
 
-        Restaurant restaurant2 = new Restaurant("TEST_FILTER", 112.2, 26262,
+        NearbyRestaurant restaurant2 = new NearbyRestaurant("TEST_FILTER", 112.2, 26262,
                 "test", "test", 1.2, true, "test",
                 "test");
 

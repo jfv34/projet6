@@ -1,11 +1,11 @@
-package com.vincler.jf.projet6.models;
+package com.vincler.jf.projet6.models.restaurants.nearby;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.vincler.jf.projet6.utils.KeysUtils;
 
-public class Restaurant implements Parcelable {
+public class NearbyRestaurant implements Parcelable {
 
     private String name;
     private double latitude;
@@ -17,8 +17,8 @@ public class Restaurant implements Parcelable {
     private String  isOpenNowList;
     private String placeid;
 
-    public Restaurant(String name, double latitude, double longitude, String address, String photo,
-                      Double rating, boolean isVisible, String isOpenNowList, String placeid) {
+    public NearbyRestaurant(String name, double latitude, double longitude, String address, String photo,
+                            Double rating, boolean isVisible, String isOpenNowList, String placeid) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -30,7 +30,7 @@ public class Restaurant implements Parcelable {
         this.placeid = placeid;
     }
 
-    protected Restaurant(Parcel in) {
+    protected NearbyRestaurant(Parcel in) {
         name = in.readString();
         latitude = in.readDouble();
         longitude = in.readDouble();
@@ -42,15 +42,15 @@ public class Restaurant implements Parcelable {
         placeid = in.readString();
     }
 
-    public static final Creator<Restaurant> CREATOR = new Creator<Restaurant>() {
+    public static final Creator<NearbyRestaurant> CREATOR = new Creator<NearbyRestaurant>() {
         @Override
-        public Restaurant createFromParcel(Parcel in) {
-            return new Restaurant(in);
+        public NearbyRestaurant createFromParcel(Parcel in) {
+            return new NearbyRestaurant(in);
         }
 
         @Override
-        public Restaurant[] newArray(int size) {
-            return new Restaurant[size];
+        public NearbyRestaurant[] newArray(int size) {
+            return new NearbyRestaurant[size];
         }
     };
 

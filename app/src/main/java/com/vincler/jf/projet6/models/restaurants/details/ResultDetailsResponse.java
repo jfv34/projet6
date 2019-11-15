@@ -1,4 +1,4 @@
-package com.vincler.jf.projet6.models.googleMapResponse;
+package com.vincler.jf.projet6.models.restaurants.details;
 
 import com.google.gson.annotations.SerializedName;
 

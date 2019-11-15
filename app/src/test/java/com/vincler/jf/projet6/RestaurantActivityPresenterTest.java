@@ -2,18 +2,8 @@ package com.vincler.jf.projet6;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
-import com.vincler.jf.projet6.models.Details;
-import com.vincler.jf.projet6.models.Restaurant;
-import com.vincler.jf.projet6.models.User;
-import com.vincler.jf.projet6.ui.restaurant.RestaurantActivityContract;
-import com.vincler.jf.projet6.ui.restaurant.RestaurantActivityPresenter;
-
-import org.assertj.core.api.Assertions;
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.TestRule;
-
-import java.util.ArrayList;
 
 public class RestaurantActivityPresenterTest {
 
@@ -24,7 +14,7 @@ public class RestaurantActivityPresenterTest {
     public void When_restaurant_is_loaded__view_is_updated_correctly() {
 
         final boolean[] viewUpdated = {false};
-        final Restaurant[] viewRestaurant = new Restaurant[1];
+        final NearbyRestaurant[] viewRestaurant = new NearbyRestaurant[1];
 
         RestaurantActivityContract.View view = new RestaurantActivityContract.View() {
             @Override
@@ -53,15 +43,15 @@ public class RestaurantActivityPresenterTest {
             }
 
             @Override
-            public void displayRestaurant(Restaurant restaurant) {
+            public void displayRestaurant(NearbyRestaurant restaurant) {
                 viewUpdated[0] = true;
                 viewRestaurant[0] = restaurant;
             }
         };
 
         RestaurantActivityPresenter presenter = new RestaurantActivityPresenter(view,
-                new Restaurant(
-                        "Restaurant de Paris",
+                new NearbyRestaurant(
+                        "NearbyRestaurant de Paris",
                         112.2,
                         26262,
                         "test",
@@ -75,7 +65,7 @@ public class RestaurantActivityPresenterTest {
         presenter.loadRestaurant();
 
         Assertions.assertThat(viewUpdated[0]).isTrue();
-        Assertions.assertThat(viewRestaurant[0].getName()).isEqualTo("Restaurant de Paris");
+        Assertions.assertThat(viewRestaurant[0].getName()).isEqualTo("NearbyRestaurant de Paris");
         Assertions.assertThat(viewRestaurant[0].getRating()).isEqualTo(1.2);
     }*/
 

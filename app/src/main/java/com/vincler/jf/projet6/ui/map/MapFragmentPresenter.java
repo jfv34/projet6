@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -17,17 +16,13 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
-import com.vincler.jf.projet6.models.Restaurant;
-import com.vincler.jf.projet6.models.googleMapResponse.ListRestaurantResponse;
-import com.vincler.jf.projet6.models.googleMapResponse.RestaurantResponse;
+import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
+import com.vincler.jf.projet6.models.restaurants.nearby.ListNearbyRestaurantResponse;
+import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurantResponse;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -92,17 +87,17 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
     public void searchRestaurants(double latitude, double longitude) {
 
         String locationRequest = latitude + "," + longitude;
-        service.listRestaurants(locationRequest, "1000").enqueue(new Callback<ListRestaurantResponse>() {
+        service.listRestaurants(locationRequest, "1000").enqueue(new Callback<ListNearbyRestaurantResponse>() {
 
             @Override
-            public void onResponse(Call<ListRestaurantResponse> call, Response<ListRestaurantResponse> response) {
+            public void onResponse(Call<ListNearbyRestaurantResponse> call, Response<ListNearbyRestaurantResponse> response) {
                 if (!response.body().getResults().isEmpty()) {
                     ArrayList newRestaurants = new ArrayList();
                     int sizeRestaurantsData = response.body().results.size();
                     for (int i = 0; i < sizeRestaurantsData; i++) {
-                        RestaurantResponse res = response.body().getResults().get(i);
-                        Restaurant restaurant = new Restaurant(res.getName(), res.getLatitude(), res.getLongitude(), res.getAddress(),
-                                res.getPhoto(), res.getRating(), true, res.getIsOpenNow(), res.getPlaceid());
+                        NearbyRestaurantResponse res = response.body().getResults().get(i);
+                        NearbyRestaurant restaurant = new NearbyRestaurant(res.getName(), res.getLatitude(), res.getLongitude(), res.getAddress(),
+                                res.photo, res.getRating(), true, res.getIsOpenNow(), res.getPlaceid());
                         newRestaurants.add(i, restaurant);
                     }
                     view.getLiveData().setValue(newRestaurants);
@@ -110,7 +105,7 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
             }
 
             @Override
-            public void onFailure(Call<ListRestaurantResponse> call, Throwable t) {
+            public void onFailure(Call<ListNearbyRestaurantResponse> call, Throwable t) {
                 t.printStackTrace();
             }
         });
@@ -143,7 +138,7 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
 
     }
 
-    public Restaurant restaurantChosenByClickOnMarker(Marker marker, ArrayList<Restaurant> data) {
+    public NearbyRestaurant restaurantChosenByClickOnMarker(Marker marker, ArrayList<NearbyRestaurant> data) {
 
         LatLng latLng = marker.getPosition();
         int restauId = -1;

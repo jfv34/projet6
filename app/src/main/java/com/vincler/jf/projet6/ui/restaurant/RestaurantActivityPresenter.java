@@ -9,9 +9,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.api.LikesFirebase;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
-import com.vincler.jf.projet6.models.Details;
+import com.vincler.jf.projet6.models.restaurants.details.Details;
 import com.vincler.jf.projet6.models.User;
-import com.vincler.jf.projet6.models.googleMapResponse.DetailsResponse;
+import com.vincler.jf.projet6.models.restaurants.details.DetailsRestaurantResponse;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
 import java.util.ArrayList;
@@ -31,12 +31,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
     private String restaurantDisplayedId;
     private Details details;
-    private String phoneNumber;
-    private String webSite;
-    private String name;
-    private String address;
-    private String photo;
-
     private boolean isFavorited = false;
     private boolean isLiked = false;
 
@@ -66,12 +60,12 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
     @Override
     public String getPhoneNumber() {
-        return phoneNumber;
+        return details.getPhoneNumber();
     }
 
     @Override
     public String getWebSite() {
-        return webSite;
+        return details.getWebSite();
     }
 
     @Override
@@ -120,37 +114,25 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
                             isFavorited = restaurantDisplayedId.equals(restaurantFavoriteId);
                         } else isFavorited = false;
 
-                        service.listDetails(restaurantDisplayedId).enqueue(new Callback<DetailsResponse>() {
+                        service.listDetails(restaurantDisplayedId).enqueue(new Callback<DetailsRestaurantResponse>() {
                             @Override
-                            public void onResponse(Call<DetailsResponse> call, Response<DetailsResponse> response) {
-                                phoneNumber = response.body().getPhoneNumber();
-                                webSite = response.body().getWebSite();
-                                name = response.body().getName();
-                                address = response.body().getAddress();
-                                photo = response.body().getPhoto();
+                            public void onResponse(Call<DetailsRestaurantResponse> call, Response<DetailsRestaurantResponse> response) {
+
+                                DetailsRestaurantResponse restaurantResponse = response.body();
                                 details = new Details(
-                                        name,
-                                        address,
-                                        photo,
+                                        restaurantResponse.getName(),
+                                        restaurantResponse.getAddress(),
+                                        restaurantResponse.photos,
                                         isLiked,
                                         isFavorited,
-                                        phoneNumber,
-                                        webSite);
-                                view.displayDetails(
-                                        new Details(
-                                                name,
-                                                address,
-                                                photo,
-                                                isLiked,
-                                                isFavorited,
-                                                phoneNumber,
-                                                webSite)
-                                );
+                                        restaurantResponse.getPhoneNumber(),
+                                        restaurantResponse.getWebSite());
+                                view.displayDetails(details);
                                 view.displayRestaurant(details);
                             }
 
                             @Override
-                            public void onFailure(Call<DetailsResponse> call, Throwable t) {
+                            public void onFailure(Call<DetailsRestaurantResponse> call, Throwable t) {
                                 Log.i("tag_onResponse", "failure");
                             }
                         });

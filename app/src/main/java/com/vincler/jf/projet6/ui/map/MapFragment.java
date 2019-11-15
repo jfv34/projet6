@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
-import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.ui.main.MainActivity;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 
@@ -44,7 +43,7 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
     private MapFragmentContract.Presenter presenter = new MapFragmentPresenter(this);
 
     @Override
-    public MutableLiveData<ArrayList<Restaurant>> getLiveData() {
+    public MutableLiveData<ArrayList<NearbyRestaurant>> getLiveData() {
         return ((MainActivity) getActivity()).presenter.getLiveData();
     }
 
@@ -119,8 +118,8 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
                 this.googleMap = googleMap;
                 googleMap.setMyLocationEnabled(true);
                 googleMap.setOnMarkerClickListener(marker -> {
-                    ArrayList<Restaurant> data = getLiveData().getValue();
-                    Restaurant restaurant = presenter.restaurantChosenByClickOnMarker(marker, data);
+                    ArrayList<NearbyRestaurant> data = getLiveData().getValue();
+                    NearbyRestaurant restaurant = presenter.restaurantChosenByClickOnMarker(marker, data);
                     if (restaurant != null) {
                         Intent intent = new Intent(getActivity(), RestaurantActivity.class);
                         intent.putExtra("restaurantDisplayedId", restaurant.getPlaceid());

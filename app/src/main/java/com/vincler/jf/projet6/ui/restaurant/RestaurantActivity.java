@@ -3,7 +3,6 @@ package com.vincler.jf.projet6.ui.restaurant;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vincler.jf.projet6.R;
-import com.vincler.jf.projet6.models.Details;
+import com.vincler.jf.projet6.models.restaurants.details.Details;
 import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.utils.IntentUtils;
 
@@ -85,9 +84,9 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
             name_tv.setText(details.getName());
             address_tv.setText(details.getAddress());
 
-            Glide.with(this).
-                    load(details.getPhoto()).
-                    into(photo_iv);
+            Glide.with(this)
+                    .load(details.getPhotosResponses().get(0).reference)
+                    .into(photo_iv);
         }
     }
 

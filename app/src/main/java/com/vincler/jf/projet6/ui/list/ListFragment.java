@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vincler.jf.projet6.R;
-import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.ui.main.MainActivity;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class ListFragment extends Fragment {
         ((MainActivity) getActivity()).presenter.getLiveData().observe(this, restaurants -> displayRestaurants(restaurants));
     }
 
-    private void displayRestaurants(ArrayList<Restaurant> restaurants) {
+    private void displayRestaurants(ArrayList<NearbyRestaurant> restaurants) {
         if (!restaurants.isEmpty()) {
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());

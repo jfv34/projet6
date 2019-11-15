@@ -33,6 +33,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
+import com.vincler.jf.projet6.ui.workmates.WorkmatesFragment;
 
 import java.util.Arrays;
 import java.util.List;
@@ -278,7 +279,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     private void viewPager() {
-        viewPager.setAdapter(new PageAdapter(getSupportFragmentManager()));
+        PageAdapter pageAdapter = new PageAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pageAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -287,6 +289,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
             @Override
             public void onPageSelected(int position) {
+                ((WorkmatesFragment) pageAdapter.getItem(2)).onSelectedFromViewPager();
                 bottomNavigationView.getMenu().getItem(position).setChecked(true);
             }
 

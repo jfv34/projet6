@@ -1,17 +1,13 @@
 package com.vincler.jf.projet6.ui.main;
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.api.UserFirebase;
-import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 
 import java.util.ArrayList;
 
@@ -19,10 +15,10 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     private MainActivityContract.View view;
 
-    public MutableLiveData<ArrayList<Restaurant>> restaurantsData = new MutableLiveData<>(new ArrayList<>());
+    public MutableLiveData<ArrayList<NearbyRestaurant>> restaurantsData = new MutableLiveData<>(new ArrayList<>());
 
     @Override
-    public MutableLiveData<ArrayList<Restaurant>> getLiveData() {
+    public MutableLiveData<ArrayList<NearbyRestaurant>> getLiveData() {
         return restaurantsData;
     }
     public MainActivityPresenter(MainActivityContract.View view) {
@@ -31,15 +27,15 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     @Override
     public void filterRestaurants(String query) {
-        ArrayList<Restaurant> result = new ArrayList<>();
-        ArrayList<Restaurant> restaurants = restaurantsData.getValue();
+        ArrayList<NearbyRestaurant> result = new ArrayList<>();
+        ArrayList<NearbyRestaurant> restaurants = restaurantsData.getValue();
 
         if (restaurants != null) {
             for (int i = 0; i < restaurants.size(); i++) {
                 String r = restaurants.get(i).getName();
-                Restaurant data = restaurants.get(i);
+                NearbyRestaurant data = restaurants.get(i);
 
-                result.add(new Restaurant(
+                result.add(new NearbyRestaurant(
                         data.getName(),
                         data.getLatitude(),
                         data.getLongitude(),

@@ -46,10 +46,15 @@ public class WorkmatesFragment extends Fragment implements WorkmatesFragmentCont
 
     @Override
     public void displayWorkmates(ArrayList<User> users) {
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        if(recyclerView!=null){recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
         RecyclerView.Adapter adapter = new ListWorkmatesAdapter(users, getContext());
         recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));}
+    }
+
+    @Override
+    public void onSelectedFromViewPager() {
+        presenter.loadWorkmates();
     }
 }

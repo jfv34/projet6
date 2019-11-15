@@ -10,14 +10,14 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 
 import java.util.ArrayList;
 
 public interface MapFragmentContract {
 
     interface View {
-        MutableLiveData<ArrayList<Restaurant>> getLiveData();
+        MutableLiveData<ArrayList<NearbyRestaurant>> getLiveData();
 
         void updatesMapDisplay(LatLng position);
     }
@@ -31,7 +31,7 @@ public interface MapFragmentContract {
 
         void searchRestaurants(double latitude, double longitude);
 
-        Restaurant restaurantChosenByClickOnMarker(Marker marker, ArrayList<Restaurant> data);
+        NearbyRestaurant restaurantChosenByClickOnMarker(Marker marker, ArrayList<NearbyRestaurant> data);
 
         BitmapDescriptor bitmapDescriptorFromVector(Context context, int drawable);
 

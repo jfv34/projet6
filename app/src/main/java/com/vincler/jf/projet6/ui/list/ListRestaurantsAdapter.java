@@ -25,7 +25,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
-import com.vincler.jf.projet6.models.Restaurant;
+import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 import com.vincler.jf.projet6.utils.KeysUtils;
 
@@ -38,7 +38,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     private static final int WIDTH_PHOTO = 50;
     private static final String API_KEY = KeysUtils.API_KEY;
     private Context context;
-    private List<Restaurant> restaurants;
+    private List<NearbyRestaurant> restaurants;
     private TextView workmatesNumber_tv;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -47,7 +47,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         }
     }
 
-    public ListRestaurantsAdapter(List<Restaurant> restaurants) {
+    public ListRestaurantsAdapter(List<NearbyRestaurant> restaurants) {
         this.restaurants = restaurants;
     }
 

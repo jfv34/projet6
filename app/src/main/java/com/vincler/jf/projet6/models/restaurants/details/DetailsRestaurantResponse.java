@@ -1,19 +1,18 @@
-package com.vincler.jf.projet6.models.googleMapResponse;
+package com.vincler.jf.projet6.models.restaurants.details;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class DetailsResponse {
+public class DetailsRestaurantResponse {
 
-    public DetailsResponse(String name, String address, String photo, String phoneNumber, String webSite) {
+    public DetailsRestaurantResponse(String name, String address, List<PhotosResponse> photos, String phoneNumber, String webSite) {
 
         this.name = name;
         this.address = address;
-        this.photo = photo;
+        this.photos = photos;
         this.phoneNumber = phoneNumber;
         this.webSite = webSite;
-
     }
 
     @SerializedName("result")
@@ -25,11 +24,8 @@ public class DetailsResponse {
     @SerializedName("name")
     public String name;
 
-    @SerializedName("photo_reference")
-    public String photo;
-
     @SerializedName("photos")
-    public List<PhotosResponse> PhotosResponse;
+    public List<PhotosResponse> photos;
 
     @SerializedName("formatted_address")
     public String address;
@@ -58,12 +54,6 @@ public class DetailsResponse {
     public String getAddress() {
         if (resultDetailsResponse != null) {
             return resultDetailsResponse.address;
-        } else return "";
-    }
-
-    public String getPhoto() {
-        if ((PhotosResponse) != null) {
-            return PhotosResponse.get(0).photo_reference_response;
         } else return "";
     }
 }

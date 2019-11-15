@@ -1,18 +1,20 @@
-package com.vincler.jf.projet6.models;
+package com.vincler.jf.projet6.models.restaurants.details;
+
+import java.util.List;
 
 public class Details {
     private String name;
     private String address;
-    private String photo;
+    private List<PhotosResponse> photosResponses;
     private boolean isLiked;
     private boolean isFavorited;
     private String phoneNumber;
     private String webSite;
 
-    public Details(String name, String address, String photo, boolean isLiked, boolean isFavorited, String phoneNumber, String webSite) {
+    public Details(String name, String address, List<PhotosResponse> photosResponses, boolean isLiked, boolean isFavorited, String phoneNumber, String webSite) {
         this.name = name;
         this.address = address;
-        this.photo = photo;
+        this.photosResponses = photosResponses;
         this.isLiked = isLiked;
         this.isFavorited = isFavorited;
         this.phoneNumber = phoneNumber;
@@ -27,8 +29,8 @@ public class Details {
         return address;
     }
 
-    public String getPhoto() {
-        return photo;
+    public List<PhotosResponse> getPhotosResponses() {
+        return photosResponses;
     }
 
     public String getPhoneNumber() {
