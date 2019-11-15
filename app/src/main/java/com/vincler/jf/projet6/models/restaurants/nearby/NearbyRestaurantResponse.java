@@ -6,18 +6,17 @@ import com.vincler.jf.projet6.models.googleMapResponse.OpeningHoursResponse;
 import com.vincler.jf.projet6.models.restaurants.details.PhotosResponse;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class NearbyRestaurantResponse {
 
     public NearbyRestaurantResponse(String restaurantName, double latitude, double longitude, String address,
-                                    String photo, Double rating, ArrayList typesListResponse, String placeid,
+                                    ArrayList photo_reference, Double rating, ArrayList typesListResponse, String placeid,
                                     ArrayList isOpenNowList) {
         this.restaurantName = restaurantName;
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
-        this.photo = photo;
+        this.photo_reference = photo_reference;
         this.rating = rating;
         this.typesListResponse = typesListResponse;
         this.placeid = placeid;
@@ -35,7 +34,10 @@ public class NearbyRestaurantResponse {
     public double longitude;
 
     @SerializedName("photo_reference")
-    public String photo;
+    public ArrayList photo_reference;
+
+    @SerializedName("photos")
+    public PhotosResponse photos;
 
     @SerializedName("rating")
     public Double rating;
@@ -87,7 +89,13 @@ public class NearbyRestaurantResponse {
         }
        return "";
     }
+  /*  public String getPhoto(){
 
+        if ((photos) != null) {
+            return photos.reference;
+        }
+        return "";
+    }*/
 
     public Double getRating() {
         return rating;
