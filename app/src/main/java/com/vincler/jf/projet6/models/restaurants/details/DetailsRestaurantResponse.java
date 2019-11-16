@@ -33,27 +33,10 @@ public class DetailsRestaurantResponse {
     @SerializedName("website")
     public String webSite;
 
-    public String getPhoneNumber() {
-        if(resultDetailsResponse!=null){
-            return resultDetailsResponse.phoneNumber;
-        } else return "";
-    }
-
-    public String getWebSite() {
-        if (resultDetailsResponse != null) {
-            return resultDetailsResponse.website;
-        }else return "";
-    }
 
     public String getName() {
         if (resultDetailsResponse != null) {
             return resultDetailsResponse.name;
-        } else return "";
-    }
-
-    public String getAddress() {
-        if (resultDetailsResponse != null) {
-            return resultDetailsResponse.address;
         } else return "";
     }
 }

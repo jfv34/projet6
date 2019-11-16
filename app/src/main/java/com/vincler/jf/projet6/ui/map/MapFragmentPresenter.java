@@ -97,9 +97,8 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                     int sizeRestaurantsData = response.body().results.size();
                     for (int i = 0; i < sizeRestaurantsData; i++) {
                         NearbyRestaurantResponse res = response.body().getResults().get(i);
-                        //Log.i("tag_restau",res.getPhoto());
                         NearbyRestaurant restaurant = new NearbyRestaurant(res.getName(), res.getLatitude(), res.getLongitude(), res.getAddress(),
-                                "for testing", res.getRating(), true, res.getIsOpenNow(), res.getPlaceid());
+                                res.getPhoto(), res.getRating(), true, res.getIsOpenNow(), res.getPlaceid());
                         newRestaurants.add(i, restaurant);
                     }
                     view.getLiveData().setValue(newRestaurants);

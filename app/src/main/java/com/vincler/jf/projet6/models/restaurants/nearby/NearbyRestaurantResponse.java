@@ -1,16 +1,17 @@
 package com.vincler.jf.projet6.models.restaurants.nearby;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 import com.vincler.jf.projet6.models.googleMapResponse.GeometryResponse;
 import com.vincler.jf.projet6.models.googleMapResponse.OpeningHoursResponse;
-import com.vincler.jf.projet6.models.restaurants.details.PhotosResponse;
 
 import java.util.ArrayList;
 
 public class NearbyRestaurantResponse {
 
     public NearbyRestaurantResponse(String restaurantName, double latitude, double longitude, String address,
-                                    ArrayList photo_reference, Double rating, ArrayList typesListResponse, String placeid,
+                                    String photo_reference, Double rating, ArrayList typesListResponse, String placeid,
                                     ArrayList isOpenNowList) {
         this.restaurantName = restaurantName;
         this.latitude = latitude;
@@ -34,10 +35,10 @@ public class NearbyRestaurantResponse {
     public double longitude;
 
     @SerializedName("photo_reference")
-    public ArrayList photo_reference;
+    public String photo_reference;
 
     @SerializedName("photos")
-    public PhotosResponse photos;
+    public ArrayList<NearbyPhotosResponse> photos;
 
     @SerializedName("rating")
     public Double rating;
@@ -89,13 +90,14 @@ public class NearbyRestaurantResponse {
         }
        return "";
     }
-  /*  public String getPhoto(){
+  public String getPhoto(){
 
         if ((photos) != null) {
-            return photos.reference;
+            return photos.get(0).reference;
+
         }
         return "";
-    }*/
+    }
 
     public Double getRating() {
         return rating;

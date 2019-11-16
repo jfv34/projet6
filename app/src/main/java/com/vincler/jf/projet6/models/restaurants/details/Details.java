@@ -1,20 +1,20 @@
 package com.vincler.jf.projet6.models.restaurants.details;
 
-import java.util.List;
+import com.vincler.jf.projet6.utils.KeysUtils;
 
 public class Details {
     private String name;
     private String address;
-    private List<PhotosResponse> photosResponses;
+    private String photo;
     private boolean isLiked;
     private boolean isFavorited;
     private String phoneNumber;
     private String webSite;
 
-    public Details(String name, String address, List<PhotosResponse> photosResponses, boolean isLiked, boolean isFavorited, String phoneNumber, String webSite) {
+    public Details(String name, String address, String photo, boolean isLiked, boolean isFavorited, String phoneNumber, String webSite) {
         this.name = name;
         this.address = address;
-        this.photosResponses = photosResponses;
+        this.photo = photo;
         this.isLiked = isLiked;
         this.isFavorited = isFavorited;
         this.phoneNumber = phoneNumber;
@@ -29,8 +29,15 @@ public class Details {
         return address;
     }
 
-    public List<PhotosResponse> getPhotosResponses() {
-        return photosResponses;
+    public String getPhoto() {
+        return photo;
+    }
+
+    public String getMapsPhotoUrl(){
+        return  "https://maps.googleapis.com/maps/api/place/photo?"
+                + "maxwidth=" + KeysUtils.WIDTH_PHOTO
+                + "&photoreference=" + getPhoto()
+                + "&key=" + KeysUtils.API_KEY;
     }
 
     public String getPhoneNumber() {

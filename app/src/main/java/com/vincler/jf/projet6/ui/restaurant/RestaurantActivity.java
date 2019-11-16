@@ -3,6 +3,7 @@ package com.vincler.jf.projet6.ui.restaurant;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -85,7 +86,7 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
             address_tv.setText(details.getAddress());
 
             Glide.with(this)
-                    .load(details.getPhotosResponses().get(0).reference)
+                    .load(details.getMapsPhotoUrl())
                     .into(photo_iv);
         }
     }

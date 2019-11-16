@@ -12,6 +12,7 @@ import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.restaurants.details.Details;
 import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.models.restaurants.details.DetailsRestaurantResponse;
+import com.vincler.jf.projet6.models.restaurants.details.ResultDetailsResponse;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
 import java.util.ArrayList;
@@ -118,15 +119,16 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
                             @Override
                             public void onResponse(Call<DetailsRestaurantResponse> call, Response<DetailsRestaurantResponse> response) {
 
-                                DetailsRestaurantResponse restaurantResponse = response.body();
+                                ResultDetailsResponse result = response.body().resultDetailsResponse;
+
                                 details = new Details(
-                                        restaurantResponse.getName(),
-                                        restaurantResponse.getAddress(),
-                                        restaurantResponse.photos,
+                                        result.getName(),
+                                        result.getAddress(),
+                                        result.getPhoto(),
                                         isLiked,
                                         isFavorited,
-                                        restaurantResponse.getPhoneNumber(),
-                                        restaurantResponse.getWebSite());
+                                        result.getPhoneNumber(),
+                                        result.getWebSite());
                                 view.displayDetails(details);
                                 view.displayRestaurant(details);
                             }
