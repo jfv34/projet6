@@ -6,5 +6,5 @@ import java.util.ArrayList;
 
 public class PhotosResponse {
     @SerializedName("photo_reference")
-    public String reference;
+    public ArrayList reference;
 }

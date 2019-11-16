@@ -11,7 +11,9 @@ import java.util.ArrayList;
 public class NearbyRestaurantResponse {
 
     public NearbyRestaurantResponse(String restaurantName, double latitude, double longitude, String address,
+
                                     String photo_reference, Double rating, ArrayList typesListResponse, String placeid,
+
                                     ArrayList isOpenNowList) {
         this.restaurantName = restaurantName;
         this.latitude = latitude;
@@ -35,10 +37,12 @@ public class NearbyRestaurantResponse {
     public double longitude;
 
     @SerializedName("photo_reference")
+
     public String photo_reference;
 
     @SerializedName("photos")
     public ArrayList<NearbyPhotosResponse> photos;
+
 
     @SerializedName("rating")
     public Double rating;
@@ -90,6 +94,7 @@ public class NearbyRestaurantResponse {
         }
        return "";
     }
+
   public String getPhoto(){
 
         if ((photos) != null) {
@@ -98,6 +103,7 @@ public class NearbyRestaurantResponse {
         }
         return "";
     }
+
 
     public Double getRating() {
         return rating;
