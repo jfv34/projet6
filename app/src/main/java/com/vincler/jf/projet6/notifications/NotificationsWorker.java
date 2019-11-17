@@ -12,8 +12,6 @@ import com.vincler.jf.projet6.R;
 
 public class NotificationsWorker extends Worker {
 
-    NotificationsActivityPresenter presenter = new NotificationsActivityPresenter();
-
     public NotificationsWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
@@ -22,11 +20,7 @@ public class NotificationsWorker extends Worker {
     @Override
     public Result doWork() {
 
-
-        {
-            sendNotification("titre", "message");
-        }
-
+        sendNotification("titre", "message");
         return Result.success();
     }
 

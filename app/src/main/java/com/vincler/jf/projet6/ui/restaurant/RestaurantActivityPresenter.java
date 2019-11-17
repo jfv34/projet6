@@ -2,6 +2,9 @@ package com.vincler.jf.projet6.ui.restaurant;
 
 import android.util.Log;
 
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -9,15 +12,21 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.api.LikesFirebase;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
-import com.vincler.jf.projet6.models.restaurants.details.Details;
 import com.vincler.jf.projet6.models.User;
+import com.vincler.jf.projet6.models.restaurants.details.Details;
 import com.vincler.jf.projet6.models.restaurants.details.DetailsRestaurantResponse;
 import com.vincler.jf.projet6.models.restaurants.details.ResultDetailsResponse;
+import com.vincler.jf.projet6.notifications.NotificationsWorker;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -29,7 +38,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestaurantActivityPresenter implements RestaurantActivityContract.Presenter {
 
     private RestaurantActivityContract.View view;
-
     private String restaurantDisplayedId;
     private Details details;
     private boolean isFavorited = false;
@@ -47,6 +55,7 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
             .build();
 
     private RestaurantsService service = retrofit.create(RestaurantsService.class);
+
 
     public RestaurantActivityPresenter(RestaurantActivityContract.View view, String restaurantDisplayedId) {
         this.view = view;
@@ -90,6 +99,8 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         } else {
             UserFirebase.updateRestaurantFavoriteId(restaurantDisplayedId, getUserID());
             UserFirebase.updateRestaurantFavoriteName(details.getName(), getUserID());
+            sendPeriodicsNotifications();
+
         }
         isFavorited = !isFavorited;
         view.displayFavorite(isFavorited);
@@ -168,11 +179,39 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
                             hm.get("photoUserUrl").toString());
 
                     users.add(user);
-
                 }
 
                 view.displayUsers(users);
             }
         });
+    }
+
+    private void sendPeriodicsNotifications() {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        String currentTime = simpleDateFormat.format(new Date());
+        Date firstDate = null;
+        try {
+            firstDate = simpleDateFormat.parse(currentTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Date secondDate = null;
+        try {
+            secondDate = simpleDateFormat.parse("12:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        long diffInMillies;
+        if (secondDate.after(firstDate)) {
+            diffInMillies = secondDate.getTime() - firstDate.getTime();
+        } else {
+            diffInMillies = firstDate.getTime() - secondDate.getTime();
+        }
+
+        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationsWorker.class)
+                .setInitialDelay(diffInMillies, TimeUnit.MILLISECONDS).build();
+        WorkManager.getInstance().enqueue(oneTimeWorkRequest);
+        Log.i("tag_time ", String.valueOf(diffInMillies));
     }
 }
