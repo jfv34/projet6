@@ -1,6 +1,6 @@
 package com.vincler.jf.projet6.models.restaurants.details;
 
-import com.vincler.jf.projet6.utils.KeysUtils;
+import com.vincler.jf.projet6.utils.ConstantsUtils;
 
 public class Details {
     private String name;
@@ -35,9 +35,9 @@ public class Details {
 
     public String getMapsPhotoUrl(){
         return  "https://maps.googleapis.com/maps/api/place/photo?"
-                + "maxwidth=" + KeysUtils.WIDTH_PHOTO
+                + "maxwidth=" + ConstantsUtils.WIDTH_PHOTO
                 + "&photoreference=" + getPhoto()
-                + "&key=" + KeysUtils.API_KEY;
+                + "&key=" + ConstantsUtils.API_KEY;
     }
 
     public String getPhoneNumber() {

@@ -27,7 +27,7 @@ import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
-import com.vincler.jf.projet6.utils.KeysUtils;
+import com.vincler.jf.projet6.utils.ConstantsUtils;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ import static com.vincler.jf.projet6.utils.DistanceUtils.calculateDistance;
 public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurantsAdapter.ViewHolder> {
 
     private static final int WIDTH_PHOTO = 50;
-    private static final String API_KEY = KeysUtils.API_KEY;
+    private static final String API_KEY = ConstantsUtils.API_KEY;
     private Context context;
     private List<NearbyRestaurant> restaurants;
     private TextView workmatesNumber_tv;

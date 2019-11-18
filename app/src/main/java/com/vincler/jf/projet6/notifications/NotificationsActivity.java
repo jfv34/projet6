@@ -1,6 +1,5 @@
 package com.vincler.jf.projet6.notifications;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -10,14 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.api.UserFirebase;
-import com.vincler.jf.projet6.ui.main.MainActivity;
-import com.vincler.jf.projet6.ui.main.MainActivityPresenter;
-
-import java.util.Calendar;
-import java.util.Date;
 
 public class NotificationsActivity extends AppCompatActivity {
 
@@ -25,8 +18,6 @@ public class NotificationsActivity extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Task<DocumentSnapshot> user = UserFirebase.getUser(uid);

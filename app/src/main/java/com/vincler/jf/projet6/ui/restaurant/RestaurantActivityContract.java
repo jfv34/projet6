@@ -22,8 +22,6 @@ public interface RestaurantActivityContract {
 
     interface Presenter  {
 
-        void loadRestaurant();
-
         void loadDetails();
 
         void loadUsers();

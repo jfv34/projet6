@@ -3,7 +3,7 @@ package com.vincler.jf.projet6.models.restaurants.nearby;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.vincler.jf.projet6.utils.KeysUtils;
+import com.vincler.jf.projet6.utils.ConstantsUtils;
 
 public class NearbyRestaurant implements Parcelable {
 
@@ -110,8 +110,8 @@ public class NearbyRestaurant implements Parcelable {
 
     public String getMapsPhotoUrl(){
         return  "https://maps.googleapis.com/maps/api/place/photo?"
-                + "maxwidth=" + KeysUtils.WIDTH_PHOTO
+                + "maxwidth=" + ConstantsUtils.WIDTH_PHOTO
                 + "&photoreference=" + getPhoto()
-                + "&key=" + KeysUtils.API_KEY;
+                + "&key=" + ConstantsUtils.API_KEY;
     }
 }

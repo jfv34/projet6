@@ -12,6 +12,9 @@ import com.vincler.jf.projet6.R;
 
 public class NotificationsWorker extends Worker {
 
+    public static final String EXTRA_TITLE = "title";
+    public static final String EXTRA_TEXT = "text";
+
     public NotificationsWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
     }
@@ -20,12 +23,14 @@ public class NotificationsWorker extends Worker {
     @Override
     public Result doWork() {
 
-        sendNotification("titre", "message");
+        String title = getInputData().getString(EXTRA_TITLE);
+        String text = getInputData().getString(EXTRA_TEXT);
+
+        sendNotification(title, text);
         return Result.success();
     }
 
-
-    public void sendNotification(String title, String message) {
+    private void sendNotification(String title, String message) {
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         //If on Oreo then notification required a notification channel.

@@ -2,9 +2,12 @@ package com.vincler.jf.projet6.ui.restaurant;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,13 +22,11 @@ import com.vincler.jf.projet6.models.restaurants.details.ResultDetailsResponse;
 import com.vincler.jf.projet6.notifications.NotificationsWorker;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -34,6 +35,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static com.vincler.jf.projet6.utils.ConstantsUtils.NOTIFICATION_HOUR;
+import static com.vincler.jf.projet6.utils.ConstantsUtils.NOTIFICATION_MINUTES;
 
 public class RestaurantActivityPresenter implements RestaurantActivityContract.Presenter {
 
@@ -60,12 +64,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     public RestaurantActivityPresenter(RestaurantActivityContract.View view, String restaurantDisplayedId) {
         this.view = view;
         this.restaurantDisplayedId = restaurantDisplayedId;
-    }
-
-    @Override
-    public void loadRestaurant() {
-
-        loadDetails();
     }
 
     @Override
@@ -96,18 +94,18 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         if (isFavorited) {
             UserFirebase.updateRestaurantFavoriteId("", getUserID());
             UserFirebase.updateRestaurantFavoriteName("", getUserID());
+            stopNotification();
         } else {
             UserFirebase.updateRestaurantFavoriteId(restaurantDisplayedId, getUserID());
             UserFirebase.updateRestaurantFavoriteName(details.getName(), getUserID());
-            sendPeriodicsNotifications();
-
+            scheduleNotification();
         }
         isFavorited = !isFavorited;
         view.displayFavorite(isFavorited);
         loadUsers();
     }
 
-    public String getUserID() {
+    private String getUserID() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         return user != null ? user.getUid() : "";
     }
@@ -180,38 +178,110 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
                     users.add(user);
                 }
-
                 view.displayUsers(users);
             }
         });
     }
 
-    private void sendPeriodicsNotifications() {
+    private void scheduleNotification() {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
-        String currentTime = simpleDateFormat.format(new Date());
-        Date firstDate = null;
-        try {
-            firstDate = simpleDateFormat.parse(currentTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Date secondDate = null;
-        try {
-            secondDate = simpleDateFormat.parse("12:00");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        long diffInMillies;
-        if (secondDate.after(firstDate)) {
-            diffInMillies = secondDate.getTime() - firstDate.getTime();
-        } else {
-            diffInMillies = firstDate.getTime() - secondDate.getTime();
-        }
 
-        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationsWorker.class)
-                .setInitialDelay(diffInMillies, TimeUnit.MILLISECONDS).build();
-        WorkManager.getInstance().enqueue(oneTimeWorkRequest);
-        Log.i("tag_time ", String.valueOf(diffInMillies));
+        UserFirebase.getUsersByRestaurantFavorite(restaurantDisplayedId).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                int duration = getDuration();
+                String titleNotification = "Rappel: déjeuner";
+                String message = getNotificationText(task);
+
+                Data data = new Data.Builder()
+                        .putString(NotificationsWorker.EXTRA_TITLE, titleNotification)
+                        .putString(NotificationsWorker.EXTRA_TEXT, message)
+                        .build();
+
+                OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationsWorker.class)
+                        .setInitialDelay(duration, TimeUnit.MINUTES)
+                        .setInputData(data)
+                        .build();
+
+                WorkManager.getInstance().cancelAllWork();
+                WorkManager.getInstance().enqueue(oneTimeWorkRequest);
+            }
+        });
+    }
+
+    private String getNotificationText(Task<QuerySnapshot> task) {
+        int size = task.getResult().size();
+        String workmatesListText = getWorkmatesListText(task);
+        StringBuilder message = new StringBuilder();
+        message.append("Vous avez choisi de déjeuner aujourd'hui au restaurant");
+        message.append(" ");
+        message.append(details.getName());
+        message.append(" ");
+        message.append("situé");
+        message.append(" ");
+        message.append(details.getAddress());
+        message.append(". ");
+        if (size == 1) {
+            message.append("Aucun autre oollègue n'a prévu d'y déjeuner");
+        }
+        if (size == 2) {
+            message.append("Une autre personne a prévu d'y déjeuner:");
+        }
+        if (size > 2) {
+            message.append("Les autres personnes qui ont prévu d'y déjeuner sont:");
+        }
+        if (size > 1) {
+            message.append(" ");
+            message.append(workmatesListText);
+        }
+        message.append(".");
+
+        return message.toString();
+    }
+
+    private String getWorkmatesListText(Task<QuerySnapshot> task) {
+        int size = task.getResult().size();
+        String text = "";
+        String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        for (int i = 0; i < size; i++) {
+            String workmate = task.getResult().getDocuments().get(i).get("username").toString();
+            if (!workmate.equals(userName)) {
+                if (size == 2) {
+                    text = workmate;
+                }
+                if (i < size && size > 2) {
+                    text = String.format("%s%s, ", text, workmate);
+                    if (i == size - 1) {
+                        text = text
+                                + "et "
+                                + workmate;
+                    }
+                }
+            }
+        }
+        return text;
+    }
+
+    private int getDuration() {
+        SimpleDateFormat formatCurrentHour = new SimpleDateFormat("HH");
+        SimpleDateFormat formatCurrentMinutes = new SimpleDateFormat("mm");
+        Date date = new Date();
+
+        int currentHour = Integer.parseInt(formatCurrentHour.format(date));
+        int currentMinutes = Integer.parseInt(formatCurrentMinutes.format(date));
+
+        int notificationTime = NOTIFICATION_HOUR * 60 + NOTIFICATION_MINUTES;
+        int currentTime = currentHour * 60 + currentMinutes;
+
+        int duration = notificationTime - currentTime;
+        if (currentTime > notificationTime) {
+            duration = duration + 1440;
+        }
+        return duration;
+    }
+
+    private void stopNotification() {
+        WorkManager.getInstance().cancelAllWork();
     }
 }
