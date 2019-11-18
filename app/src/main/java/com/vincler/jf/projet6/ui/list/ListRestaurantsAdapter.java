@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,11 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.R;
-import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 import com.vincler.jf.projet6.utils.ConstantsUtils;
@@ -133,16 +128,10 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     }
 
     private void display_photo(ImageView photo_iv, int position) {
-        String photoRef = restaurants.get(position).getPhoto();
-        /*String url = "https://maps.googleapis.com/maps/api/place/photo?"
-                + "maxwidth=" + WIDTH_PHOTO
-                + "&photoreference=" + photoRef
-                + "&key=" + API_KEY;*/
-String url = restaurants.get(position).getMapsPhotoUrl();
+
+        String url = restaurants.get(position).getMapsPhotoUrl();
         Glide.with(context).load(url).dontTransform().into(photo_iv);
-        Log.i("tag_ListRestAdapter ","photoref "+photoRef);
-        Log.i("tag_ListRestAdapter ","get "+ restaurants.get(position));
-        Log.i("tag_ListRestAdapter ",photoRef+"");
+
     }
 
     private void display_rating(
@@ -182,18 +171,15 @@ String url = restaurants.get(position).getMapsPhotoUrl();
 
     private void display_workmatesNumber(int position) {
 
-        Task<QuerySnapshot> data = UserFirebase.getUsersByRestaurantFavorite(restaurants.get(position).getPlaceid());
-        data.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (data.getResult() != null && !data.getResult().isEmpty()) {
-                    String number = String.valueOf(data.getResult().size());
-                    String text = "(" + number + ")";
-                    workmatesNumber_tv.setText(text);
-                    Log.i("tag_restaurant ", text);
-                } else workmatesNumber_tv.setText("()");
-            }
-        });
+        int number = restaurants.get(position).getWorkmatesNumber();
+
+        String text;
+        if (number > 0) {
+            text = "(" + number + ")";
+        } else {
+            text = "()";
+        }
+        workmatesNumber_tv.setText(text);
     }
 
     private void display_address(TextView address_tv, int position) {

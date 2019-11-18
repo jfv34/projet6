@@ -44,6 +44,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                         data.getRating(),
                         r.toLowerCase().contains(query.toLowerCase()),
                         restaurants.get(i).getIsOpenNow(),
+                        data.getWorkmatesNumber(),
                         data.getPlaceid()
                 ));
             }
@@ -75,8 +76,6 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
             });
         }
     }
-
-
 
     public String getUidFirebase() {
 

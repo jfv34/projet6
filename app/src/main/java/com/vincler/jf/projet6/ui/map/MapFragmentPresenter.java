@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -18,8 +17,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.vincler.jf.projet6.data.RestaurantsService;
-import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.models.restaurants.nearby.ListNearbyRestaurantResponse;
+import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurantResponse;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
@@ -97,10 +96,10 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                     int sizeRestaurantsData = response.body().results.size();
                     for (int i = 0; i < sizeRestaurantsData; i++) {
                         NearbyRestaurantResponse res = response.body().getResults().get(i);
-                        //Log.i("tag_restau",res.getPhoto());
-                        NearbyRestaurant restaurant = new NearbyRestaurant(res.getName(), res.getLatitude(), res.getLongitude(), res.getAddress(),
-
-                                res.getPhoto(), res.getRating(), true, res.getIsOpenNow(), res.getPlaceid());
+                        NearbyRestaurant restaurant = new NearbyRestaurant(res.getName(), res.getLatitude(),
+                                res.getLongitude(), res.getAddress(), res.getPhoto(), res.getRating(),
+                                true, res.getIsOpenNow(), getWorkmatesNumber(res.getPlaceid()),
+                                res.getPlaceid());
 
                         newRestaurants.add(i, restaurant);
                     }
@@ -113,6 +112,19 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                 t.printStackTrace();
             }
         });
+    }
+
+    private int getWorkmatesNumber(String placeid) {
+
+        /*UserFirebase.getUsersByRestaurantFavorite(placeid).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                int number = task.getResult().size();
+                return number;
+            }
+        });*/
+
+        return 0;
     }
 
     @Override

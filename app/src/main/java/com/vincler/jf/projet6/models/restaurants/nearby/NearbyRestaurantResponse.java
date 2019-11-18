@@ -83,6 +83,7 @@ public class NearbyRestaurantResponse {
         return address;
     }
 
+
     public String getPlaceid() {
         return placeid;
     }

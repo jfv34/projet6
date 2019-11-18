@@ -15,10 +15,12 @@ public class NearbyRestaurant implements Parcelable {
     private double rating;
     private boolean isVisible;
     private String  isOpenNowList;
+    private int workmatesNumber;
     private String placeid;
 
-    public NearbyRestaurant(String name, double latitude, double longitude, String address, String photo,
-                            Double rating, boolean isVisible, String isOpenNowList, String placeid) {
+    public NearbyRestaurant(String name, double latitude, double longitude, String address,
+                            String photo, Double rating, boolean isVisible, String isOpenNowList,
+                            int workmatesNumber, String placeid) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -27,6 +29,7 @@ public class NearbyRestaurant implements Parcelable {
         this.rating = rating;
         this.isVisible = isVisible;
         this.isOpenNowList = isOpenNowList;
+        this.workmatesNumber = workmatesNumber;
         this.placeid = placeid;
     }
 
@@ -39,6 +42,7 @@ public class NearbyRestaurant implements Parcelable {
         rating = in.readDouble();
         isVisible = in.readByte() != 0;
         isOpenNowList = in.readString();
+        workmatesNumber = in.readInt();
         placeid = in.readString();
     }
 
@@ -78,6 +82,9 @@ public class NearbyRestaurant implements Parcelable {
         return rating;
     }
 
+    public int getWorkmatesNumber() {
+        return workmatesNumber;
+    }
     public String getPlaceid() {
         return placeid;
     }
@@ -105,6 +112,7 @@ public class NearbyRestaurant implements Parcelable {
         dest.writeDouble(rating);
         dest.writeByte((byte) (isVisible ? 1 : 0));
         dest.writeString(isOpenNowList);
+        dest.writeInt(workmatesNumber);
         dest.writeString(placeid);
     }
 
