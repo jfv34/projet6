@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Go4Lunch</string>
+    <string name="connectActivity_toast_failed">échec de connexion</string>
+    <string name="connectActivity_toast_successful">connexion réussie</string>
+    <string name="customlayout_textlogo">Trouver un bon restaurant et inviter vos collègues pour déjeuner !</string>
+    <string name="dislike">JE N\'AIME PLUS</string>
+    <string name="drawer_item1">VOTRE DÉJEUNER</string>
+    <string name="drawer_item2">PARAMÈTRES</string>
+    <string name="drawer_item3">QUITTER</string>
+    <string name="ferme">FERMÉ</string>
+    <string name="hasntdecidedyet">n\'a pas encore décidé</string>
+    <string name="iseatingat">mange à</string>
+    <string name="isjoining">participe !</string>
+    <string name="like">J\'AIME</string>
+    <string name="menu_bottom_listview">Liste</string>
+    <string name="menu_bottom_map">Carte</string>
+    <string name="menu_bottom_workmates">Collègues</string>
+    <string name="navigation_drawer_close">Fermer le menu latéral</string>
+    <string name="navigation_drawer_open">Ouvrir le menu latéral</string>
+    <string name="ouvert">Ouvert</string>
+    <string name="title_hungry">J\'ai faim !</string>
+    <string name="website">SITE WEB</string>
+    <string name="call">APPELER</string>
+</resources>
