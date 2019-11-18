@@ -14,6 +14,7 @@ public interface MainActivityContract {
         void displayUserInformation(FirebaseUser user);
 
         void startLogin();
+
     }
 
     interface Presenter {

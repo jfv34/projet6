@@ -70,9 +70,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
         presenter.loadUser();
 
-
-
-
     }
 
     @Override
@@ -190,6 +187,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         }
     }
 
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
@@ -220,9 +218,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         data.addOnCompleteListener(task -> {
             if (data.getResult() != null) {
                 String restaurantDisplayedId = data.getResult().getData().get("restaurantFavoriteId").toString();
-                Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
-                intent.putExtra("restaurantDisplayedId", restaurantDisplayedId);
-                startActivity(intent);
+                if (!restaurantDisplayedId.equals("")) {
+                    Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
+                    intent.putExtra("restaurantDisplayedId", restaurantDisplayedId);
+                    startActivity(intent);
+                }
 
             }
         });
@@ -271,6 +271,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         Glide.with(this)
                 .load(user.getPhotoUrl())
                 .into(imageView);
+
+
     }
 
     @Override
@@ -323,5 +325,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     private void toast(int message) {
         Toast toast = Toast.makeText(this, getString(message), Toast.LENGTH_LONG);
         toast.show();
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
     }
 }

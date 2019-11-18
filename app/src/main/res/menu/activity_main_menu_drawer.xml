@@ -16,6 +16,7 @@
             <group android:checkableBehavior="single">
 
                 <item
+                    android:visible="false"
                     app:itemIconTint="#FFFFFF"
                     android:id="@+id/activity_main_drawer_1"
                     android:icon="@drawable/menu_restaurant"
