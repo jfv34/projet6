@@ -10,12 +10,18 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.vincler.jf.projet6.api.LikesFirebase;
+import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.restaurants.nearby.ListNearbyRestaurantResponse;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
@@ -97,7 +103,7 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                     for (int i = 0; i < sizeRestaurantsData; i++) {
                         NearbyRestaurantResponse res = response.body().getResults().get(i);
                         NearbyRestaurant restaurant = new NearbyRestaurant(res.getName(), res.getLatitude(),
-                                res.getLongitude(), res.getAddress(), res.getPhoto(), res.getRating(),
+                                res.getLongitude(), res.getAddress(), res.getPhoto(), getRating(res.getPlaceid()),
                                 true, res.getIsOpenNow(), getWorkmatesNumber(res.getPlaceid()),
                                 res.getPlaceid());
 
@@ -112,6 +118,18 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                 t.printStackTrace();
             }
         });
+    }
+
+    private Double getRating(String placeid) {
+
+       /* LikesFirebase.getUsersByRestaurantLike(placeid).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+
+            }
+        });*/
+        return 0.0;
     }
 
     private int getWorkmatesNumber(String placeid) {

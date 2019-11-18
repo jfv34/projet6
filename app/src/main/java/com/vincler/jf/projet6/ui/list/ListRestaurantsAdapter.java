@@ -35,6 +35,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
     private Context context;
     private List<NearbyRestaurant> restaurants;
     private TextView workmatesNumber_tv;
+    private ImageView workmates_iv;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ViewHolder(@NonNull View itemView) {
@@ -65,6 +66,7 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         TextView openingHours_tv = holder.itemView.findViewById(R.id.item_restaurant_opening_hours_tv);
         ImageView photo_iv = holder.itemView.findViewById(R.id.item_restaurant_photo_iv);
         workmatesNumber_tv = holder.itemView.findViewById(R.id.item_restaurant_numberOfWorkmates_tv);
+        workmates_iv = holder.itemView.findViewById(R.id.item_restaurant_workmates_iv);
         ImageView star1_iv = holder.itemView.findViewById(R.id.item_restaurant_star1_iv);
         ImageView star2_iv = holder.itemView.findViewById(R.id.item_restaurant_star2_iv);
         ImageView star3_iv = holder.itemView.findViewById(R.id.item_restaurant_star3_iv);
@@ -173,13 +175,13 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
         int number = restaurants.get(position).getWorkmatesNumber();
 
-        String text;
         if (number > 0) {
-            text = "(" + number + ")";
+            String text = "(" + number + ")";
+            workmatesNumber_tv.setText(text);
+            workmates_iv.setVisibility(View.VISIBLE);
         } else {
-            text = "()";
+            workmates_iv.setVisibility(View.INVISIBLE);
         }
-        workmatesNumber_tv.setText(text);
     }
 
     private void display_address(TextView address_tv, int position) {

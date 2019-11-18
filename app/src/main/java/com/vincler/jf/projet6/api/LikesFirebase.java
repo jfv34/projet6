@@ -42,6 +42,15 @@ public class LikesFirebase {
                 .get();
     }
 
+    // --- GET RESTAURANT BY LIKES ---
+
+    public static Task<QuerySnapshot> getUsersByRestaurantLike(String restaurantLikeId) {
+
+        return getLikeCollection()
+                .whereEqualTo("restaurant_uid", restaurantLikeId)
+                .get();
+    }
+
 
     public static void deleteLike(String user_uid, String restaurant_uid) {
         getLikeCollection()

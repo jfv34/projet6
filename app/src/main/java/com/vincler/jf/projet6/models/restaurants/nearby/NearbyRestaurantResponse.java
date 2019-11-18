@@ -104,9 +104,4 @@ public class NearbyRestaurantResponse {
         }
         return "";
     }
-
-
-    public Double getRating() {
-        return rating;
-    }
 }
