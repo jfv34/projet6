@@ -9,7 +9,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.api.UserFirebase;
+import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
+import com.vincler.jf.projet6.ui.SharedData;
 
 import java.util.ArrayList;
 
@@ -62,18 +64,29 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         if (firebaseUser == null) {
             view.startLogin();
         } else {
-            view.displayUserInformation(firebaseUser);
-
             Task<DocumentSnapshot> u = UserFirebase.getUser(firebaseUser.getUid());
             u.addOnCompleteListener(task -> {
+                DocumentSnapshot result = task.getResult();
 
-                if (u.getResult().getData()== null) {
+                if (result.getData()== null) {
 
                     UserFirebase.createUser(firebaseUser.getUid(), firebaseUser.getDisplayName(),
                             firebaseUser.getEmail(),
                             firebaseUser.getPhoneNumber(),
                             firebaseUser.getPhotoUrl().toString()
                     );
+                }else {
+                    User user = new User(
+                            result.getString("uid"),
+                            result.getString("username"),
+                            result.getString("email"),
+                            result.getString("phoneNumber"),
+                            result.getString("restaurantFavoriteId"),
+                            result.getString("restaurantFavoriteName"),
+                            result.getString("photoUserUrl"));
+
+                    view.displayUserInformation(user);
+                    SharedData.hasRestaurantFavorited.setValue(user.getRestaurantFavoriteId() != null && !user.getRestaurantFavoriteId().isEmpty());
                 }
             });
         }

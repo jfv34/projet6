@@ -98,6 +98,7 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
             @Override
             public void onResponse(Call<ListNearbyRestaurantResponse> call, Response<ListNearbyRestaurantResponse> response) {
                 if (!response.body().getResults().isEmpty()) {
+
                     ArrayList newRestaurants = new ArrayList();
                     int sizeRestaurantsData = response.body().results.size();
                     for (int i = 0; i < sizeRestaurantsData; i++) {

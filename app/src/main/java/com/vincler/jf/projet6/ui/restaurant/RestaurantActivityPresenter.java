@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.LikesFirebase;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
@@ -20,6 +21,7 @@ import com.vincler.jf.projet6.models.restaurants.details.Details;
 import com.vincler.jf.projet6.models.restaurants.details.DetailsRestaurantResponse;
 import com.vincler.jf.projet6.models.restaurants.details.ResultDetailsResponse;
 import com.vincler.jf.projet6.notifications.NotificationsWorker;
+import com.vincler.jf.projet6.ui.SharedData;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
 import java.text.SimpleDateFormat;
@@ -44,8 +46,8 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     private RestaurantActivityContract.View view;
     private String restaurantDisplayedId;
     private Details details;
-    private boolean isFavorited = false;
     private boolean isLiked = false;
+    private boolean isFavorited = false;
 
     private Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("https://maps.googleapis.com/maps/api/place/")
@@ -100,8 +102,9 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
             UserFirebase.updateRestaurantFavoriteName(details.getName(), getUserID());
             scheduleNotification();
         }
-        isFavorited = !isFavorited;
+        isFavorited =! isFavorited;
         view.displayFavorite(isFavorited);
+
         loadUsers();
     }
 
@@ -214,7 +217,7 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         int size = task.getResult().size();
         String workmatesListText = getWorkmatesListText(task);
         StringBuilder message = new StringBuilder();
-        message.append("Vous avez choisi de déjeuner aujourd'hui au restaurant");
+        message.append(R.string.notification);
         message.append(" ");
         message.append(details.getName());
         message.append(" ");

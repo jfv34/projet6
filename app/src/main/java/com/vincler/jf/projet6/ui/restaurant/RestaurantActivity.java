@@ -72,6 +72,7 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         presenter.loadUsers();
     }
 
+
     private void clickWebSite() {
         Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(presenter.getWebSite()));
         startActivity(intent);

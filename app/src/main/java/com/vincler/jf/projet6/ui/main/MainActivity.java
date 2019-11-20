@@ -21,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.lifecycle.Observer;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -32,6 +33,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
+import com.vincler.jf.projet6.models.User;
+import com.vincler.jf.projet6.ui.SharedData;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 import com.vincler.jf.projet6.ui.workmates.WorkmatesFragment;
 
@@ -229,9 +232,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     private void drawerLayout() {
+
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        SharedData.hasRestaurantFavorited.observe(this, aBoolean ->
+                navigationView.getMenu().getItem(0).setVisible(aBoolean));
     }
 
     private void navigationView() {
@@ -259,17 +266,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     @Override
-    public void displayUserInformation(FirebaseUser user) {
+    public void displayUserInformation(User user) {
         View headerLayout = navigationView.inflateHeaderView(R.layout.activity_main_nav_header);
 
         TextView viewName = headerLayout.findViewById(R.id.nav_header_name_and_surname_tv);
         TextView viewMail = headerLayout.findViewById(R.id.nav_header_mail_tv);
         ImageView imageView = headerLayout.findViewById(R.id.nav_header_iv);
 
-        viewName.setText(user.getDisplayName());
+        viewName.setText(user.getUsername());
         viewMail.setText(user.getEmail());
         Glide.with(this)
-                .load(user.getPhotoUrl())
+                .load(user.getPhotoUserUrl())
                 .into(imageView);
 
 

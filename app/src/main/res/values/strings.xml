@@ -30,5 +30,6 @@
     <string name="iseatingat">is eating at</string>
     <string name="call">CALL</string>
     <string name="website">WEBSITE</string>
+    <string name="notification">Vous avez choisi de déjeuner aujourd\'hui au restaurant %1$s situé %2$s. %3$s</string>
 
 </resources>
