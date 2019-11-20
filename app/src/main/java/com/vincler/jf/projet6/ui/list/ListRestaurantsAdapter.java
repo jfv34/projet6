@@ -22,7 +22,6 @@ import com.bumptech.glide.Glide;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
-import com.vincler.jf.projet6.utils.ConstantsUtils;
 
 import java.util.List;
 
@@ -30,8 +29,6 @@ import static com.vincler.jf.projet6.utils.DistanceUtils.calculateDistance;
 
 public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurantsAdapter.ViewHolder> {
 
-    private static final int WIDTH_PHOTO = 50;
-    private static final String API_KEY = ConstantsUtils.API_KEY;
     private Context context;
     private List<NearbyRestaurant> restaurants;
     private TextView workmatesNumber_tv;
@@ -133,7 +130,6 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
 
         String url = restaurants.get(position).getMapsPhotoUrl();
         Glide.with(context).load(url).dontTransform().into(photo_iv);
-
     }
 
     private void display_rating(
