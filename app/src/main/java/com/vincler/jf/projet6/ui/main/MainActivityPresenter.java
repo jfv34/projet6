@@ -70,7 +70,9 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
                 if (result.getData()== null) {
 
-                    UserFirebase.createUser(firebaseUser.getUid(), firebaseUser.getDisplayName(),
+                    UserFirebase.createUser(
+                            firebaseUser.getUid(),
+                            firebaseUser.getDisplayName(),
                             firebaseUser.getEmail(),
                             firebaseUser.getPhoneNumber(),
                             firebaseUser.getPhotoUrl().toString()

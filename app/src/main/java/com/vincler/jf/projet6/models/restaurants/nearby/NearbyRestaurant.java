@@ -97,6 +97,10 @@ public class NearbyRestaurant implements Parcelable {
         return isOpenNowList;
     }
 
+    public void setWorkmatesNumber(int workmatesNumber) {
+        this.workmatesNumber = workmatesNumber;
+    }
+
     @Override
     public int describeContents() {
         return 0;

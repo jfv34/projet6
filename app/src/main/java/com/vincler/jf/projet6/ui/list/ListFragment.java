@@ -41,6 +41,11 @@ public class ListFragment extends Fragment {
     }
 
     private void displayRestaurants(ArrayList<NearbyRestaurant> restaurants) {
+
+        // todo number of workmates in restaurants.get(i).
+        // restaurants.get(i).setWorkmatesNumber(x);
+
+
         if (!restaurants.isEmpty()) {
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());

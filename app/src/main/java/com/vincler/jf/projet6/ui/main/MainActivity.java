@@ -188,7 +188,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         }
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
