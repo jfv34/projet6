@@ -174,8 +174,10 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         if (number > 0) {
             String text = "(" + number + ")";
             workmatesNumber_tv.setText(text);
+            workmatesNumber_tv.setVisibility(View.VISIBLE);
             workmates_iv.setVisibility(View.VISIBLE);
         } else {
+            workmatesNumber_tv.setVisibility(View.INVISIBLE);
             workmates_iv.setVisibility(View.INVISIBLE);
         }
     }

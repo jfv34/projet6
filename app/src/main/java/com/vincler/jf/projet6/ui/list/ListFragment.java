@@ -17,9 +17,10 @@ import com.vincler.jf.projet6.ui.main.MainActivity;
 
 import java.util.ArrayList;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements ListFragmentContract.View {
 
     private RecyclerView recyclerView;
+    public ListFragmentContract.Presenter presenter = new ListFragmentPresenter(this);
 
     public static ListFragment newInstance() {
         return new ListFragment();
@@ -37,21 +38,20 @@ public class ListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((MainActivity) getActivity()).presenter.getLiveData().observe(this, restaurants -> displayRestaurants(restaurants));
+        ((MainActivity) getActivity()).presenter.getLiveData().observe(this, restaurants
+                -> presenter.setWorkmatesByRestaurant(restaurants));
     }
 
-    private void displayRestaurants(ArrayList<NearbyRestaurant> restaurants) {
-
-        // todo number of workmates in restaurants.get(i).
-        // restaurants.get(i).setWorkmatesNumber(x);
-
+    public void displayRestaurants(ArrayList<NearbyRestaurant> restaurants) {
 
         if (!restaurants.isEmpty()) {
+
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
             RecyclerView.Adapter adapter = new ListRestaurantsAdapter(restaurants);
             recyclerView.setAdapter(adapter);
         }
+
     }
 }

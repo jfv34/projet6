@@ -64,7 +64,7 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
         item_workmates.setOnClickListener(v -> {
             String restaurantClicked = users.get(position).getRestaurantFavoriteId();
             if (!restaurantClicked.isEmpty()) {
-                restaurantActivityIntent(position, restaurantClicked);
+                restaurantActivityIntent(restaurantClicked);
             }
 
         });
@@ -113,9 +113,8 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
         }
     }
 
-    private void restaurantActivityIntent(int position, String restaurantDisplayedId) {
+    private void restaurantActivityIntent(String restaurantDisplayedId) {
 
-        Log.i("tag_restaurantIntent", "click");
         Intent intent = new Intent(context.getApplicationContext(), RestaurantActivity.class);
         intent.putExtra("restaurantDisplayedId", restaurantDisplayedId);
 
