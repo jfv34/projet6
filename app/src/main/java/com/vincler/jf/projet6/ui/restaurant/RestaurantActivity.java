@@ -3,7 +3,7 @@ package com.vincler.jf.projet6.ui.restaurant;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vincler.jf.projet6.R;
-import com.vincler.jf.projet6.models.restaurants.details.Details;
 import com.vincler.jf.projet6.models.User;
+import com.vincler.jf.projet6.models.restaurants.details.Details;
 import com.vincler.jf.projet6.utils.IntentUtils;
 
 import java.util.ArrayList;
@@ -66,7 +66,8 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
 */
         presenter = new RestaurantActivityPresenter(
                 this,
-                getIntent().getStringExtra("restaurantDisplayedId")
+                getIntent().getStringExtra("restaurantDisplayedId"),
+                getIntent().getIntExtra("restaurantStars", 0)
         );
         presenter.loadDetails();
         presenter.loadUsers();
@@ -106,6 +107,26 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
 
         displayLike(details.isLiked());
         displayFavorite(details.isFavorited());
+        displayStars(details.getStars());
+    }
+
+    private void displayStars(int stars) {
+        ImageView star1_iv = findViewById(R.id.activity_restaurant_star1_iv);
+        ImageView star2_iv = findViewById(R.id.activity_restaurant_star2_iv);
+        ImageView star3_iv = findViewById(R.id.activity_restaurant_star3_iv);
+
+        star1_iv.setVisibility(View.INVISIBLE);
+        star2_iv.setVisibility(View.INVISIBLE);
+        star3_iv.setVisibility(View.INVISIBLE);
+
+        switch (stars) {
+            case 3:
+                star3_iv.setVisibility(View.VISIBLE);
+            case 2:
+                star2_iv.setVisibility(View.VISIBLE);
+            case 1:
+                star1_iv.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

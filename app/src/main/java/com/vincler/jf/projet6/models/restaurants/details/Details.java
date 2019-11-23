@@ -10,8 +10,10 @@ public class Details {
     private boolean isFavorited;
     private String phoneNumber;
     private String webSite;
+    private int stars;
 
-    public Details(String name, String address, String photo, boolean isLiked, boolean isFavorited, String phoneNumber, String webSite) {
+    public Details(String name, String address, String photo, boolean isLiked, boolean isFavorited,
+                   String phoneNumber, String webSite, int stars) {
         this.name = name;
         this.address = address;
         this.photo = photo;
@@ -19,6 +21,7 @@ public class Details {
         this.isFavorited = isFavorited;
         this.phoneNumber = phoneNumber;
         this.webSite = webSite;
+        this.stars = stars;
     }
 
     public String getName() {
@@ -44,31 +47,20 @@ public class Details {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
     public String getWebSite() {
         return webSite;
     }
 
-    public void setWebSite(String webSite) {
-        this.webSite = webSite;
+    public int getStars() {
+        return stars;
     }
 
     public boolean isFavorited() {
         return isFavorited;
     }
 
-    public void setFavorited(boolean favorited) {
-        isFavorited = favorited;
-    }
-
     public boolean isLiked() {
         return isLiked;
     }
 
-    public void setLiked(boolean liked) {
-        isLiked = liked;
-    }
 }

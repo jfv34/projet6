@@ -45,6 +45,7 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
     private RestaurantActivityContract.View view;
     private String restaurantDisplayedId;
+    private int restaurantStars;
     private Details details;
     private boolean isLiked = false;
     private boolean isFavorited = false;
@@ -63,9 +64,11 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     private RestaurantsService service = retrofit.create(RestaurantsService.class);
 
 
-    public RestaurantActivityPresenter(RestaurantActivityContract.View view, String restaurantDisplayedId) {
+    public RestaurantActivityPresenter(RestaurantActivityContract.View view, String restaurantDisplayedId,
+                                       int restaurantStars) {
         this.view = view;
         this.restaurantDisplayedId = restaurantDisplayedId;
+        this.restaurantStars = restaurantStars;
     }
 
     @Override
@@ -142,7 +145,9 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
                                         isLiked,
                                         isFavorited,
                                         result.getPhoneNumber(),
-                                        result.getWebSite());
+                                        result.getWebSite(),
+                                        restaurantStars
+                                );
                                 view.displayDetails(details);
                                 view.displayRestaurant(details);
                             }
