@@ -22,4 +22,8 @@
     <string name="title_hungry">J\'ai faim !</string>
     <string name="website">SITE WEB</string>
     <string name="call">APPELER</string>
+    <string name="notification">Vous avez choisi de déjeuner aujourd\'hui au restaurant %1$s situated %2$s. %3$s+%4$\".\" +\".\"</string>
+    <string name="beginSecondSentence1">Aucun autre oollègue n\\\'a prévu d\\\'y déjeuner</string>
+    <string name="beginSecondSentence2">Une autre personne a prévu d\'y déjeuner:</string>
+    <string name="beginSecondSentence3">Les autres personnes qui ont prévu d\'y déjeuner sont:</string>
 </resources>

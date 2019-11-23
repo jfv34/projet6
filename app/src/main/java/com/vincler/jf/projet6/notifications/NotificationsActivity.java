@@ -21,13 +21,6 @@ public class NotificationsActivity extends AppCompatActivity {
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Task<DocumentSnapshot> user = UserFirebase.getUser(uid);
-        user.addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                restaurantFavoriteName = task.getResult().get("RestaurantFavoriteName").toString();
-            }
-        });
-
-        Log.i("tag_restaurant_","notif: "+restaurantFavoriteName);
+        user.addOnCompleteListener(task -> restaurantFavoriteName = task.getResult().get("RestaurantFavoriteName").toString());
     }
 }

@@ -65,7 +65,7 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
             }});
 */
         presenter = new RestaurantActivityPresenter(
-                this,
+                this,this,
                 getIntent().getStringExtra("restaurantDisplayedId"),
                 getIntent().getIntExtra("restaurantStars", 0)
         );

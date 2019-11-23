@@ -30,6 +30,10 @@
     <string name="iseatingat">is eating at</string>
     <string name="call">CALL</string>
     <string name="website">WEBSITE</string>
-    <string name="notification">Vous avez choisi de déjeuner aujourd\'hui au restaurant %1$s situé %2$s. %3$s</string>
+    <string name="notification">You have chosen to have lunch today at the restaurant %1$s
+        situé %2$s. %3$s %4$s"."</string>
+    <string name="beginSecondSentence1">No other club has planned to have lunch there</string>
+    <string name="beginSecondSentence2">Another person has planned to lunch there:</string>
+    <string name="beginSecondSentence3">Other people who have planned to have lunch there are:</string>
 
 </resources>

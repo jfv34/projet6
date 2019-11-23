@@ -1,5 +1,6 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -43,6 +44,7 @@ import static com.vincler.jf.projet6.utils.ConstantsUtils.NOTIFICATION_MINUTES;
 
 public class RestaurantActivityPresenter implements RestaurantActivityContract.Presenter {
 
+    private Context context;
     private RestaurantActivityContract.View view;
     private String restaurantDisplayedId;
     private int restaurantStars;
@@ -64,8 +66,9 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     private RestaurantsService service = retrofit.create(RestaurantsService.class);
 
 
-    public RestaurantActivityPresenter(RestaurantActivityContract.View view, String restaurantDisplayedId,
+    public RestaurantActivityPresenter(Context context, RestaurantActivityContract.View view, String restaurantDisplayedId,
                                        int restaurantStars) {
+        this.context = context;
         this.view = view;
         this.restaurantDisplayedId = restaurantDisplayedId;
         this.restaurantStars = restaurantStars;
@@ -221,33 +224,34 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     }
 
     private String getNotificationText(Task<QuerySnapshot> task) {
+
+        String name = details.getName();
+        String address = details.getAddress();
+        String workmatesListText = " " + getWorkmatesListText(task);
         int size = task.getResult().size();
-        String workmatesListText = getWorkmatesListText(task);
-        StringBuilder message = new StringBuilder();
-        message.append(R.string.notification);
-        message.append(" ");
-        message.append(details.getName());
-        message.append(" ");
-        message.append("situé");
-        message.append(" ");
-        message.append(details.getAddress());
-        message.append(". ");
+        String beginSecondSentence = getBeginSecondSentence(size);
+
+        //Resources res = context.getResources();
+      /*  String message = String.format(R.string.notification, name, address, beginSecondSentence, workmatesListText));
+        Log.i("tag_message ", message);
+        return message;*/
+        return "error";
+
+    }
+
+    private String getBeginSecondSentence(int size) {
+
+        String beginSecondSentence = "";
         if (size == 1) {
-            message.append("Aucun autre oollègue n'a prévu d'y déjeuner");
+            beginSecondSentence = context.getString(R.string.beginSecondSentence1);
         }
         if (size == 2) {
-            message.append("Une autre personne a prévu d'y déjeuner:");
+            beginSecondSentence = context.getString(R.string.beginSecondSentence2);
         }
         if (size > 2) {
-            message.append("Les autres personnes qui ont prévu d'y déjeuner sont:");
+            beginSecondSentence = context.getString(R.string.beginSecondSentence3);
         }
-        if (size > 1) {
-            message.append(" ");
-            message.append(workmatesListText);
-        }
-        message.append(".");
-
-        return message.toString();
+        return beginSecondSentence;
     }
 
     private String getWorkmatesListText(Task<QuerySnapshot> task) {
