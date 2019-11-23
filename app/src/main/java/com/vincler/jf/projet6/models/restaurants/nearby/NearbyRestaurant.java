@@ -12,21 +12,21 @@ public class NearbyRestaurant implements Parcelable {
     private double longitude;
     private String address;
     private String photo;
-    private double rating;
+    private int stars;
     private boolean isVisible;
     private String  isOpenNowList;
     private int workmatesNumber;
     private String placeid;
 
     public NearbyRestaurant(String name, double latitude, double longitude, String address,
-                            String photo, Double rating, boolean isVisible, String isOpenNowList,
+                            String photo, int stars, boolean isVisible, String isOpenNowList,
                             int workmatesNumber, String placeid) {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.address = address;
         this.photo = photo;
-        this.rating = rating;
+        this.stars = stars;
         this.isVisible = isVisible;
         this.isOpenNowList = isOpenNowList;
         this.workmatesNumber = workmatesNumber;
@@ -39,7 +39,7 @@ public class NearbyRestaurant implements Parcelable {
         longitude = in.readDouble();
         address = in.readString();
         photo = in.readString();
-        rating = in.readDouble();
+        stars = in.readInt();
         isVisible = in.readByte() != 0;
         isOpenNowList = in.readString();
         workmatesNumber = in.readInt();
@@ -78,8 +78,8 @@ public class NearbyRestaurant implements Parcelable {
         return photo;
     }
 
-    public double getRating() {
-        return rating;
+    public int getStars() {
+        return stars;
     }
 
     public int getWorkmatesNumber() {
@@ -101,6 +101,10 @@ public class NearbyRestaurant implements Parcelable {
         this.workmatesNumber = workmatesNumber;
     }
 
+    public void setStarsNumber(int stars) {
+        this.stars = stars;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -113,7 +117,7 @@ public class NearbyRestaurant implements Parcelable {
         dest.writeDouble(longitude);
         dest.writeString(address);
         dest.writeString(photo);
-        dest.writeDouble(rating);
+        dest.writeInt(stars);
         dest.writeByte((byte) (isVisible ? 1 : 0));
         dest.writeString(isOpenNowList);
         dest.writeInt(workmatesNumber);

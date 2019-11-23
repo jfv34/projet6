@@ -67,12 +67,10 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
         ImageView star1_iv = holder.itemView.findViewById(R.id.item_restaurant_star1_iv);
         ImageView star2_iv = holder.itemView.findViewById(R.id.item_restaurant_star2_iv);
         ImageView star3_iv = holder.itemView.findViewById(R.id.item_restaurant_star3_iv);
-        ImageView star4_iv = holder.itemView.findViewById(R.id.item_restaurant_star4_iv);
-        ImageView star5_iv = holder.itemView.findViewById(R.id.item_restaurant_star5_iv);
 
         display_name(name_tv, position);
         display_address(address_tv, position);
-        display_rating(star1_iv, star2_iv, star3_iv, star4_iv, star5_iv, position);
+        display_rating(star1_iv, star2_iv, star3_iv, position);
         display_photo(photo_iv, position);
         display_opening(openingHours_tv, position);
         display_distance(distance_tv, position, location.getLatitude(), location.getLongitude());
@@ -136,23 +134,22 @@ public class ListRestaurantsAdapter extends RecyclerView.Adapter<ListRestaurants
             ImageView star1_iv,
             ImageView star2_iv,
             ImageView star3_iv,
-            ImageView star4_iv,
-            ImageView star5_iv,
             int position
     ) {
-        int ra = (int) restaurants.get(position).getRating();
+        int ra = restaurants.get(position).getStars();
+
+        star1_iv.setVisibility(View.INVISIBLE);
+        star2_iv.setVisibility(View.INVISIBLE);
+        star3_iv.setVisibility(View.INVISIBLE);
 
         switch (ra) {
-            case 0:
-                star1_iv.setVisibility(View.INVISIBLE);
-            case 1:
-                star2_iv.setVisibility(View.INVISIBLE);
-            case 2:
-                star3_iv.setVisibility(View.INVISIBLE);
             case 3:
-                star4_iv.setVisibility(View.INVISIBLE);
-            case 4:
-                star5_iv.setVisibility(View.INVISIBLE);
+                star3_iv.setVisibility(View.VISIBLE);
+            case 2:
+                star2_iv.setVisibility(View.VISIBLE);
+            case 1:
+                star1_iv.setVisibility(View.VISIBLE);
+
         }
     }
 

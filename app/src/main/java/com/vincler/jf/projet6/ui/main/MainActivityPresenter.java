@@ -45,7 +45,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                         data.getLongitude(),
                         data.getAddress(),
                         data.getPhoto(),
-                        data.getRating(),
+                        data.getStars(),
                         r.toLowerCase().contains(query.toLowerCase()),
                         restaurants.get(i).getIsOpenNow(),
                         data.getWorkmatesNumber(),

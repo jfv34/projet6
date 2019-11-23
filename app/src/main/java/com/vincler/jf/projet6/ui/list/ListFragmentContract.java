@@ -14,5 +14,7 @@ public interface ListFragmentContract {
     interface Presenter {
 
         void setWorkmatesByRestaurant(ArrayList<NearbyRestaurant> restaurants);
+
+        void setRating(ArrayList<NearbyRestaurant> restaurants);
     }
 }

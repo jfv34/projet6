@@ -33,7 +33,15 @@ public class LikesFirebase {
         return LikesFirebase.getLikeCollection().document(alea).set(userToCreate);
     }
 
-    // --- GET ---
+    // --- GET LIKES ---
+
+    public static Task<QuerySnapshot> getLikes(){
+        return LikesFirebase.getLikeCollection()
+                .get();
+    }
+
+
+    // --- GET LIKES FOR RESTAURANT ---
 
     public static Task<QuerySnapshot> getLikeForRestaurant(String user_uid, String restaurant_uid) {
         return LikesFirebase.getLikeCollection()

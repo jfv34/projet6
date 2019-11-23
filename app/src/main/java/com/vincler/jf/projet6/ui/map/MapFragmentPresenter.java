@@ -104,8 +104,8 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                     for (int i = 0; i < sizeRestaurantsData; i++) {
                         NearbyRestaurantResponse res = response.body().getResults().get(i);
                         NearbyRestaurant restaurant = new NearbyRestaurant(res.getName(), res.getLatitude(),
-                                res.getLongitude(), res.getAddress(), res.getPhoto(), getRating(res.getPlaceid()),
-                                true, res.getIsOpenNow(), getWorkmatesNumber(res.getPlaceid()),
+                                res.getLongitude(), res.getAddress(), res.getPhoto(), 0,
+                                true, res.getIsOpenNow(), 0,
                                 res.getPlaceid());
 
                         newRestaurants.add(i, restaurant);
@@ -119,31 +119,6 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                 t.printStackTrace();
             }
         });
-    }
-
-    private Double getRating(String placeid) {
-
-       /* LikesFirebase.getUsersByRestaurantLike(placeid).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-
-            }
-        });*/
-        return 0.0;
-    }
-
-    private int getWorkmatesNumber(String placeid) {
-
-        /*UserFirebase.getUsersByRestaurantFavorite(placeid).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                int number = task.getResult().size();
-                return number;
-            }
-        });*/
-
-        return 0;
     }
 
     @Override
