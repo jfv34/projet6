@@ -32,6 +32,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.User;
+import com.vincler.jf.projet6.ui.SettingsFragment;
 import com.vincler.jf.projet6.ui.SharedData;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 import com.vincler.jf.projet6.ui.workmates.WorkmatesFragment;
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         toolbar = findViewById(R.id.toolbar);
         customEditText = findViewById(R.id.toolbar_customEditText);
         searchButton = findViewById(R.id.toolbar_searchButton_imButton);
-        drawerLayout = findViewById(R.id.fragment_map_drawer_layout);
+        drawerLayout = findViewById(R.id.activity_main);
         navigationView = findViewById(R.id.nav_view);
 
         configureViews();
@@ -197,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                 restaurantActivityIntent();
                 break;
             case R.id.activity_main_drawer_2:
+                settingsFragmentIntent();
 
                 break;
             case R.id.activity_main_drawer_3:
@@ -208,6 +210,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         drawerLayout.closeDrawer(GravityCompat.START);
 
         return true;
+    }
+
+    private void settingsFragmentIntent() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_main, new SettingsFragment())
+                .commit();
     }
 
     private void restaurantActivityIntent() {
