@@ -232,7 +232,8 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         String beginSecondSentence = getBeginSecondSentence(size);
 
         //Resources res = context.getResources();
-      /*  String message = String.format(R.string.notification, name, address, beginSecondSentence, workmatesListText));
+
+    /*    String message = String.format(R.string.notification, name, address, beginSecondSentence, workmatesListText));
         Log.i("tag_message ", message);
         return message;*/
         return "error";

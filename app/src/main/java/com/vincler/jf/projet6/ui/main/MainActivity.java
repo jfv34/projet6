@@ -32,6 +32,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.User;
+import com.vincler.jf.projet6.ui.SettingActivity;
 import com.vincler.jf.projet6.ui.SettingsFragment;
 import com.vincler.jf.projet6.ui.SharedData;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         displayToolbar();
 
         presenter.loadUser();
-
     }
 
     @Override
@@ -213,10 +213,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     private void settingsFragmentIntent() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.activity_main, new SettingsFragment())
-                .commit();
+
+        Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+        startActivity(intent);
+
+
+
     }
 
     private void restaurantActivityIntent() {
