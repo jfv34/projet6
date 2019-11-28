@@ -198,7 +198,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
     private void scheduleNotification() {
 
-
         UserFirebase.getUsersByRestaurantFavorite(restaurantDisplayedId).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -231,12 +230,12 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         int size = task.getResult().size();
         String beginSecondSentence = getBeginSecondSentence(size);
 
-        //Resources res = context.getResources();
+       return context.getResources().getString(R.string.notification,name, address, beginSecondSentence, workmatesListText);
 
     /*    String message = String.format(R.string.notification, name, address, beginSecondSentence, workmatesListText));
         Log.i("tag_message ", message);
         return message;*/
-        return "error";
+
 
     }
 

@@ -1,5 +1,7 @@
 package com.vincler.jf.projet6.ui.main;
 
+import android.widget.ProgressBar;
+
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.Task;
@@ -57,6 +59,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     @Override
     public void loadUser() {
+
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         if (firebaseUser == null) {

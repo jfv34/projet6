@@ -15,7 +15,7 @@ public class SettingActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .attach(new SettingsFragment())
+                .add(R.id.preferences,new SettingsFragment())
                 .commit();
     }
 }

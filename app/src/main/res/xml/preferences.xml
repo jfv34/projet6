@@ -2,15 +2,10 @@
 
     <PreferenceCategory android:title="preferencesCategory">
 
-        <Preference
+        <SwitchPreference
             android:key="preference1"
             android:summary="summary_preference1"
             android:title="preference1" />
-
-        <Preference
-            android:key="preference2"
-            android:summary="summary_preference2"
-            android:title="preference2" />
 
     </PreferenceCategory>
 

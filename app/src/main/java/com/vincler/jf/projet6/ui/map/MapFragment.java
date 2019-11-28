@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -76,9 +77,7 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
         });
     }
 
-
     private void markers(double latitude, double longitude, String restaurantId) {
-
 
         Task<QuerySnapshot> data = UserFirebase.getUsers();
 
