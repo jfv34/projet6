@@ -1,11 +1,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="preferencesCategory">
+    <PreferenceCategory android:title="">
 
         <SwitchPreference
-            android:key="preference1"
-            android:summary="summary_preference1"
-            android:title="preference1" />
+            android:key="notifications"
+            android:summary=""
+            android:title="Notifications" />
 
     </PreferenceCategory>
 

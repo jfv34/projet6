@@ -216,8 +216,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
         startActivity(intent);
 
-
-
     }
 
     private void restaurantActivityIntent() {

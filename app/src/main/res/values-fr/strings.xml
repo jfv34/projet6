@@ -26,4 +26,5 @@
     <string name="beginSecondSentence1">Aucun autre oollègue n\'a prévu d\'y déjeuner</string>
     <string name="beginSecondSentence2">Une autre personne a prévu d\'y déjeuner:</string>
     <string name="beginSecondSentence3">Les autres personnes qui ont prévu d\'y déjeuner sont:</string>
+    <string name="preferences_summary_notifications">autoriser ou non les notifications</string>
 </resources>

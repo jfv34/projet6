@@ -75,7 +75,7 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
 
         Thread thread = new Thread(() -> {
             try {
-                Thread.sleep(200);
+                Thread.sleep(300);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
