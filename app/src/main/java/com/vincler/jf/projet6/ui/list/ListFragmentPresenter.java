@@ -72,7 +72,6 @@ public class ListFragmentPresenter implements ListFragmentContract.Presenter {
                 }
                 if (likeRate > RATE_FOR_ONE_STARS) {
                     stars++;
-                    Log.i("tag_stars ", String.valueOf(likeRate));
                 }
 
                 restaurants.get(rest).setStarsNumber(stars);

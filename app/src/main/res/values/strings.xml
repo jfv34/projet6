@@ -36,5 +36,6 @@
     <string name="beginSecondSentence2">Another person has planned to lunch there:</string>
     <string name="beginSecondSentence3">Other people who have planned to have lunch there are:</string>
     <string name="preferences_summary_notifications">enable or disable notifications</string>
+    <string name="settings_notifications_summary">To receive at 12 o\'clock a reminder of your lunch.</string>
 
 </resources>

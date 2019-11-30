@@ -12,7 +12,6 @@ import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.utils.ConstantsUtils;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-    private SwitchPreference switchPreference;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -21,7 +20,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         Context context = getActivity();
         SharedPreferences sharedPref = context.getSharedPreferences(
                 ConstantsUtils.SHAREDPREFERENCES_SETTINGS, Context.MODE_PRIVATE);
-        switchPreference = getPreferenceScreen().findPreference("notifications");
+        SwitchPreference switchPreference = getPreferenceScreen().findPreference("notifications");
         if (switchPreference != null) {
 
             switchPreference.setOnPreferenceChangeListener((preference, newValue) -> {

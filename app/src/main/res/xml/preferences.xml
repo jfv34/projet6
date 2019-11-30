@@ -4,7 +4,7 @@
 
         <SwitchPreference
             android:key="notifications"
-            android:summary=""
+            android:summary="@string/settings_notifications_summary"
             android:title="Notifications" />
 
     </PreferenceCategory>
