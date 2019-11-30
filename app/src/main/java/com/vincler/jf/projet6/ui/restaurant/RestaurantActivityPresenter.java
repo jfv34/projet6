@@ -1,6 +1,7 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import com.vincler.jf.projet6.models.restaurants.details.DetailsRestaurantRespon
 import com.vincler.jf.projet6.models.restaurants.details.ResultDetailsResponse;
 import com.vincler.jf.projet6.notifications.NotificationsWorker;
 import com.vincler.jf.projet6.ui.SharedData;
+import com.vincler.jf.projet6.utils.ConstantsUtils;
 import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
 import java.text.SimpleDateFormat;
@@ -45,6 +47,7 @@ import static com.vincler.jf.projet6.utils.ConstantsUtils.NOTIFICATION_MINUTES;
 public class RestaurantActivityPresenter implements RestaurantActivityContract.Presenter {
 
     private Context context;
+    private SharedPreferences sharedPref;
     private RestaurantActivityContract.View view;
     private String restaurantDisplayedId;
     private int restaurantStars;
@@ -72,6 +75,10 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         this.view = view;
         this.restaurantDisplayedId = restaurantDisplayedId;
         this.restaurantStars = restaurantStars;
+
+        sharedPref = context.getSharedPreferences(
+                ConstantsUtils.SHAREDPREFERENCES_SETTINGS, Context.MODE_PRIVATE);
+
     }
 
     @Override
@@ -108,12 +115,21 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
             UserFirebase.updateRestaurantFavoriteId(restaurantDisplayedId, getUserID());
             UserFirebase.updateRestaurantFavoriteName(details.getName(), getUserID());
             SharedData.hasRestaurantFavorited.postValue(true);
-            scheduleNotification();
+
+            boolean setting_notifications = get_Setting_notifications();
+            if (setting_notifications) {
+                scheduleNotification();
+            }
         }
         isFavorited =! isFavorited;
         view.displayFavorite(isFavorited);
 
         loadUsers();
+    }
+
+    private boolean get_Setting_notifications() {
+
+        return sharedPref.getBoolean("notifications", true);
     }
 
     private String getUserID() {

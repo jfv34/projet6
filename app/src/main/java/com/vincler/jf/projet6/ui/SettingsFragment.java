@@ -1,14 +1,15 @@
 package com.vincler.jf.projet6.ui;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceViewHolder;
 import androidx.preference.SwitchPreference;
-import androidx.preference.SwitchPreferenceCompat;
 
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.utils.ConstantsUtils;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
     private SwitchPreference switchPreference;
@@ -17,13 +18,16 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
 
+        Context context = getActivity();
+        SharedPreferences sharedPref = context.getSharedPreferences(
+                ConstantsUtils.SHAREDPREFERENCES_SETTINGS, Context.MODE_PRIVATE);
         switchPreference = getPreferenceScreen().findPreference("notifications");
         if (switchPreference != null) {
-            Log.i("tag_settings1", switchPreference.toString());
 
             switchPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-                        Log.i("tag_settings2", preference.toString());
-                Log.i("tag_settings3", newValue.toString());
+
+                sharedPref.edit().putBoolean("notifications", (Boolean) newValue).apply();
+                Log.i("tag_setting_apply",newValue.toString());
                         return true;
                     }
 
