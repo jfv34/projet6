@@ -166,8 +166,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     private void editTextListener() {
         Places.initialize(getApplicationContext(), ConstantsUtils.API_KEY);
         RectangularBounds bounds = RectangularBounds.newInstance(
-                new LatLng(-33.880490, 151.184363),
-                new LatLng(-33.858754, 151.229596));
+                new LatLng(-100, 100),
+                new LatLng(-100, 100));
         FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
                 .setLocationRestriction(bounds)
                 .setTypeFilter(TypeFilter.ESTABLISHMENT)
@@ -189,19 +189,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
             @Override
             public void afterTextChanged(Editable s) {
-                Log.i("tag_place ", "1");
+
                 placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
-                    Log.i("tag_place ", "2");
+
                     for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
-                        Log.i("tag_place ", "3");
                         Log.i("tag_places", prediction.getPlaceId());
                         Log.i("tag_places", prediction.getPrimaryText(null).toString());
                     }
-                    Log.i("tag_place ", "4");
+
                 }).addOnFailureListener((exception) -> {
-                    Log.i("tag_place ", "5");
+
                     if (exception instanceof ApiException) {
-                        Log.i("tag_place ", "6");
                         ApiException apiException = (ApiException) exception;
                         Log.e("tag_places", "Place not found: " + apiException.getStatusCode());
                     }
@@ -343,7 +341,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -354,7 +351,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }

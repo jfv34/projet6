@@ -248,10 +248,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
        return context.getResources().getString(R.string.notification,name, address, beginSecondSentence, workmatesListText);
 
-    /*    String message = String.format(R.string.notification, name, address, beginSecondSentence, workmatesListText));
-        Log.i("tag_message ", message);
-        return message;*/
-
 
     }
 
