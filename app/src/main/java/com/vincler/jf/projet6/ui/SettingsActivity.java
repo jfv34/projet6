@@ -1,12 +1,14 @@
 package com.vincler.jf.projet6.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.vincler.jf.projet6.R;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -15,7 +17,11 @@ public class SettingActivity extends AppCompatActivity {
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.preferences,new SettingsFragment())
+                .add(R.id.preferences_setting,new SettingsFragment())
                 .commit();
+
+        Toolbar toolbar = findViewById(R.id.preferences_toolbar);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle(R.string.settings);
     }
 }

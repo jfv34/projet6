@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -25,17 +26,26 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.User;
-import com.vincler.jf.projet6.ui.SettingActivity;
+import com.vincler.jf.projet6.ui.SettingsActivity;
 import com.vincler.jf.projet6.ui.SharedData;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 import com.vincler.jf.projet6.ui.workmates.WorkmatesFragment;
+import com.vincler.jf.projet6.utils.ConstantsUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -139,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     private void displaySearchButton() {
+
         searchButton.setVisibility(View.VISIBLE);
         searchButtonListener();
     }
@@ -153,7 +164,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     private void editTextListener() {
+        Places.initialize(getApplicationContext(), ConstantsUtils.API_KEY);
+        RectangularBounds bounds = RectangularBounds.newInstance(
+                new LatLng(-33.880490, 151.184363),
+                new LatLng(-33.858754, 151.229596));
+        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
+                .setLocationRestriction(bounds)
+                .setTypeFilter(TypeFilter.ESTABLISHMENT)
+                .build();
+
+        PlacesClient placesClient = com.google.android.libraries.places.api.Places.createClient(getApplicationContext());
+
         customEditText.addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -166,7 +189,30 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
             @Override
             public void afterTextChanged(Editable s) {
+                Log.i("tag_place ", "1");
+                placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
+                    Log.i("tag_place ", "2");
+                    for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
+                        Log.i("tag_place ", "3");
+                        Log.i("tag_places", prediction.getPlaceId());
+                        Log.i("tag_places", prediction.getPrimaryText(null).toString());
+                    }
+                    Log.i("tag_place ", "4");
+                }).addOnFailureListener((exception) -> {
+                    Log.i("tag_place ", "5");
+                    if (exception instanceof ApiException) {
+                        Log.i("tag_place ", "6");
+                        ApiException apiException = (ApiException) exception;
+                        Log.e("tag_places", "Place not found: " + apiException.getStatusCode());
+                    }
+                });
+
+
                 presenter.filterRestaurants(s.toString());
+
+
+
+
             }
         });
 
@@ -213,9 +259,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     private void settingsFragmentIntent() {
 
-        Intent intent = new Intent(getApplicationContext(), SettingActivity.class);
+        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
         startActivity(intent);
-
     }
 
     private void restaurantActivityIntent() {
@@ -231,13 +276,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                     intent.putExtra("restaurantDisplayedId", restaurantDisplayedId);
                     startActivity(intent);
                 }
-
             }
         });
     }
 
     private void drawerLayout() {
-
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -283,8 +326,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         Glide.with(this)
                 .load(user.getPhotoUserUrl())
                 .into(imageView);
-
-
     }
 
     @Override

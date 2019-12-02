@@ -23,13 +23,19 @@
         android:drawableStart="@drawable/icon_search_black"
         android:drawableEnd="@drawable/icon_voice"
         android:drawablePadding="5dp"
-        android:hint="Search..."
         android:imeOptions="actionDone"
         android:inputType="text"
         app:libIZO_setBackgroundColor="#FFFFFF"
         app:libIZO_setBorderColor="#FFFFFF"
         app:libIZO_setBorderView="true"
         app:libIZO_setCornerRadius="4dp" />
+
+  <!--  <fragment
+        android:id="@+id/autocomplete_fragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />-->
+
 
     <ImageButton
         android:id="@+id/toolbar_searchButton_imButton"
