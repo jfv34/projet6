@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class RestaurantActivity extends FragmentActivity implements RestaurantActivityContract.View {
 
     private RestaurantActivityContract.Presenter presenter;
-
+    private ProgressBar progressBar;
     private RecyclerView recyclerView;
     private TextView address_tv;
     private TextView name_tv;
@@ -43,7 +43,6 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
-        setProgressValue();
         recyclerView = findViewById(R.id.fragment_workmatesInRestaurant_recyclerView);
         photo_iv = findViewById(R.id.activity_restaurant_photo_iv);
         name_tv = findViewById(R.id.activity_restaurant_name_tv);
@@ -55,6 +54,7 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         call_iv = findViewById(R.id.activity_restaurant_call_iv);
         webSite_tv = findViewById(R.id.activity_restaurant_website_tv);
         webSite_iv = findViewById(R.id.activity_restaurant_website_iv);
+        progressBar = findViewById(R.id.activity_restaurant_progressBar);
 
         presenter = new RestaurantActivityPresenter(
                 this,this,
@@ -63,30 +63,6 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         );
         presenter.loadDetails();
         presenter.loadUsers();
-    }
-
-
-    private void setProgressValue() {
-
-        ProgressBar progressBar = findViewById(R.id.activity_restaurant_progressBar);
-        progressBar.setMax(100);
-
-        progressBar.setProgress(progress);
-
-        Thread thread = new Thread(() -> {
-            try {
-                Thread.sleep(300);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (progress < 100) {
-                progress = progress + 5;
-                setProgressValue();
-            } else {
-                progressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-        thread.start();
     }
 
     private void clickWebSite() {
@@ -109,6 +85,7 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
 
     @Override
     public void displayDetails(Details details) {
+        progressBar.setVisibility(View.GONE);
         webSite_iv.setOnClickListener(v -> clickWebSite());
         webSite_tv.setOnClickListener(v -> clickWebSite());
 

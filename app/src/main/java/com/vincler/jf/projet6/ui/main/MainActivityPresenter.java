@@ -89,7 +89,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                             result.getString("photoUserUrl"));
 
                     view.displayUserInformation(user);
-                    SharedData.hasRestaurantFavorited.setValue(user.getRestaurantFavoriteId() != null && !user.getRestaurantFavoriteId().isEmpty());
+                    SharedData.favoritedRestaurant.setValue(user.getRestaurantFavoriteId());
                 }
             });
         }

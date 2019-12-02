@@ -109,12 +109,12 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         if (isFavorited) {
             UserFirebase.updateRestaurantFavoriteId("", getUserID());
             UserFirebase.updateRestaurantFavoriteName("", getUserID());
-            SharedData.hasRestaurantFavorited.postValue(false);
+            SharedData.favoritedRestaurant.postValue(null);
             stopNotification();
         } else {
             UserFirebase.updateRestaurantFavoriteId(restaurantDisplayedId, getUserID());
             UserFirebase.updateRestaurantFavoriteName(details.getName(), getUserID());
-            SharedData.hasRestaurantFavorited.postValue(true);
+            SharedData.favoritedRestaurant.postValue(restaurantDisplayedId);
 
             boolean setting_notifications = get_Setting_notifications();
             if (setting_notifications) {

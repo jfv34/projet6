@@ -283,8 +283,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        SharedData.hasRestaurantFavorited.observe(this, aBoolean ->
-                navigationView.getMenu().getItem(0).setVisible(aBoolean));
+        SharedData.favoritedRestaurant.observe(this, restaurant ->
+                navigationView.getMenu().getItem(0).setVisible(restaurant!=null));
     }
 
     private void navigationView() {
@@ -345,7 +345,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
             @Override
             public void onPageSelected(int position) {
-                ((WorkmatesFragment) pageAdapter.getItem(2)).onSelectedFromViewPager();
                 bottomNavigationView.getMenu().getItem(position).setChecked(true);
             }
 

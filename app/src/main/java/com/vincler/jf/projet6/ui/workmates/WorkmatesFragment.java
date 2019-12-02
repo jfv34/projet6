@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.models.User;
+import com.vincler.jf.projet6.ui.SharedData;
 
 import java.util.ArrayList;
 
@@ -40,8 +42,9 @@ public class WorkmatesFragment extends Fragment implements WorkmatesFragmentCont
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        presenter.loadWorkmates();
+        SharedData.favoritedRestaurant.observe(this, s -> {
+            presenter.loadWorkmates();
+        });
     }
 
     @Override
@@ -51,10 +54,5 @@ public class WorkmatesFragment extends Fragment implements WorkmatesFragmentCont
         RecyclerView.Adapter adapter = new ListWorkmatesAdapter(users, getContext());
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));}
-    }
-
-    @Override
-    public void onSelectedFromViewPager() {
-        presenter.loadWorkmates();
     }
 }
