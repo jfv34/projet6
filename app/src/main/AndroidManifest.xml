@@ -24,7 +24,7 @@
         </activity>
         <activity android:name=".ui.restaurant.RestaurantActivity" />
         <activity android:name=".notifications.NotificationsActivity" />
-        <activity android:name=".ui.SettingsActivity" />
+        <activity android:name=".ui.settings.SettingsActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

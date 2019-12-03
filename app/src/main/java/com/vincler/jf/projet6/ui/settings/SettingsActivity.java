@@ -1,4 +1,4 @@
-package com.vincler.jf.projet6.ui;
+package com.vincler.jf.projet6.ui.settings;
 
 import android.graphics.Color;
 import android.os.Bundle;
