@@ -27,12 +27,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -44,7 +41,6 @@ import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.ui.SettingsActivity;
 import com.vincler.jf.projet6.ui.SharedData;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
-import com.vincler.jf.projet6.ui.workmates.WorkmatesFragment;
 import com.vincler.jf.projet6.utils.ConstantsUtils;
 
 import java.util.Arrays;
@@ -69,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Places.initialize(getApplicationContext(), ConstantsUtils.API_KEY);
         bottomNavigationView = findViewById(R.id.activity_main_bottom_nav_view);
         viewPager = findViewById(R.id.activity_main_viewpager);
         toolbar = findViewById(R.id.toolbar);
@@ -164,14 +161,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     private void editTextListener() {
-        Places.initialize(getApplicationContext(), ConstantsUtils.API_KEY);
-        RectangularBounds bounds = RectangularBounds.newInstance(
-                new LatLng(-100, 100),
-                new LatLng(-100, 100));
-        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest.builder()
-                .setLocationRestriction(bounds)
-                .setTypeFilter(TypeFilter.ESTABLISHMENT)
-                .build();
+
 
         PlacesClient placesClient = com.google.android.libraries.places.api.Places.createClient(getApplicationContext());
 
@@ -190,6 +180,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
             @Override
             public void afterTextChanged(Editable s) {
 
+                FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest
+                        .builder()
+                        .setQuery(s.toString())
+                        .build();
                 placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
 
                     for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
@@ -205,12 +199,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                     }
                 });
 
-
                 presenter.filterRestaurants(s.toString());
-
-
-
-
             }
         });
 
