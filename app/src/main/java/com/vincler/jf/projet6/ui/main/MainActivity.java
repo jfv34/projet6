@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -22,15 +21,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.AutocompletePrediction;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -38,11 +36,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.User;
-import com.vincler.jf.projet6.ui.settings.SettingsActivity;
 import com.vincler.jf.projet6.ui.SharedData;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
+import com.vincler.jf.projet6.ui.search.SearchFragment;
+import com.vincler.jf.projet6.ui.settings.SettingsActivity;
 import com.vincler.jf.projet6.utils.ConstantsUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -97,6 +97,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                         .setLogo(R.drawable.logo)
                         .build(),
                 RC_SIGN_IN);
+    }
+
+    @Override
+    public void instanceSearchFragment(ArrayList<String> search) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        SearchFragment fragment = new SearchFragment(search);
+        fragmentTransaction.replace(R.id.activity_main_viewpager, fragment);
+        fragmentTransaction.commit();
+
     }
 
     private void configureViews() {

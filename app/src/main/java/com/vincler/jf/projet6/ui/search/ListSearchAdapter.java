@@ -1,9 +1,11 @@
 package com.vincler.jf.projet6.ui.search;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,15 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.vincler.jf.projet6.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.ViewHolder> {
 
     private Context context;
-    private List<String> search;
-
-    public ListSearchAdapter(ArrayList<String> search) {
-    }
+    private ArrayList<String> search;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ViewHolder(@NonNull View itemView) {
@@ -27,7 +25,7 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Vi
         }
     }
 
-    public ListSearchAdapter(List<String> search) {
+    public ListSearchAdapter(ArrayList<String> search) {
         this.search = search;
     }
 
@@ -42,12 +40,14 @@ public class ListSearchAdapter extends RecyclerView.Adapter<ListSearchAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        TextView textView = holder.itemView.findViewById(R.id.item_search_tv);
+        Log.i("tag_search",search.get(position));
+        textView.setText(search.get(position));
     }
 
 
     @Override
     public int getItemCount() {
-        return 0;
+        return search.size();
     }
 }

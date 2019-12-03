@@ -2,13 +2,11 @@ package com.vincler.jf.projet6.ui.main;
 
 import android.text.Editable;
 import android.util.Log;
-import android.widget.ProgressBar;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -110,17 +108,25 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     @Override
     public void autocompleteRequest(Editable s, PlacesClient placesClient) {
+        ArrayList<String> search = new ArrayList<>();
         FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest
                 .builder()
                 .setQuery(s.toString())
                 .build();
         placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
-
+            int i=0;
             for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
+                search.add(i, prediction.getPrimaryText(null).toString());
+                i++;
                 Log.i("tag_places", prediction.getPlaceId());
                 Log.i("tag_places", prediction.getPrimaryText(null).toString());
-
             }
+
+
+            view.instanceSearchFragment(search);
+
+
+
 
         }).addOnFailureListener((exception) -> {
 
