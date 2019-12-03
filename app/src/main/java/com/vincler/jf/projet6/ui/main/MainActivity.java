@@ -180,24 +180,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
             @Override
             public void afterTextChanged(Editable s) {
 
-                FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest
-                        .builder()
-                        .setQuery(s.toString())
-                        .build();
-                placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
+                presenter.autocompleteRequest(s,placesClient);
 
-                    for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
-                        Log.i("tag_places", prediction.getPlaceId());
-                        Log.i("tag_places", prediction.getPrimaryText(null).toString());
-                    }
-
-                }).addOnFailureListener((exception) -> {
-
-                    if (exception instanceof ApiException) {
-                        ApiException apiException = (ApiException) exception;
-                        Log.e("tag_places", "Place not found: " + apiException.getStatusCode());
-                    }
-                });
 
                 presenter.filterRestaurants(s.toString());
             }

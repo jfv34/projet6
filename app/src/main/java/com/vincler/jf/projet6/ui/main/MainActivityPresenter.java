@@ -1,10 +1,17 @@
 package com.vincler.jf.projet6.ui.main;
 
+import android.text.Editable;
+import android.util.Log;
 import android.widget.ProgressBar;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -18,7 +25,6 @@ import java.util.ArrayList;
 public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     private MainActivityContract.View view;
-
     public MutableLiveData<ArrayList<NearbyRestaurant>> restaurantsData = new MutableLiveData<>(new ArrayList<>());
 
     @Override
@@ -28,6 +34,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     public MainActivityPresenter(MainActivityContract.View view) {
         this.view = view;
     }
+
 
     @Override
     public void filterRestaurants(String query) {
@@ -99,5 +106,28 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         return user != null ? user.getUid() : "";
+    }
+
+    @Override
+    public void autocompleteRequest(Editable s, PlacesClient placesClient) {
+        FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest
+                .builder()
+                .setQuery(s.toString())
+                .build();
+        placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
+
+            for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
+                Log.i("tag_places", prediction.getPlaceId());
+                Log.i("tag_places", prediction.getPrimaryText(null).toString());
+
+            }
+
+        }).addOnFailureListener((exception) -> {
+
+            if (exception instanceof ApiException) {
+                ApiException apiException = (ApiException) exception;
+                Log.e("tag_places", "Place not found: " + apiException.getStatusCode());
+            }
+        });
     }
 }
