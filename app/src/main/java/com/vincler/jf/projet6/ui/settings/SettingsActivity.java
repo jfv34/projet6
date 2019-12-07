@@ -2,11 +2,13 @@ package com.vincler.jf.projet6.ui.settings;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.widget.Toolbar;
-
+import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import com.vincler.jf.projet6.R;
+
+import java.util.Objects;
 
 public class SettingsActivity extends AppCompatActivity {
     @Override
@@ -23,5 +25,8 @@ public class SettingsActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.preferences_toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setTitle(R.string.settings);
+        setSupportActionBar(toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
     }
 }
