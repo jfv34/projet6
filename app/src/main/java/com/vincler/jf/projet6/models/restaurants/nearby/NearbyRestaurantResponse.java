@@ -1,7 +1,5 @@
 package com.vincler.jf.projet6.models.restaurants.nearby;
 
-import android.util.Log;
-
 import com.google.gson.annotations.SerializedName;
 import com.vincler.jf.projet6.models.googleMapResponse.GeometryResponse;
 import com.vincler.jf.projet6.models.googleMapResponse.OpeningHoursResponse;
@@ -11,9 +9,7 @@ import java.util.ArrayList;
 public class NearbyRestaurantResponse {
 
     public NearbyRestaurantResponse(String restaurantName, double latitude, double longitude, String address,
-
                                     String photo_reference, Double rating, ArrayList typesListResponse, String placeid,
-
                                     ArrayList isOpenNowList) {
         this.restaurantName = restaurantName;
         this.latitude = latitude;

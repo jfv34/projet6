@@ -1,7 +1,6 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     private Context context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
         }
@@ -39,19 +37,15 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                          int viewType) {
-
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_restaurantworkmate, parent, false);
-
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         ImageView photo_iv = holder.itemView.findViewById(R.id.item_restaurantWorkmate_iv);
         TextView name_tv = holder.itemView.findViewById(R.id.item_restaurantWorkmate_tv);
-
         displayPhoto(photo_iv, position);
         displayText(name_tv, position);
     }
@@ -61,7 +55,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         String firstName = GetStringUtils.getFirstWord(name);
         String text = firstName + " " + context.getString(R.string.isjoining);
         name_tv.setText(text);
-
     }
 
     private void displayPhoto(ImageView photo_iv, int position) {

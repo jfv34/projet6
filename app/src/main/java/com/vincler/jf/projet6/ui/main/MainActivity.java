@@ -99,17 +99,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                 RC_SIGN_IN);
     }
 
-    @Override
-    public void instanceSearchFragment(ArrayList<String> search) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        SearchFragment fragment = new SearchFragment(search);
-        fragmentTransaction.replace(R.id.activity_main_viewpager, fragment);
-        fragmentTransaction.commit();
-
-    }
-
     private void configureViews() {
         viewPager();
         bottomView();
@@ -133,11 +122,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         displayEditText();
     }
 
-    private void searchButtonListener() {
-
-        searchButton.setOnClickListener(v -> displaySearchBar());
-    }
-
     private void displayEditText() {
         customEditText.setVisibility(View.VISIBLE);
         editTextListener();
@@ -148,18 +132,34 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         customEditText.setVisibility(View.GONE);
     }
 
-    private void noDisplayNavigationIcon() {
-        toolbar.setNavigationIcon(null);
+    private void searchButtonListener() {
+
+        searchButton.setOnClickListener(v -> displaySearchBar());
     }
 
-    private void noDisplaySearchButton() {
-        searchButton.setVisibility(View.INVISIBLE);
+    @Override
+    public void instanceSearchFragment(ArrayList<String> search) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        SearchFragment fragment = new SearchFragment(search);
+        fragmentTransaction.replace(R.id.activity_main_viewpager, fragment);
+        fragmentTransaction.commit();
+
     }
 
     private void displaySearchButton() {
 
         searchButton.setVisibility(View.VISIBLE);
         searchButtonListener();
+    }
+
+    private void noDisplaySearchButton() {
+        searchButton.setVisibility(View.INVISIBLE);
+    }
+
+    private void noDisplayNavigationIcon() {
+        toolbar.setNavigationIcon(null);
     }
 
     private void displayTitle() {
@@ -237,6 +237,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         return true;
     }
 
+    private void drawerLayout() {
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        SharedData.favoritedRestaurant.observe(this, restaurant ->
+                navigationView.getMenu().getItem(0).setVisible(restaurant!=null));
+    }
+
+    private void navigationView() {
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
     private void settingsFragmentIntent() {
 
         Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
@@ -258,19 +271,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                 }
             }
         });
-    }
-
-    private void drawerLayout() {
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-        SharedData.favoritedRestaurant.observe(this, restaurant ->
-                navigationView.getMenu().getItem(0).setVisible(restaurant!=null));
-    }
-
-    private void navigationView() {
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override

@@ -16,15 +16,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
-
         Context context = getActivity();
         SharedPreferences sharedPref = context.getSharedPreferences(
                 ConstantsUtils.SHAREDPREFERENCES_SETTINGS, Context.MODE_PRIVATE);
         SwitchPreference switchPreference = getPreferenceScreen().findPreference("notifications");
         if (switchPreference != null) {
-
             switchPreference.setOnPreferenceChangeListener((preference, newValue) -> {
-
                 sharedPref.edit().putBoolean("notifications", (Boolean) newValue).apply();
                 Log.i("tag_setting_apply",newValue.toString());
                         return true;

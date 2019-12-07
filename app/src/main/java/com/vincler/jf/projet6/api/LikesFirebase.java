@@ -2,11 +2,6 @@ package com.vincler.jf.projet6.api;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -14,6 +9,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.models.Like;
 import com.vincler.jf.projet6.utils.GetStringUtils;
+
+import java.util.Objects;
 
 public class LikesFirebase {
 
@@ -40,7 +37,6 @@ public class LikesFirebase {
                 .get();
     }
 
-
     // --- GET LIKES FOR RESTAURANT ---
 
     public static Task<QuerySnapshot> getLikeForRestaurant(String user_uid, String restaurant_uid) {
@@ -50,45 +46,24 @@ public class LikesFirebase {
                 .get();
     }
 
-    // --- GET RESTAURANT BY LIKES ---
-
-    public static Task<QuerySnapshot> getUsersByRestaurantLike(String restaurantLikeId) {
-
-        return getLikeCollection()
-                .whereEqualTo("restaurant_uid", restaurantLikeId)
-                .get();
-    }
-
-
     public static void deleteLike(String user_uid, String restaurant_uid) {
         getLikeCollection()
                 .whereEqualTo("user_uid", user_uid)
                 .whereEqualTo("restaurant_uid", restaurant_uid)
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String idDelete = document.getId();
-                                getLikeCollection().document(idDelete)
-                                        .delete()
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            String idDelete = document.getId();
+                            getLikeCollection().document(idDelete)
+                                    .delete()
+                                    .addOnSuccessListener(aVoid -> {
 
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.w("tag_LikesFirebase", "Error deleting document", e);
-                                            }
-                                        });
-                            }
-                        } else {
-                            Log.d("tag_LikesFirebase", "Error getting documents: ", task.getException());
+                                    })
+                                    .addOnFailureListener(e -> Log.w("tag_LikesFirebase", "Error deleting document", e));
                         }
+                    } else {
+                        Log.d("tag_LikesFirebase", "Error getting documents: ", task.getException());
                     }
                 });
     }

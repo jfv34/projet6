@@ -15,9 +15,7 @@ import com.vincler.jf.projet6.R;
 import java.util.ArrayList;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
-
     private ArrayList<String> search;
-
     public SearchAdapter(ArrayList<String> search) {
         this.search = search;
     }
@@ -28,7 +26,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
         Context context = parent.getContext();
         View v = LayoutInflater.from(context).inflate(R.layout.item_search, parent, false);
         return new SearchViewHolder(v);
-
     }
 
     @Override

@@ -7,7 +7,6 @@ import android.net.Uri;
 public class IntentUtils {
 
     public static void callNumber(Context context, String phoneNumber) {
-
         if(phoneNumber!=null&&!phoneNumber.isEmpty()){
         Intent callPhone = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+ phoneNumber));
         context.startActivity(callPhone);

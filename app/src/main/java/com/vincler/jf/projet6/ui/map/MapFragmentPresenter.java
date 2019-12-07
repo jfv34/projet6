@@ -10,18 +10,12 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.vincler.jf.projet6.api.LikesFirebase;
-import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.restaurants.nearby.ListNearbyRestaurantResponse;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
@@ -56,7 +50,6 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                 .client(builder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
         service = retrofit.create(RestaurantsService.class);
     }
 
@@ -72,11 +65,9 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
         }
-
         if (locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
         }
-
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10000, 0, this);
         }
@@ -91,10 +82,8 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
 
     @Override
     public void searchRestaurants(double latitude, double longitude) {
-
         String locationRequest = latitude + "," + longitude;
         service.listRestaurants(locationRequest, "1000").enqueue(new Callback<ListNearbyRestaurantResponse>() {
-
             @Override
             public void onResponse(Call<ListNearbyRestaurantResponse> call, Response<ListNearbyRestaurantResponse> response) {
                 if (!response.body().getResults().isEmpty()) {
@@ -135,24 +124,19 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-
     }
 
     @Override
     public void onProviderEnabled(String provider) {
-
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-
     }
 
     public NearbyRestaurant restaurantChosenByClickOnMarker(Marker marker, ArrayList<NearbyRestaurant> data) {
-
         LatLng latLng = marker.getPosition();
         int restauId = -1;
-
         for (int i = 0; i < data.size(); i++) {
             double lat = data.get(i).getLatitude();
             double lg = data.get(i).getLongitude();
@@ -175,6 +159,4 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
         background.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
-
-
 }

@@ -40,19 +40,16 @@ public class ListFragment extends Fragment implements ListFragmentContract.View 
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity) getActivity()).presenter.getLiveData().observe(this, restaurants
                 -> presenter.setWorkmatesByRestaurant(restaurants));
-
     }
 
     public void displayRestaurants(ArrayList<NearbyRestaurant> restaurants) {
 
         if (!restaurants.isEmpty()) {
-
             recyclerView.setHasFixedSize(true);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
             RecyclerView.Adapter adapter = new ListRestaurantsAdapter(restaurants);
             recyclerView.setAdapter(adapter);
         }
-
     }
 }

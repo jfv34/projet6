@@ -68,9 +68,7 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
                         double latitude = it.get(i).getLatitude();
                         double longitude = it.get(i).getLongitude();
                         String restaurantId = it.get(i).getPlaceid();
-
                         markers(latitude, longitude, restaurantId);
-
                     }
                 }
             }
@@ -78,13 +76,9 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
     }
 
     private void markers(double latitude, double longitude, String restaurantId) {
-
         Task<QuerySnapshot> data = UserFirebase.getUsers();
-
         data.addOnCompleteListener(task -> {
-
             isFavorited = false;
-
             if (data.getResult() != null) {
                 for (int i = 0; i < data.getResult().size(); i++) {
                     HashMap h = (HashMap) data.getResult().getDocuments().get(i).getData();
@@ -94,18 +88,15 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
                     }
                 }
             }
-
             int drawable;
             if (isFavorited) {
                 drawable = R.drawable.icon_marker_green;
             } else {
                 drawable = R.drawable.icon_marker_red;
             }
-
             googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(latitude, longitude))
                     .icon(presenter.bitmapDescriptorFromVector(requireContext(), drawable)));
-
         });
     }
 

@@ -1,7 +1,5 @@
 package com.vincler.jf.projet6.ui.list;
 
-import android.util.Log;
-
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.api.LikesFirebase;
@@ -28,9 +26,7 @@ public class ListFragmentPresenter implements ListFragmentContract.Presenter {
 
             int usersSize = users.getResult().size();
             for (int rest = 0; rest < restaurants.size(); rest++) {
-
                 String restaurantId = restaurants.get(rest).getPlaceid();
-
                 int workmatesNumber = 0;
                 for (int u = 0; u < usersSize; u++) {
                     String userFavoriteRestau = users.getResult().getDocuments().get(u).getString("restaurantFavoriteId");
@@ -38,9 +34,7 @@ public class ListFragmentPresenter implements ListFragmentContract.Presenter {
                         workmatesNumber++;
                     }
                 }
-
                 restaurants.get(rest).setWorkmatesNumber(workmatesNumber);
-
             }
             setRating(restaurants);
         });
@@ -78,7 +72,6 @@ public class ListFragmentPresenter implements ListFragmentContract.Presenter {
             }
             view.displayRestaurants(restaurants);
         }
-
         );
     }
 }

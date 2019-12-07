@@ -121,15 +121,8 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                 Log.i("tag_places", prediction.getPlaceId());
                 Log.i("tag_places", prediction.getPrimaryText(null).toString());
             }
-
-
             view.instanceSearchFragment(search);
-
-
-
-
         }).addOnFailureListener((exception) -> {
-
             if (exception instanceof ApiException) {
                 ApiException apiException = (ApiException) exception;
                 Log.e("tag_places", "Place not found: " + apiException.getStatusCode());

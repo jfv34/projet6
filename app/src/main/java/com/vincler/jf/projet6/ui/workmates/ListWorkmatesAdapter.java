@@ -3,7 +3,6 @@ package com.vincler.jf.projet6.ui.workmates;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,14 +26,11 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
     private Context context;
     private ImageView photo_iv;
     private TextView name_tv;
-
     static class ViewHolder extends RecyclerView.ViewHolder {
-
         ViewHolder(@NonNull View itemView) {
             super(itemView);
         }
     }
-
     ListWorkmatesAdapter(List<User> users, Context context) {
 
         this.users = users;
@@ -45,20 +41,16 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                          int viewType) {
-
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_workmates, parent, false);
-
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         name_tv = holder.itemView.findViewById(R.id.item_workmates_tv);
         photo_iv = holder.itemView.findViewById(R.id.item_workmates_photo_iv);
         View item_workmates = holder.itemView.findViewById(R.id.item_workmates);
-
         displayPhoto(position);
         displayText(position);
         item_workmates.setOnClickListener(v -> {
@@ -66,16 +58,13 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
             if (!restaurantClicked.isEmpty()) {
                 restaurantActivityIntent(restaurantClicked);
             }
-
         });
     }
 
     private void displayText(int position) {
-
         String name = users.get(position).getUsername();
         String firstname = GetStringUtils.getFirstWord(name);
         String nameRestaurant = users.get(position).getRestaurantFavoriteName();
-
         String text;
         if (nameRestaurant.isEmpty()) {
             text = getDefaultText(firstname);
@@ -100,24 +89,19 @@ public class ListWorkmatesAdapter extends RecyclerView.Adapter<ListWorkmatesAdap
                 + context.getString(R.string.hasntdecidedyet);
     }
 
-
     private void displayPhoto(int position) {
-
         String photo = users.get(position).getPhotoUserUrl();
         if (!photo.isEmpty()) {
             Glide.with(context).
                     load(photo).
                     dontTransform().
                     into(photo_iv);
-
         }
     }
 
     private void restaurantActivityIntent(String restaurantDisplayedId) {
-
         Intent intent = new Intent(context.getApplicationContext(), RestaurantActivity.class);
         intent.putExtra("restaurantDisplayedId", restaurantDisplayedId);
-
         context.startActivity(intent);
     }
 

@@ -24,12 +24,10 @@ public class WorkmatesFragmentPresenter implements WorkmatesFragmentContract.Pre
         Task<QuerySnapshot> data = UserFirebase.getUsers();
         data.addOnCompleteListener(task -> {
             if (data.getResult() != null) {
-
                 for (int i = 0; i < data.getResult().size(); i++) {
                     HashMap h = (HashMap) data.getResult().getDocuments().get(i).getData();
                     result.add(h);
                 }
-
                 for (int i = 0; i < result.size(); i++) {
                     HashMap hm = result.get(i);
                     User user = new User(
@@ -43,7 +41,6 @@ public class WorkmatesFragmentPresenter implements WorkmatesFragmentContract.Pre
 
                     users.add(user);
                 }
-
                 view.displayWorkmates(users);
             }
         });

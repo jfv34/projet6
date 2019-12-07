@@ -40,4 +40,3 @@ public class DetailsRestaurantResponse {
         } else return "";
     }
 }
-

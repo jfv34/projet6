@@ -75,10 +75,8 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         this.view = view;
         this.restaurantDisplayedId = restaurantDisplayedId;
         this.restaurantStars = restaurantStars;
-
         sharedPref = context.getSharedPreferences(
                 ConstantsUtils.SHAREDPREFERENCES_SETTINGS, Context.MODE_PRIVATE);
-
     }
 
     @Override
@@ -98,7 +96,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         } else {
             LikesFirebase.createLike(getUserID(), restaurantDisplayedId);
         }
-
         isLiked = !isLiked;
         view.displayLike(isLiked);
         loadUsers();
@@ -115,7 +112,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
             UserFirebase.updateRestaurantFavoriteId(restaurantDisplayedId, getUserID());
             UserFirebase.updateRestaurantFavoriteName(details.getName(), getUserID());
             SharedData.favoritedRestaurant.postValue(restaurantDisplayedId);
-
             boolean setting_notifications = get_Setting_notifications();
             if (setting_notifications) {
                 scheduleNotification();
@@ -123,12 +119,10 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         }
         isFavorited =! isFavorited;
         view.displayFavorite(isFavorited);
-
         loadUsers();
     }
 
     private boolean get_Setting_notifications() {
-
         return sharedPref.getBoolean("notifications", true);
     }
 
@@ -150,13 +144,10 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
                             String restaurantFavoriteId = task2.getResult().get("restaurantFavoriteId").toString();
                             isFavorited = restaurantDisplayedId.equals(restaurantFavoriteId);
                         } else isFavorited = false;
-
                         service.listDetails(restaurantDisplayedId).enqueue(new Callback<DetailsRestaurantResponse>() {
                             @Override
                             public void onResponse(Call<DetailsRestaurantResponse> call, Response<DetailsRestaurantResponse> response) {
-
                                 ResultDetailsResponse result = response.body().resultDetailsResponse;
-
                                 details = new Details(
                                         result.getName(),
                                         result.getAddress(),
@@ -170,7 +161,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
                                 view.displayDetails(details);
                                 view.displayRestaurant(details);
                             }
-
                             @Override
                             public void onFailure(Call<DetailsRestaurantResponse> call, Throwable t) {
                                 Log.i("tag_onResponse", "failure");
@@ -186,14 +176,11 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         Task<QuerySnapshot> data = UserFirebase.getUsersByRestaurantFavorite(restaurantDisplayedId);
         data.addOnCompleteListener(task -> {
             if (data.getResult() != null) {
-
                 for (int i = 0; i < data.getResult().size(); i++) {
                     HashMap h = (HashMap) data.getResult().getDocuments().get(i).getData();
                     result.add(h);
                 }
-
                 ArrayList<User> users = new ArrayList<>();
-
                 for (int i = 0; i < result.size(); i++) {
                     HashMap hm = result.get(i);
                     User user = new User(
@@ -204,7 +191,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
                             hm.get("restaurantFavoriteId").toString(),
                             hm.get("restaurantFavoriteName").toString(),
                             hm.get("photoUserUrl").toString());
-
                     users.add(user);
                 }
                 view.displayUsers(users);
@@ -213,11 +199,9 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     }
 
     private void scheduleNotification() {
-
         UserFirebase.getUsersByRestaurantFavorite(restaurantDisplayedId).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
                 int duration = getDuration();
                 String titleNotification = "Rappel: déjeuner";
                 String message = getNotificationText(task);
@@ -226,12 +210,10 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
                         .putString(NotificationsWorker.EXTRA_TITLE, titleNotification)
                         .putString(NotificationsWorker.EXTRA_TEXT, message)
                         .build();
-
                 OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(NotificationsWorker.class)
                         .setInitialDelay(duration, TimeUnit.MINUTES)
                         .setInputData(data)
                         .build();
-
                 WorkManager.getInstance().cancelAllWork();
                 WorkManager.getInstance().enqueue(oneTimeWorkRequest);
             }
@@ -239,20 +221,15 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     }
 
     private String getNotificationText(Task<QuerySnapshot> task) {
-
         String name = details.getName();
         String address = details.getAddress();
         String workmatesListText = " " + getWorkmatesListText(task);
         int size = task.getResult().size();
         String beginSecondSentence = getBeginSecondSentence(size);
-
        return context.getResources().getString(R.string.notification,name, address, beginSecondSentence, workmatesListText);
-
-
     }
 
     private String getBeginSecondSentence(int size) {
-
         String beginSecondSentence = "";
         if (size == 1) {
             beginSecondSentence = context.getString(R.string.beginSecondSentence1);
@@ -293,20 +270,16 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         SimpleDateFormat formatCurrentHour = new SimpleDateFormat("HH");
         SimpleDateFormat formatCurrentMinutes = new SimpleDateFormat("mm");
         Date date = new Date();
-
         int currentHour = Integer.parseInt(formatCurrentHour.format(date));
         int currentMinutes = Integer.parseInt(formatCurrentMinutes.format(date));
-
         int notificationTime = NOTIFICATION_HOUR * 60 + NOTIFICATION_MINUTES;
         int currentTime = currentHour * 60 + currentMinutes;
-
         int duration = notificationTime - currentTime;
         if (currentTime > notificationTime) {
             duration = duration + 1440;
         }
         return duration;
     }
-
     private void stopNotification() {
         WorkManager.getInstance().cancelAllWork();
     }

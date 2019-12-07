@@ -40,7 +40,6 @@ public class UserFirebase {
                 .get();
     }
 
-
     // --- GET ALL USERS ---
 
     public static Task<QuerySnapshot> getUsers() {
@@ -50,23 +49,11 @@ public class UserFirebase {
     }
 
     // --- UPDATE ---
-
-    public static Task<Void> updateUsername(String username, String uid) {
-        return UserFirebase.getUsersCollection().document(uid).update("username", username);
-    }
-
     public static Task<Void> updateRestaurantFavoriteId(String restaurantFavoriteId, String uid) {
         return UserFirebase.getUsersCollection().document(uid).update("restaurantFavoriteId", restaurantFavoriteId);
     }
 
     public static Task<Void> updateRestaurantFavoriteName(String restaurantFavoriteName, String uid) {
         return UserFirebase.getUsersCollection().document(uid).update("restaurantFavoriteName", restaurantFavoriteName);
-    }
-
-
-    // --- DELETE ---
-
-    public static Task<Void> deleteUser(String uid) {
-        return UserFirebase.getUsersCollection().document(uid).delete();
     }
 }

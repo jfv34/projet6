@@ -17,11 +17,6 @@ public class PageAdapter extends FragmentPagerAdapter {
         super(fm);
     }
 
-    @Override
-    public int getCount() {
-        return NUMBER_OF_PAGES;
-    }
-
     @NonNull
     @Override
     public Fragment getItem(int position) {
@@ -35,5 +30,10 @@ public class PageAdapter extends FragmentPagerAdapter {
             default:
                 return MapFragment.newInstance();
         }
+    }
+
+    @Override
+    public int getCount() {
+        return NUMBER_OF_PAGES;
     }
 }

@@ -27,31 +27,23 @@ public class SearchFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-
         recyclerView = rootView.findViewById(R.id.fragment_search_recyclerView);
-
         return rootView;
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     displaySearch();
-
     }
 
     public void displaySearch() {
-
         if (search != null && !search.isEmpty()) {
-
             RecyclerView.Adapter adapter = new SearchAdapter(search);
             recyclerView.setAdapter(adapter);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
-
         }
     }
 }
