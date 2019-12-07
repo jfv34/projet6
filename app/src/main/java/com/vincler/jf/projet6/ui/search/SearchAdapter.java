@@ -11,13 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.models.Search;
 
 import java.util.ArrayList;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
-    private ArrayList<String> search;
-    public SearchAdapter(ArrayList<String> search) {
-        this.search = search;
+    private ArrayList<Search> searchList;
+    public SearchAdapter(ArrayList<Search> searchList) {
+        this.searchList = searchList;
     }
 
     @NonNull
@@ -31,12 +32,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
         TextView textView = holder.itemView.findViewById(R.id.item_search_tv);
-        Log.i("tag_search",search.get(position));
-        textView.setText(search.get(position));
+        Log.i("tag_search",searchList.get(position).getPlaceId());
+        textView.setText(searchList.get(position).getRestaurantName());
     }
 
     @Override
     public int getItemCount() {
-        return search.size();
+        return searchList.size();
     }
 }

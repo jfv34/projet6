@@ -6,6 +6,7 @@ import android.text.Editable;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.vincler.jf.projet6.models.Search;
 import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 
@@ -19,7 +20,7 @@ public interface MainActivityContract {
 
         void startLogin();
 
-        void instanceSearchFragment(ArrayList<String> search);
+        void instanceSearchFragment(ArrayList<Search> search);
     }
 
     interface Presenter {

@@ -35,6 +35,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
+import com.vincler.jf.projet6.models.Search;
 import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.ui.SharedData;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
@@ -138,14 +139,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     @Override
-    public void instanceSearchFragment(ArrayList<String> search) {
+    public void instanceSearchFragment(ArrayList<Search> searchList) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        SearchFragment fragment = new SearchFragment(search);
+        SearchFragment fragment = new SearchFragment(searchList);
         fragmentTransaction.replace(R.id.activity_main_viewpager, fragment);
         fragmentTransaction.commit();
-
     }
 
     private void displaySearchButton() {

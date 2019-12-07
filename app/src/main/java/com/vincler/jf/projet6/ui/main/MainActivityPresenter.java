@@ -14,11 +14,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.api.UserFirebase;
+import com.vincler.jf.projet6.models.Search;
 import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.ui.SharedData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivityPresenter implements MainActivityContract.Presenter {
 
@@ -108,20 +110,22 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     @Override
     public void autocompleteRequest(Editable s, PlacesClient placesClient) {
-        ArrayList<String> search = new ArrayList<>();
+
         FindAutocompletePredictionsRequest request = FindAutocompletePredictionsRequest
                 .builder()
                 .setQuery(s.toString())
                 .build();
         placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
+            ArrayList<Search> searchList = new ArrayList<>();
             int i=0;
             for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
-                search.add(i, prediction.getPrimaryText(null).toString());
+                Search search = new Search(prediction.getPlaceId(),prediction.getPrimaryText(null).toString());
+                searchList.add(i,search);
                 i++;
                 Log.i("tag_places", prediction.getPlaceId());
                 Log.i("tag_places", prediction.getPrimaryText(null).toString());
             }
-            view.instanceSearchFragment(search);
+            view.instanceSearchFragment(searchList);
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
                 ApiException apiException = (ApiException) exception;

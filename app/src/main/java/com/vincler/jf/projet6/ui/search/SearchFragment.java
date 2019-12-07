@@ -12,16 +12,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vincler.jf.projet6.R;
+import com.vincler.jf.projet6.models.Search;
 
 import java.util.ArrayList;
 
 public class SearchFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private ArrayList<String> search;
+    private ArrayList<Search> searchList;
 
-    public SearchFragment(ArrayList<String> search) {
-        this.search = search;
+    public SearchFragment(ArrayList<Search> searchList) {
+        this.searchList = searchList;
     }
 
 
@@ -39,8 +40,8 @@ public class SearchFragment extends Fragment {
     }
 
     public void displaySearch() {
-        if (search != null && !search.isEmpty()) {
-            RecyclerView.Adapter adapter = new SearchAdapter(search);
+        if (searchList != null && !searchList.isEmpty()) {
+            RecyclerView.Adapter adapter = new SearchAdapter(searchList);
             recyclerView.setAdapter(adapter);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
