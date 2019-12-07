@@ -24,31 +24,13 @@ public class SearchFragment extends Fragment {
         this.search = search;
     }
 
-    public static SearchFragment newInstance(ArrayList<String> searchList) {
-
-        SearchFragment searchFragment = new SearchFragment(searchList);
-        Bundle args = new Bundle();
-        args.putStringArrayList("search", searchList);
-        searchFragment.setArguments(args);
-
-        return searchFragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            search = getArguments().getStringArrayList("search");
-        }
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
+
         recyclerView = rootView.findViewById(R.id.fragment_search_recyclerView);
-
-
 
         return rootView;
     }
@@ -65,14 +47,11 @@ public class SearchFragment extends Fragment {
 
         if (search != null && !search.isEmpty()) {
 
-            recyclerView.setHasFixedSize(true);
+            RecyclerView.Adapter adapter = new SearchAdapter(search);
+            recyclerView.setAdapter(adapter);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
-            RecyclerView.Adapter adapter = new ListSearchAdapter(search);
-            recyclerView.setAdapter(adapter);
+
         }
-
     }
-
-
 }

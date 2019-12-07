@@ -192,8 +192,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
             public void afterTextChanged(Editable s) {
 
                 presenter.autocompleteRequest(s,placesClient);
-
-
                 presenter.filterRestaurants(s.toString());
             }
         });
