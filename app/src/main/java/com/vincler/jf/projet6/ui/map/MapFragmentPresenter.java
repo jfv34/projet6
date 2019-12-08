@@ -37,6 +37,9 @@ import static android.content.Context.LOCATION_SERVICE;
 public class MapFragmentPresenter implements MapFragmentContract.Presenter {
 
     private MapFragmentContract.View view;
+    private LocationManager locationManager;
+    private static boolean locationFocusedOnUser = true;
+    private RestaurantsService service;
 
     public MapFragmentPresenter(MapFragmentContract.View view) {
         this.view = view;
@@ -52,10 +55,6 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                 .build();
         service = retrofit.create(RestaurantsService.class);
     }
-
-    private LocationManager locationManager;
-    public static boolean locationFocusedOnUser = true;
-    RestaurantsService service;
 
     @SuppressLint("MissingPermission")
     @Override

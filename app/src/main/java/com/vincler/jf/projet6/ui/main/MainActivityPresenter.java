@@ -7,7 +7,9 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,7 +22,6 @@ import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.ui.SharedData;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivityPresenter implements MainActivityContract.Presenter {
 
@@ -119,11 +120,10 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
             ArrayList<Search> searchList = new ArrayList<>();
             int i=0;
             for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
+
                 Search search = new Search(prediction.getPlaceId(),prediction.getPrimaryText(null).toString());
                 searchList.add(i,search);
                 i++;
-                Log.i("tag_places", prediction.getPlaceId());
-                Log.i("tag_places", prediction.getPrimaryText(null).toString());
             }
             view.instanceSearchFragment(searchList);
         }).addOnFailureListener((exception) -> {
