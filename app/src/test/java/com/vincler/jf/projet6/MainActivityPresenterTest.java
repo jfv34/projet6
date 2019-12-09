@@ -3,6 +3,8 @@ package com.vincler.jf.projet6;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.vincler.jf.projet6.models.Search;
+import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.ui.main.MainActivityContract;
 import com.vincler.jf.projet6.ui.main.MainActivityPresenter;
@@ -23,8 +25,9 @@ public class MainActivityPresenterTest {
     public void When_query_is_not_nul_restaurant_are_filtered() {
 
         MainActivityContract.View view = new MainActivityContract.View() {
+
             @Override
-            public void displayUserInformation(FirebaseUser user) {
+            public void displayUserInformation(User user) {
 
             }
 
@@ -32,18 +35,23 @@ public class MainActivityPresenterTest {
             public void startLogin() {
 
             }
+
+            @Override
+            public void instanceSearchFragment(ArrayList<Search> search) {
+
+            }
         };
         MainActivityPresenter presenter = new MainActivityPresenter(view);
 
         ArrayList<NearbyRestaurant> restaurantArrayList = new ArrayList<>();
 
-        NearbyRestaurant restaurant1 = new NearbyRestaurant("test", 112.2, 26262,
-                "test", "test", 1.2, true, "test",
-                "test");
+        NearbyRestaurant restaurant1 = new NearbyRestaurant("test_no_filtred", 112.2, 26262,
+                "test", "test", 1, true, "test",
+                3,"test");
 
         NearbyRestaurant restaurant2 = new NearbyRestaurant("TEST_FILTER", 112.2, 26262,
-                "test", "test", 1.2, true, "test",
-                "test");
+                "test", "test", 2, true, "test",
+                2,"test");
 
         restaurantArrayList.add(0, restaurant1);
         restaurantArrayList.add(1, restaurant2);
@@ -54,7 +62,4 @@ public class MainActivityPresenterTest {
         Assertions.assertThat(presenter.restaurantsData.getValue().get(1).isVisible()).isTrue();
 
     }
-
-
-
 }

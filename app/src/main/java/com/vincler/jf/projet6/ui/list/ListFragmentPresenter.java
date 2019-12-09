@@ -54,24 +54,28 @@ public class ListFragmentPresenter implements ListFragmentContract.Presenter {
                         likesNumber++;
                     }
                 }
-
-                int stars = 0;
-                double likeRate = (double) likesNumber / (double) likeSize;
-
-                if (likeRate > RATE_FOR_THREE_STARS) {
-                    stars++;
-                }
-                if (likeRate > RATE_FOR_TWO_STARS) {
-                    stars++;
-                }
-                if (likeRate > RATE_FOR_ONE_STARS) {
-                    stars++;
-                }
-
+                int stars = getStars(likesNumber,likeSize);
                 restaurants.get(rest).setStarsNumber(stars);
             }
             view.displayRestaurants(restaurants);
         }
         );
+    }
+
+    public int getStars(int likesNumber, int likeSize) {
+
+        double likeRate = (double) likesNumber / (double) likeSize;
+        int stars = 0;
+
+        if (likeRate > RATE_FOR_THREE_STARS) {
+            stars++;
+        }
+        if (likeRate > RATE_FOR_TWO_STARS) {
+            stars++;
+        }
+        if (likeRate > RATE_FOR_ONE_STARS) {
+            stars++;
+        }
+        return stars;
     }
 }

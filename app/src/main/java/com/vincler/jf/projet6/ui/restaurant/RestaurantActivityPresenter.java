@@ -1,5 +1,6 @@
 package com.vincler.jf.projet6.ui.restaurant;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -67,7 +68,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
             .build();
 
     private RestaurantsService service = retrofit.create(RestaurantsService.class);
-
 
     public RestaurantActivityPresenter(Context context, RestaurantActivityContract.View view, String restaurantDisplayedId,
                                        int restaurantStars) {
@@ -267,8 +267,8 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     }
 
     private int getDuration() {
-        SimpleDateFormat formatCurrentHour = new SimpleDateFormat("HH");
-        SimpleDateFormat formatCurrentMinutes = new SimpleDateFormat("mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatCurrentHour = new SimpleDateFormat("HH");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatCurrentMinutes = new SimpleDateFormat("mm");
         Date date = new Date();
         int currentHour = Integer.parseInt(formatCurrentHour.format(date));
         int currentMinutes = Integer.parseInt(formatCurrentMinutes.format(date));
