@@ -123,12 +123,17 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                 searchList.add(i,search);
                 i++;
             }
-            view.instanceSearchFragment(searchList);
+            view.updateSearch(searchList);
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
                 ApiException apiException = (ApiException) exception;
                 Log.e("tag_places", "Place not found: " + apiException.getStatusCode());
             }
         });
+    }
+
+    @Override
+    public void search(Search search) {
+
     }
 }

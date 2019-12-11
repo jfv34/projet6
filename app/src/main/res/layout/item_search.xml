@@ -3,9 +3,12 @@
     android:id="@+id/item_search"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
+        android:textSize="25sp"
+android:layout_marginBottom="7dp"
+        android:layout_marginStart="10dp"
         android:id="@+id/item_search_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

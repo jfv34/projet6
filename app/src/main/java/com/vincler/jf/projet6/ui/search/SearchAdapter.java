@@ -9,24 +9,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.vincler.jf.projet6.R;
-import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Search;
-import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
 import java.util.ArrayList;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implements OnMapReadyCallback {
+public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
     private ArrayList<Search> searchList;
-    public SearchAdapter(ArrayList<Search> searchList) {
+    private SearchAdapterClick click;
+    public SearchAdapter(ArrayList<Search> searchList, SearchAdapterClick click) {
         this.searchList = searchList;
+        this.click = click;
     }
 
     @NonNull
@@ -43,12 +36,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
         textView.setText(searchList.get(position).getRestaurantName());
         View item_search = holder.itemView.findViewById(R.id.item_search);
         item_search.setOnClickListener(v -> {
-            String placeId = searchList.get(position).getPlaceId();
-            placeIdSelected(placeId);
+            click.onClick(searchList.get(position));
         });
     }
 
-    private void placeIdSelected(String placeId) {
+    /*private void placeIdSelected(String placeId) {
         RestaurantsService service;
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -64,7 +56,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
         // result.geometry.location
 
 
-    }
+    }*/
 
     ;
 
@@ -75,8 +67,5 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> implem
         return searchList.size();
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
 
-    }
 }

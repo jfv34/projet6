@@ -21,8 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
@@ -39,7 +39,8 @@ import com.vincler.jf.projet6.models.Search;
 import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.ui.SharedData;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
-import com.vincler.jf.projet6.ui.search.SearchFragment;
+import com.vincler.jf.projet6.ui.search.SearchAdapter;
+import com.vincler.jf.projet6.ui.search.SearchAdapterClick;
 import com.vincler.jf.projet6.ui.settings.SettingsActivity;
 import com.vincler.jf.projet6.utils.ConstantsUtils;
 
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     public EditText customEditText;
     private ImageButton searchButton;
     private NavigationView navigationView;
+    private RecyclerView recyclerView;
     public MainActivityContract.Presenter presenter = new MainActivityPresenter(this);
 
     @Override
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         searchButton = findViewById(R.id.toolbar_searchButton_imButton);
         drawerLayout = findViewById(R.id.activity_main);
         navigationView = findViewById(R.id.nav_view);
+        recyclerView = findViewById(R.id.activity_main_recycler_view);
 
         configureViews();
         displayToolbar();
@@ -98,6 +101,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                         .setLogo(R.drawable.logo)
                         .build(),
                 RC_SIGN_IN);
+    }
+
+    @Override
+    public void updateSearch(ArrayList<Search> searchList) {
+
+        if (searchList != null && !searchList.isEmpty()) {
+            RecyclerView.Adapter adapter = new SearchAdapter(searchList, search -> {
+                presenter.search(search);
+            });
+            recyclerView.setAdapter(adapter);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+        }
+
     }
 
     private void configureViews() {
@@ -136,16 +153,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     private void searchButtonListener() {
 
         searchButton.setOnClickListener(v -> displaySearchBar());
-    }
-
-    @Override
-    public void instanceSearchFragment(ArrayList<Search> searchList) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        SearchFragment fragment = new SearchFragment(searchList);
-        fragmentTransaction.replace(R.id.activity_main_viewpager, fragment);
-        fragmentTransaction.commit();
     }
 
     private void displaySearchButton() {
@@ -205,6 +212,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
             return false;
         });
     }
+
+
 
     private void closeKeyboard() {
         View view = getCurrentFocus();

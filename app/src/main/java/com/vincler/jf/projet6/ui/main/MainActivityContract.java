@@ -20,7 +20,7 @@ public interface MainActivityContract {
 
         void startLogin();
 
-        void instanceSearchFragment(ArrayList<Search> search);
+        void updateSearch(ArrayList<Search> searchList);
     }
 
     interface Presenter {
@@ -33,5 +33,7 @@ public interface MainActivityContract {
         String getUidFirebase();
 
         void autocompleteRequest(Editable s, PlacesClient placesClient);
+
+        void search(Search search);
     }
 }
