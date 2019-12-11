@@ -14,12 +14,24 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.api.UserFirebase;
+import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Search;
 import com.vincler.jf.projet6.models.User;
+import com.vincler.jf.projet6.models.googleMapResponse.GeometryResponse;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
+import com.vincler.jf.projet6.models.search.SearchResponse;
 import com.vincler.jf.projet6.ui.SharedData;
+import com.vincler.jf.projet6.utils.UnsafeOkHttpClient;
 
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivityPresenter implements MainActivityContract.Presenter {
 
@@ -134,6 +146,36 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     @Override
     public void search(Search search) {
+Log.i("test_click",search.getPlaceId()+"/"+search.getName());
 
+
+
+        RestaurantsService service;
+        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        OkHttpClient.Builder builder = UnsafeOkHttpClient.getUnsafeOkHttpClient().addInterceptor(interceptor);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://maps.googleapis.com/maps/api/place/")
+                .client(builder.build())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(RestaurantsService.class);
+
+        service.geometry(search.getPlaceId()).enqueue(new Callback<SearchResponse>() {
+            @Override
+            public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
+                double latitude = response.body().getLatitude();
+                double longitude = response.body().getLongitude();
+                Log.i("tag_result_latitude",String.valueOf(latitude));
+                Log.i("tag_result_longitude", String.valueOf(longitude));
+
+            }
+
+            @Override
+            public void onFailure(Call<SearchResponse> call, Throwable t) {
+
+            }
+        });
     }
 }

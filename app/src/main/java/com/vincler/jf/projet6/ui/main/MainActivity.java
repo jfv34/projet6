@@ -40,7 +40,6 @@ import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.ui.SharedData;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 import com.vincler.jf.projet6.ui.search.SearchAdapter;
-import com.vincler.jf.projet6.ui.search.SearchAdapterClick;
 import com.vincler.jf.projet6.ui.settings.SettingsActivity;
 import com.vincler.jf.projet6.utils.ConstantsUtils;
 

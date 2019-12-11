@@ -2,18 +2,18 @@ package com.vincler.jf.projet6.models;
 
 public class Search {
     private String placeId;
-    private String restaurantName;
+    private String name;
 
-    public Search(String placeId, String restaurantName) {
+    public Search(String placeId, String name) {
         this.placeId = placeId;
-        this.restaurantName = restaurantName;
+        this.name = name;
     }
 
     public String getPlaceId() {
         return placeId;
     }
 
-    public String getRestaurantName() {
-        return restaurantName;
+    public String getName() {
+        return name;
     }
 }

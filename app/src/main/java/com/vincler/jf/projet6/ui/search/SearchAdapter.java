@@ -33,34 +33,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
         TextView textView = holder.itemView.findViewById(R.id.item_search_tv);
-        textView.setText(searchList.get(position).getRestaurantName());
+        textView.setText(searchList.get(position).getName());
         View item_search = holder.itemView.findViewById(R.id.item_search);
         item_search.setOnClickListener(v -> {
             click.onClick(searchList.get(position));
         });
     }
-
-    /*private void placeIdSelected(String placeId) {
-        RestaurantsService service;
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient.Builder builder = UnsafeOkHttpClient.getUnsafeOkHttpClient().addInterceptor(interceptor);
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://maps.googleapis.com/maps/api/place/")
-                .client(builder.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(RestaurantsService.class);
-
-        // result.geometry.location
-
-
-    }*/
-
-    ;
-
-
 
     @Override
     public int getItemCount() {
