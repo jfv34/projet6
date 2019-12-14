@@ -21,12 +21,11 @@ public class PageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0:
-                return MapFragment.newInstance();
             case 1:
                 return ListFragment.newInstance();
             case 2:
                 return WorkmatesFragment.newInstance();
+            case 0:
             default:
                 return MapFragment.newInstance();
         }

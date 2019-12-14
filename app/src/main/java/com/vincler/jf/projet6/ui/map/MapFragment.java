@@ -2,6 +2,7 @@ package com.vincler.jf.projet6.ui.map;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,7 +30,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
+import com.vincler.jf.projet6.ui.SharedData;
 import com.vincler.jf.projet6.ui.main.MainActivity;
+import com.vincler.jf.projet6.ui.main.MainActivityPresenter;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 
 import java.util.ArrayList;
@@ -73,6 +77,11 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
                 }
             }
         });
+        SharedData.latlngMap.observe(this,latLng ->changeMap(latLng));
+    }
+
+    private void changeMap(LatLng latLng) {
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
 
     private void markers(double latitude, double longitude, String restaurantId) {
@@ -170,4 +179,6 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
     @Override
     public void onMapReady(GoogleMap googleMap) {
     }
+
+
 }

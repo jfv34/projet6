@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.model.AutocompletePrediction;
 import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
@@ -17,7 +18,6 @@ import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.data.RestaurantsService;
 import com.vincler.jf.projet6.models.Search;
 import com.vincler.jf.projet6.models.User;
-import com.vincler.jf.projet6.models.googleMapResponse.GeometryResponse;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.models.search.SearchResponse;
 import com.vincler.jf.projet6.ui.SharedData;
@@ -51,12 +51,10 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
     public void filterRestaurants(String query) {
         ArrayList<NearbyRestaurant> result = new ArrayList<>();
         ArrayList<NearbyRestaurant> restaurants = restaurantsData.getValue();
-
         if (restaurants != null) {
             for (int i = 0; i < restaurants.size(); i++) {
                 String r = restaurants.get(i).getName();
                 NearbyRestaurant data = restaurants.get(i);
-
                 result.add(new NearbyRestaurant(
                         data.getName(),
                         data.getLatitude(),
@@ -71,7 +69,6 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                 ));
             }
         }
-
         restaurantsData.setValue(result);
     }
 
@@ -146,9 +143,6 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     @Override
     public void search(Search search) {
-Log.i("test_click",search.getPlaceId()+"/"+search.getName());
-
-
 
         RestaurantsService service;
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -169,7 +163,8 @@ Log.i("test_click",search.getPlaceId()+"/"+search.getName());
                 double longitude = response.body().getLongitude();
                 Log.i("tag_result_latitude",String.valueOf(latitude));
                 Log.i("tag_result_longitude", String.valueOf(longitude));
-
+                LatLng latLng = new LatLng(latitude, longitude);
+                SharedData.latlngMap.postValue(latLng);
             }
 
             @Override

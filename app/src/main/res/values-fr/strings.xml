@@ -29,4 +29,5 @@
     <string name="preferences_summary_notifications">autoriser ou non les notifications</string>
     <string name="settings_notifications_summary">Pour recevoir à 12h un rappel de votre déjeuner.</string>
     <string name="settings">Règlages</string>
+    <string name="titlenotification">Reminder: lunch</string>
 </resources>

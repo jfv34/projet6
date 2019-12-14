@@ -203,7 +203,7 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 int duration = getDuration();
-                String titleNotification = "Rappel: déjeuner";
+                String titleNotification = context.getResources().getString(R.string.titlenotification);
                 String message = getNotificationText(task);
 
                 Data data = new Data.Builder()
