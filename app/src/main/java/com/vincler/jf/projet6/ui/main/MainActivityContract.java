@@ -11,7 +11,6 @@ import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public interface MainActivityContract {
 
@@ -31,8 +30,6 @@ public interface MainActivityContract {
 
     interface Presenter {
         MutableLiveData<ArrayList<NearbyRestaurant>> getLiveData();
-
-        void filterRestaurants(String query);
 
         void loadUser();
 

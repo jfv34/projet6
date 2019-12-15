@@ -47,32 +47,6 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
         this.view = view;
     }
 
-
-    @Override
-    public void filterRestaurants(String query) {
-        ArrayList<NearbyRestaurant> result = new ArrayList<>();
-        ArrayList<NearbyRestaurant> restaurants = restaurantsData.getValue();
-        if (restaurants != null) {
-            for (int i = 0; i < restaurants.size(); i++) {
-                String r = restaurants.get(i).getName();
-                NearbyRestaurant data = restaurants.get(i);
-                result.add(new NearbyRestaurant(
-                        data.getName(),
-                        data.getLatitude(),
-                        data.getLongitude(),
-                        data.getAddress(),
-                        data.getPhoto(),
-                        data.getStars(),
-                        r.toLowerCase().contains(query.toLowerCase()),
-                        restaurants.get(i).getIsOpenNow(),
-                        data.getWorkmatesNumber(),
-                        data.getPlaceid()
-                ));
-            }
-        }
-        restaurantsData.setValue(result);
-    }
-
     @Override
     public void loadUser() {
 

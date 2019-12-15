@@ -220,8 +220,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                     alreadyClosed = false;
                     presenter.autocompleteRequest(s, placesClient);
                 }
-
-                //presenter.filterRestaurants(s.toString());
             }
         });
 
