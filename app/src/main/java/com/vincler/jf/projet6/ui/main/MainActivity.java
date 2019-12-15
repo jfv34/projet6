@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     private ImageButton searchButton;
     private NavigationView navigationView;
     private RecyclerView recyclerView;
+    private boolean alreadyClosed = false;
     public MainActivityContract.Presenter presenter = new MainActivityPresenter(this);
 
     @Override
@@ -131,6 +133,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         displaySearchButton();
     }
 
+    @Override
+    public void eraseEditText() {
+        customEditText.setText("");
+    }
+
     private void displaySearchBar() {
 
         noDisplayTitle();
@@ -141,10 +148,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     private void displayEditText() {
         customEditText.setVisibility(View.VISIBLE);
+        eraseEditText();
         editTextListener();
     }
 
-    private void noDisplayEditText() {
+    public void noDisplayEditText() {
 
         customEditText.setVisibility(View.GONE);
     }
@@ -197,8 +205,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
             @Override
             public void afterTextChanged(Editable s) {
 
-                presenter.autocompleteRequest(s,placesClient);
-                presenter.filterRestaurants(s.toString());
+                if (s.toString().equals("")) {
+                    if (!alreadyClosed) {
+                        closeKeyboard();
+                        displayToolbar();
+                        presenter.clearSearchList();
+                        alreadyClosed = true;
+                        Log.i("tag_alreadyClosed: ", String.valueOf(alreadyClosed));
+                        ;
+                    }
+                    Log.i("tag_alreadyClosed: ", "test");
+                } else {
+                    Log.i("tag_alreadyClosed: ", String.valueOf(alreadyClosed));
+                    alreadyClosed = false;
+                    presenter.autocompleteRequest(s, placesClient);
+                }
+
+                //presenter.filterRestaurants(s.toString());
             }
         });
 
@@ -213,8 +236,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
 
-
-    private void closeKeyboard() {
+    public void closeKeyboard() {
         View view = getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

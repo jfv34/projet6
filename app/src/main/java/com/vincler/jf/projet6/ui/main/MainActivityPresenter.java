@@ -37,6 +37,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
     private MainActivityContract.View view;
     public MutableLiveData<ArrayList<NearbyRestaurant>> restaurantsData = new MutableLiveData<>(new ArrayList<>());
+    ArrayList<Search> searchList = new ArrayList<>();
 
     @Override
     public MutableLiveData<ArrayList<NearbyRestaurant>> getLiveData() {
@@ -124,7 +125,6 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
                 .setQuery(s.toString())
                 .build();
         placesClient.findAutocompletePredictions(request).addOnSuccessListener((response) -> {
-            ArrayList<Search> searchList = new ArrayList<>();
             int i=0;
             for (AutocompletePrediction prediction : response.getAutocompletePredictions()) {
 
@@ -161,10 +161,11 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
             public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
                 double latitude = response.body().getLatitude();
                 double longitude = response.body().getLongitude();
-                Log.i("tag_result_latitude",String.valueOf(latitude));
-                Log.i("tag_result_longitude", String.valueOf(longitude));
                 LatLng latLng = new LatLng(latitude, longitude);
                 SharedData.latlngMap.postValue(latLng);
+                view.closeKeyboard();
+                view.displayToolbar();
+                clearSearchList();
             }
 
             @Override
@@ -172,5 +173,9 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
             }
         });
+    }
+
+    public void clearSearchList() {
+        searchList.clear();
     }
 }

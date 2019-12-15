@@ -21,6 +21,12 @@ public interface MainActivityContract {
         void startLogin();
 
         void updateSearch(ArrayList<Search> searchList);
+
+        void closeKeyboard();
+
+        void displayToolbar();
+
+        void eraseEditText();
     }
 
     interface Presenter {
@@ -35,5 +41,7 @@ public interface MainActivityContract {
         void autocompleteRequest(Editable s, PlacesClient placesClient);
 
         void search(Search search);
+
+        void clearSearchList();
     }
 }
