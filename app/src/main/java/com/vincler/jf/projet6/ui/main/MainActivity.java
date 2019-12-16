@@ -86,16 +86,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         viewPager();
         bottomView();
         displayToolbar();
-    }
-
-    public void displayToolbar() {
-
-        setSupportActionBar(toolbar);
-        navigationView();
-        noDisplayEditText();
-        displayTitle();
         drawerLayout();
-        displaySearchButton();
     }
 
     private void viewPager() {
@@ -133,8 +124,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         });
     }
 
-    private void navigationView() {
+    private void drawerLayout() {
+
         navigationView.setNavigationItemSelectedListener(this);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        SharedData.favoritedRestaurant.observe(this, restaurant ->
+                navigationView.getMenu().getItem(0).setVisible(restaurant != null && !restaurant.isEmpty()));
+    }
+
+    public void displayToolbar() {
+
+        setSupportActionBar(toolbar);
+        noDisplayEditText();
+        displayTitle();
+        displaySearchButton();
     }
 
     public void noDisplayEditText() {
@@ -145,15 +150,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     private void displayTitle() {
         toolbar.setTitle("    " + getString(R.string.title_hungry));
         getSupportActionBar().setTitle("    " + getString(R.string.title_hungry));
-    }
-
-    private void drawerLayout() {
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-        SharedData.favoritedRestaurant.observe(this, restaurant ->
-                navigationView.getMenu().getItem(0).setVisible(restaurant != null && !restaurant.isEmpty()));
     }
 
     private void displaySearchButton() {
@@ -193,13 +189,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         editTextListener();
     }
 
-    @Override
-    public void eraseEditText() {
-        customEditText.setText("");
-    }
-
     private void editTextListener() {
-
 
         PlacesClient placesClient = com.google.android.libraries.places.api.Places.createClient(getApplicationContext());
 
@@ -248,6 +238,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    @Override
+    public void eraseEditText() {
+        customEditText.setText("");
     }
 
     @Override
@@ -375,7 +370,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         toast.show();
     }
 
-    @Override
+   /* @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-    }
+    }*/
 }

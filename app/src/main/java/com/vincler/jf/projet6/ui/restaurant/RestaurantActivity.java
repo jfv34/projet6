@@ -94,7 +94,11 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         like_tv.setOnClickListener(v -> presenter.toggleLike());
         like_iv.setOnClickListener(v -> presenter.toggleLike());
 
-        favorite_fab.setOnClickListener(v -> presenter.toggleFavorite());
+        favorite_fab.setOnClickListener(v -> {
+
+            progressBar.setVisibility(View.GONE);
+            presenter.toggleFavorite();
+        });
 
         displayLike(details.isLiked());
         displayFavorite(details.isFavorited());

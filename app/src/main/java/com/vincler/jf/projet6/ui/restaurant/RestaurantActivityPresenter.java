@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.work.Data;
@@ -121,7 +122,6 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         }
         isFavorited =! isFavorited;
         view.displayFavorite(isFavorited);
-
     }
 
     private boolean get_Setting_notifications() {
