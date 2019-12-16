@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -50,8 +49,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainActivityContract.View, NavigationView.OnNavigationItemSelectedListener {
 
-    private final int RC_SIGN_IN = 123;
+    public MainActivityContract.Presenter presenter = new MainActivityPresenter(this);
 
+    private final int RC_SIGN_IN = 123;
     private BottomNavigationView bottomNavigationView;
     private ViewPager viewPager;
     private Toolbar toolbar;
@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     private NavigationView navigationView;
     private RecyclerView recyclerView;
     private boolean alreadyClosed = false;
-    public MainActivityContract.Presenter presenter = new MainActivityPresenter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,48 +78,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         navigationView = findViewById(R.id.nav_view);
         recyclerView = findViewById(R.id.activity_main_recycler_view);
 
-        configureViews();
-        displayToolbar();
-
+        displayViews();
         presenter.loadUser();
     }
 
-    @Override
-    public void startLogin() {
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build(),
-                new AuthUI.IdpConfig.FacebookBuilder().build(),
-                new AuthUI.IdpConfig.TwitterBuilder().build()
-        );
-
-        startActivityForResult(
-                AuthUI.getInstance()
-                        .createSignInIntentBuilder()
-                        .setAvailableProviders(providers)
-                        .setTheme(R.style.LoginTheme)
-                        .setLogo(R.drawable.logo)
-                        .build(),
-                RC_SIGN_IN);
-    }
-
-    @Override
-    public void updateSearch(ArrayList<Search> searchList) {
-
-        if (searchList != null && !searchList.isEmpty()) {
-            RecyclerView.Adapter adapter = new SearchAdapter(searchList, search -> {
-                presenter.search(search);
-            });
-            recyclerView.setAdapter(adapter);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(layoutManager);
-        }
-
-    }
-
-    private void configureViews() {
+    private void displayViews() {
         viewPager();
         bottomView();
+        displayToolbar();
     }
 
     public void displayToolbar() {
@@ -131,218 +96,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         displayTitle();
         drawerLayout();
         displaySearchButton();
-    }
-
-    @Override
-    public void eraseEditText() {
-        customEditText.setText("");
-    }
-
-    private void displaySearchBar() {
-
-        noDisplayTitle();
-        noDisplaySearchButton();
-        noDisplayNavigationIcon();
-        displayEditText();
-    }
-
-    private void displayEditText() {
-        customEditText.setVisibility(View.VISIBLE);
-        eraseEditText();
-        editTextListener();
-    }
-
-    public void noDisplayEditText() {
-
-        customEditText.setVisibility(View.GONE);
-    }
-
-    private void searchButtonListener() {
-
-        searchButton.setOnClickListener(v -> displaySearchBar());
-    }
-
-    private void displaySearchButton() {
-
-        searchButton.setVisibility(View.VISIBLE);
-        searchButtonListener();
-    }
-
-    private void noDisplaySearchButton() {
-        searchButton.setVisibility(View.INVISIBLE);
-    }
-
-    private void noDisplayNavigationIcon() {
-        toolbar.setNavigationIcon(null);
-    }
-
-    private void displayTitle() {
-        toolbar.setTitle("    " + getString(R.string.title_hungry));
-        getSupportActionBar().setTitle("    " + getString(R.string.title_hungry));
-    }
-
-    private void noDisplayTitle() {
-        getSupportActionBar().setTitle("");
-    }
-
-    private void editTextListener() {
-
-
-        PlacesClient placesClient = com.google.android.libraries.places.api.Places.createClient(getApplicationContext());
-
-        customEditText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-                if (s.toString().equals("")) {
-                    if (!alreadyClosed) {
-                        closeKeyboard();
-                        displayToolbar();
-                        presenter.clearSearchList();
-                        alreadyClosed = true;
-                        Log.i("tag_alreadyClosed: ", String.valueOf(alreadyClosed));
-                        ;
-                    }
-                    Log.i("tag_alreadyClosed: ", "test");
-                } else {
-                    Log.i("tag_alreadyClosed: ", String.valueOf(alreadyClosed));
-                    alreadyClosed = false;
-                    presenter.autocompleteRequest(s, placesClient);
-                }
-            }
-        });
-
-        customEditText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                closeKeyboard();
-                displayToolbar();
-                return true;
-            }
-            return false;
-        });
-    }
-
-
-    public void closeKeyboard() {
-        View view = getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.activity_main_drawer_1:
-                restaurantActivityIntent();
-                break;
-            case R.id.activity_main_drawer_2:
-                settingsFragmentIntent();
-
-                break;
-            case R.id.activity_main_drawer_3:
-                disconnectUser();
-                break;
-            default:
-                break;
-        }
-        drawerLayout.closeDrawer(GravityCompat.START);
-
-        return true;
-    }
-
-    private void drawerLayout() {
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-        SharedData.favoritedRestaurant.observe(this, restaurant ->
-                navigationView.getMenu().getItem(0).setVisible(restaurant!=null));
-    }
-
-    private void navigationView() {
-        navigationView.setNavigationItemSelectedListener(this);
-    }
-
-    private void settingsFragmentIntent() {
-
-        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-        startActivity(intent);
-    }
-
-    private void restaurantActivityIntent() {
-
-        String uid = presenter.getUidFirebase();
-        Task<DocumentSnapshot> data = UserFirebase.getUser(uid);
-
-        data.addOnCompleteListener(task -> {
-            if (data.getResult() != null) {
-                String restaurantDisplayedId = data.getResult().getData().get("restaurantFavoriteId").toString();
-                if (!restaurantDisplayedId.equals("")) {
-                    Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
-                    intent.putExtra("restaurantDisplayedId", restaurantDisplayedId);
-                    startActivity(intent);
-                }
-            }
-        });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == RC_SIGN_IN) {
-            if (resultCode == RESULT_OK) {
-                toast(R.string.connectActivity_toast_successful);
-                presenter.loadUser();
-            } else {
-                toast(R.string.connectActivity_toast_failed);
-            }
-        }
-    }
-
-    private void disconnectUser() {
-        AuthUI.getInstance()
-                .signOut(this)
-                .addOnCompleteListener(task -> recreate());
-    }
-
-    @Override
-    public void displayUserInformation(User user) {
-        View headerLayout = navigationView.inflateHeaderView(R.layout.activity_main_nav_header);
-
-        TextView viewName = headerLayout.findViewById(R.id.nav_header_name_and_surname_tv);
-        TextView viewMail = headerLayout.findViewById(R.id.nav_header_mail_tv);
-        ImageView imageView = headerLayout.findViewById(R.id.nav_header_iv);
-
-        viewName.setText(user.getUsername());
-        viewMail.setText(user.getEmail());
-        Glide.with(this)
-                .load(user.getPhotoUserUrl())
-                .into(imageView);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            this.drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     private void viewPager() {
@@ -380,6 +133,243 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         });
     }
 
+    private void navigationView() {
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    public void noDisplayEditText() {
+
+        customEditText.setVisibility(View.GONE);
+    }
+
+    private void displayTitle() {
+        toolbar.setTitle("    " + getString(R.string.title_hungry));
+        getSupportActionBar().setTitle("    " + getString(R.string.title_hungry));
+    }
+
+    private void drawerLayout() {
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        SharedData.favoritedRestaurant.observe(this, restaurant ->
+                navigationView.getMenu().getItem(0).setVisible(restaurant != null && !restaurant.isEmpty()));
+    }
+
+    private void displaySearchButton() {
+
+        searchButton.setVisibility(View.VISIBLE);
+        searchButtonListener();
+    }
+
+    private void searchButtonListener() {
+
+        searchButton.setOnClickListener(v -> displaySearchBar());
+    }
+
+    private void displaySearchBar() {
+
+        noDisplayTitle();
+        noDisplaySearchButton();
+        noDisplayNavigationIcon();
+        displayEditText();
+    }
+
+    private void noDisplayTitle() {
+        getSupportActionBar().setTitle("");
+    }
+
+    private void noDisplaySearchButton() {
+        searchButton.setVisibility(View.INVISIBLE);
+    }
+
+    private void noDisplayNavigationIcon() {
+        toolbar.setNavigationIcon(null);
+    }
+
+    private void displayEditText() {
+        customEditText.setVisibility(View.VISIBLE);
+        eraseEditText();
+        editTextListener();
+    }
+
+    @Override
+    public void eraseEditText() {
+        customEditText.setText("");
+    }
+
+    private void editTextListener() {
+
+
+        PlacesClient placesClient = com.google.android.libraries.places.api.Places.createClient(getApplicationContext());
+
+        customEditText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (s.toString().equals("")) {
+                    if (!alreadyClosed) {
+                        closeKeyboard();
+                        displayToolbar();
+                        presenter.clearSearchList();
+                        alreadyClosed = true;
+                    }
+                } else {
+                    alreadyClosed = false;
+                    presenter.autocompleteRequest(s, placesClient);
+                }
+            }
+        });
+
+        customEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                closeKeyboard();
+                displayToolbar();
+                return true;
+            }
+            return false;
+        });
+    }
+
+    public void closeKeyboard() {
+        View view = getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    @Override
+    public void updateSearch(ArrayList<Search> searchList) {
+
+        if (searchList != null && !searchList.isEmpty()) {
+            RecyclerView.Adapter adapter = new SearchAdapter(searchList, search -> {
+                presenter.search(search);
+            });
+            recyclerView.setAdapter(adapter);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.activity_main_drawer_1:
+                restaurantActivityIntent();
+                break;
+            case R.id.activity_main_drawer_2:
+                settingsFragmentIntent();
+                break;
+            case R.id.activity_main_drawer_3:
+                disconnectUser();
+                break;
+            default:
+                break;
+        }
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private void restaurantActivityIntent() {
+
+        String uid = presenter.getUidFirebase();
+        Task<DocumentSnapshot> data = UserFirebase.getUser(uid);
+
+        data.addOnCompleteListener(task -> {
+            if (data.getResult() != null) {
+                String restaurantDisplayedId = data.getResult().getData().get("restaurantFavoriteId").toString();
+                if (!restaurantDisplayedId.equals("")) {
+                    Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
+                    intent.putExtra("restaurantDisplayedId", restaurantDisplayedId);
+                    startActivity(intent);
+                }
+            }
+        });
+    }
+
+    private void settingsFragmentIntent() {
+
+        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void disconnectUser() {
+        AuthUI.getInstance()
+                .signOut(this)
+                .addOnCompleteListener(task -> recreate());
+    }
+
+    @Override
+    public void startLogin() {
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build(),
+                new AuthUI.IdpConfig.TwitterBuilder().build()
+        );
+
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .setTheme(R.style.LoginTheme)
+                        .setLogo(R.drawable.logo)
+                        .build(),
+                RC_SIGN_IN);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
+                toast(R.string.connectActivity_toast_successful);
+                presenter.loadUser();
+            } else {
+                toast(R.string.connectActivity_toast_failed);
+            }
+        }
+    }
+
+    @Override
+    public void displayUserInformation(User user) {
+        View headerLayout = navigationView.inflateHeaderView(R.layout.activity_main_nav_header);
+
+        TextView viewName = headerLayout.findViewById(R.id.nav_header_name_and_surname_tv);
+        TextView viewMail = headerLayout.findViewById(R.id.nav_header_mail_tv);
+        ImageView imageView = headerLayout.findViewById(R.id.nav_header_iv);
+
+        viewName.setText(user.getUsername());
+        viewMail.setText(user.getEmail());
+        Glide.with(this)
+                .load(user.getPhotoUserUrl())
+                .into(imageView);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            this.drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     private void toast(int message) {
         Toast toast = Toast.makeText(this, getString(message), Toast.LENGTH_LONG);
         toast.show();
@@ -387,6 +377,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 }

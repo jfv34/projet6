@@ -36,7 +36,6 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
     private TextView call_tv;
     private ImageView call_iv;
     private FloatingActionButton favorite_fab;
-    private int progress = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -145,8 +144,5 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new RestaurantAdapter(users, this));
-        if (progress < 70) {
-            progress = 70;
-        }
     }
 }
