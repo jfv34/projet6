@@ -105,12 +105,14 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
     public void toggleFavorite() {
         if (isFavorited) {
             UserFirebase.updateRestaurantFavoriteId("", getUserID());
-            UserFirebase.updateRestaurantFavoriteName("", getUserID());
+            UserFirebase.updateRestaurantFavoriteName("", getUserID())
+                    .addOnCompleteListener(task -> loadUsers());
             SharedData.favoritedRestaurant.postValue(null);
             stopNotification();
         } else {
             UserFirebase.updateRestaurantFavoriteId(restaurantDisplayedId, getUserID());
-            UserFirebase.updateRestaurantFavoriteName(details.getName(), getUserID());
+            UserFirebase.updateRestaurantFavoriteName(details.getName(), getUserID())
+            .addOnCompleteListener(task -> loadUsers());
             SharedData.favoritedRestaurant.postValue(restaurantDisplayedId);
             boolean setting_notifications = get_Setting_notifications();
             if (setting_notifications) {
@@ -119,7 +121,7 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
         }
         isFavorited =! isFavorited;
         view.displayFavorite(isFavorited);
-        loadUsers();
+
     }
 
     private boolean get_Setting_notifications() {
