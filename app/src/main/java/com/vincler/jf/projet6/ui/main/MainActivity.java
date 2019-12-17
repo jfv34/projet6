@@ -35,13 +35,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
+import com.vincler.jf.projet6.KeyAPI;
 import com.vincler.jf.projet6.models.Search;
 import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.ui.SharedData;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 import com.vincler.jf.projet6.ui.search.SearchAdapter;
 import com.vincler.jf.projet6.ui.settings.SettingsActivity;
-import com.vincler.jf.projet6.utils.ConstantsUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Places.initialize(getApplicationContext(), ConstantsUtils.API_KEY);
+        Places.initialize(getApplicationContext(), KeyAPI.API_KEY);
         bottomNavigationView = findViewById(R.id.activity_main_bottom_nav_view);
         viewPager = findViewById(R.id.activity_main_viewpager);
         toolbar = findViewById(R.id.toolbar);
