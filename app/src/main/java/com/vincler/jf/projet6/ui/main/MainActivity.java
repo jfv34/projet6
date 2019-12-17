@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         viewPager();
         bottomView();
         displayToolbar();
-        drawerLayout();
     }
 
     private void viewPager() {
@@ -140,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         noDisplayEditText();
         displayTitle();
         displaySearchButton();
+        drawerLayout();
     }
 
     public void noDisplayEditText() {
