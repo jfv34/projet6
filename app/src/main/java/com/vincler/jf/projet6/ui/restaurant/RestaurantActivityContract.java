@@ -18,6 +18,8 @@ public interface RestaurantActivityContract {
         void displayUsers(ArrayList<User> users);
 
         void displayRestaurant(Details details);
+
+        void displayLoader(Boolean isLoading);
     }
 
     interface Presenter  {

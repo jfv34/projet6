@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.work.Data;
@@ -104,16 +103,25 @@ public class RestaurantActivityPresenter implements RestaurantActivityContract.P
 
     @Override
     public void toggleFavorite() {
+        view.displayLoader(true);
         if (isFavorited) {
             UserFirebase.updateRestaurantFavoriteId("", getUserID());
             UserFirebase.updateRestaurantFavoriteName("", getUserID())
-                    .addOnCompleteListener(task -> loadUsers());
+                    .addOnCompleteListener(task -> {
+                                loadUsers();
+                                view.displayLoader(false);
+                            }
+                    );
             SharedData.favoritedRestaurant.postValue(null);
             stopNotification();
         } else {
             UserFirebase.updateRestaurantFavoriteId(restaurantDisplayedId, getUserID());
             UserFirebase.updateRestaurantFavoriteName(details.getName(), getUserID())
-            .addOnCompleteListener(task -> loadUsers());
+                    .addOnCompleteListener(task -> {
+                        loadUsers();
+                        view.displayLoader(false);
+                    });
+
             SharedData.favoritedRestaurant.postValue(restaurantDisplayedId);
             boolean setting_notifications = get_Setting_notifications();
             if (setting_notifications) {

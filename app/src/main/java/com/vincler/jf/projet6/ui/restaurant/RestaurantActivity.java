@@ -149,4 +149,9 @@ public class RestaurantActivity extends FragmentActivity implements RestaurantAc
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new RestaurantAdapter(users, this));
     }
+
+    @Override
+    public void displayLoader(Boolean isLoading) {
+        progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE);
+    }
 }
