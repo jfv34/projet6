@@ -39,7 +39,7 @@ public class ListFragment extends Fragment implements ListFragmentContract.View 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((MainActivity) getActivity()).presenter.getLiveData().observe(this, restaurants
-                -> presenter.setWorkmatesByRestaurant(restaurants));
+                -> presenter.setWorkmatesNumbers(restaurants));
     }
 
     public void displayRestaurants(ArrayList<NearbyRestaurant> restaurants) {

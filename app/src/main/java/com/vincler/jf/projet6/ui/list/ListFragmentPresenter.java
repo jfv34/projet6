@@ -20,7 +20,7 @@ public class ListFragmentPresenter implements ListFragmentContract.Presenter {
     }
 
     @Override
-    public void setWorkmatesByRestaurant(ArrayList<NearbyRestaurant> restaurants) {
+    public void setWorkmatesNumbers(ArrayList<NearbyRestaurant> restaurants) {
         Task<QuerySnapshot> users = UserFirebase.getUsers();
         users.addOnCompleteListener(task -> {
 

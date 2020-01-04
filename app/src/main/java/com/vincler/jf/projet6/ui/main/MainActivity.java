@@ -33,9 +33,9 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.vincler.jf.projet6.KeyAPI;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
-import com.vincler.jf.projet6.KeyAPI;
 import com.vincler.jf.projet6.models.Search;
 import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.ui.SharedData;
@@ -369,8 +369,4 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         Toast toast = Toast.makeText(this, getString(message), Toast.LENGTH_LONG);
         toast.show();
     }
-
-   /* @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-    }*/
 }

@@ -14,6 +14,11 @@ public class ListFragmentPresenterTest {
         ListFragmentPresenter presenter = new ListFragmentPresenter(view);
         Assertions.assertThat(presenter.getStars(46, 455)).isEqualTo(2);
     }
-
-
+    @Test
+    public void When_likesNumber_is_0_and_likeSize_is_0_stars_is_0() {
+        ListFragmentContract.View view = restaurants -> {
+        };
+        ListFragmentPresenter presenter = new ListFragmentPresenter(view);
+        Assertions.assertThat(presenter.getStars(0, 0)).isEqualTo(0);
+    }
 }

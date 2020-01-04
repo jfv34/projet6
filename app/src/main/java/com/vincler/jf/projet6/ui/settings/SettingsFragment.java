@@ -26,9 +26,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 Log.i("tag_setting_apply",newValue.toString());
                         return true;
                     }
-
-            )
-            ;
+            );
         }
     }
 }
