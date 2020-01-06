@@ -33,7 +33,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.vincler.jf.projet6.KeyAPI;
+import com.vincler.jf.projet6.BuildConfig;
 import com.vincler.jf.projet6.R;
 import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.Search;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Places.initialize(getApplicationContext(), KeyAPI.API_KEY);
+        Places.initialize(getApplicationContext(), BuildConfig.API_KEY);
         bottomNavigationView = findViewById(R.id.activity_main_bottom_nav_view);
         viewPager = findViewById(R.id.activity_main_viewpager);
         toolbar = findViewById(R.id.toolbar);
