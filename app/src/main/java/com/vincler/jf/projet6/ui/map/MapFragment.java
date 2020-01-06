@@ -68,12 +68,11 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
             if (googleMap != null) {
                 googleMap.clear();
                 for (int i = 0; i < it.size(); i++) {
-                    if (it.get(i).isVisible()) {
                         double latitude = it.get(i).getLatitude();
                         double longitude = it.get(i).getLongitude();
                         String restaurantId = it.get(i).getPlaceid();
                         markers(latitude, longitude, restaurantId);
-                    }
+
                 }
             }
         });
