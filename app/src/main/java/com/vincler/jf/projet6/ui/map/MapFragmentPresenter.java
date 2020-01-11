@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.core.content.ContextCompat;
 
@@ -40,6 +41,9 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
     private LocationManager locationManager;
     private static boolean locationFocusedOnUser = true;
     private RestaurantsService service;
+    private ArrayList newRestaurants;
+    private ArrayList oldRestaurants;
+
 
     public MapFragmentPresenter(MapFragmentContract.View view) {
         this.view = view;
@@ -87,16 +91,31 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
             public void onResponse(Call<ListNearbyRestaurantResponse> call, Response<ListNearbyRestaurantResponse> response) {
                 if (!response.body().getResults().isEmpty()) {
 
-                    ArrayList newRestaurants = new ArrayList();
+                    oldRestaurants = newRestaurants;
+                    newRestaurants = new ArrayList();
                     int sizeRestaurantsData = response.body().results.size();
                     for (int i = 0; i < sizeRestaurantsData; i++) {
+                        int r=0;
                         NearbyRestaurantResponse res = response.body().getResults().get(i);
                         NearbyRestaurant restaurant = new NearbyRestaurant(res.getName(), res.getLatitude(),
                                 res.getLongitude(), res.getAddress(), res.getPhoto(), 0,
                                 true, res.getIsOpenNow(), 0,
                                 res.getPlaceid());
+                        boolean alreadyDisplay = false;
+                        if (oldRestaurants != null) {
+                            for (int j = 0; j < oldRestaurants.size(); j++) {
 
-                        newRestaurants.add(i, restaurant);
+                                if ( ((NearbyRestaurant)oldRestaurants.get(j)).getPlaceid().equals(restaurant.getPlaceid())) {
+                                    Log.i("tag_oldRestaurant","restau identical !");
+                                    alreadyDisplay = true;
+                                }
+                                else {Log.i("tag_oldRestaurant","restau NOT identical");}
+                            }
+                        }
+                        if (!alreadyDisplay) {
+                            newRestaurants.add(r, restaurant);
+                            r++;
+                        }
                     }
                     view.getLiveData().setValue(newRestaurants);
                 }

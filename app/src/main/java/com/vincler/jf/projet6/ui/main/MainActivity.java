@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +22,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.ListFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -39,9 +43,11 @@ import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.Search;
 import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.ui.SharedData;
+import com.vincler.jf.projet6.ui.map.MapFragment;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 import com.vincler.jf.projet6.ui.search.SearchAdapter;
 import com.vincler.jf.projet6.ui.settings.SettingsActivity;
+import com.vincler.jf.projet6.ui.workmates.WorkmatesFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     private final int RC_SIGN_IN = 123;
     private BottomNavigationView bottomNavigationView;
-    private ViewPager viewPager;
+    private FrameLayout fragmentContainer;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     public EditText customEditText;
@@ -70,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
         Places.initialize(getApplicationContext(), BuildConfig.API_KEY);
         bottomNavigationView = findViewById(R.id.activity_main_bottom_nav_view);
-        viewPager = findViewById(R.id.activity_main_viewpager);
+        fragmentContainer = findViewById(R.id.activity_main_frameLayout);
         toolbar = findViewById(R.id.toolbar);
         customEditText = findViewById(R.id.toolbar_customEditText);
         searchButton = findViewById(R.id.toolbar_searchButton_imButton);
@@ -83,44 +89,41 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     private void displayViews() {
-        viewPager();
         bottomView();
         displayToolbar();
     }
+    final Fragment fragment1 = new MapFragment();
+    final Fragment fragment2 = new ListFragment();
+    final Fragment fragment3 = new WorkmatesFragment();
+    Fragment active = fragment1;
 
-    private void viewPager() {
-        PageAdapter pageAdapter = new PageAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(pageAdapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                bottomNavigationView.getMenu().getItem(position).setChecked(true);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-    }
 
     private void bottomView() {
+        getSupportFragmentManager().beginTransaction().add(R.id.activity_main_frameLayout, fragment3, "3").hide(fragment3).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.activity_main_frameLayout, fragment2, "2").hide(fragment2).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.activity_main_frameLayout,fragment1, "1").commit();
         bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()) {
                 case R.id.menu_bottom_map:
-                    viewPager.setCurrentItem(0);
+                    bottomNavigationView.getMenu().getItem(0).setChecked(true);
+                    switchFragment(fragment1);
                     break;
                 case R.id.menu_bottom_listview:
-                    viewPager.setCurrentItem(1);
+                    bottomNavigationView.getMenu().getItem(1).setChecked(true);
+                    switchFragment(fragment2);
                     break;
                 case R.id.menu_bottom_workmates:
-                    viewPager.setCurrentItem(2);
+                    bottomNavigationView.getMenu().getItem(2).setChecked(true);
+                    switchFragment(fragment3);
             }
             return true;
         });
+    }
+
+    private void switchFragment(Fragment fragment){
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().hide(active).show(fragment).commit();
+        active = fragment;
     }
 
     private void drawerLayout() {
