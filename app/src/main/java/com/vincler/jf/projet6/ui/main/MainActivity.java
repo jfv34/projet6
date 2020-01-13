@@ -24,10 +24,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.ListFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
@@ -43,6 +41,7 @@ import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.Search;
 import com.vincler.jf.projet6.models.User;
 import com.vincler.jf.projet6.ui.SharedData;
+import com.vincler.jf.projet6.ui.list.ListFragment;
 import com.vincler.jf.projet6.ui.map.MapFragment;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 import com.vincler.jf.projet6.ui.search.SearchAdapter;
@@ -308,7 +307,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     private void disconnectUser() {
         AuthUI.getInstance()
                 .signOut(this)
-                .addOnCompleteListener(task -> recreate());
+                .addOnCompleteListener(task ->
+                        recreate());
     }
 
     @Override
@@ -339,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                 toast(R.string.connectActivity_toast_successful);
                 presenter.loadUser();
             } else {
-                toast(R.string.connectActivity_toast_failed);
+                finish();
             }
         }
     }

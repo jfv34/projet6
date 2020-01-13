@@ -2,14 +2,12 @@ package com.vincler.jf.projet6.ui.map;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +15,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -32,7 +29,6 @@ import com.vincler.jf.projet6.api.UserFirebase;
 import com.vincler.jf.projet6.models.restaurants.nearby.NearbyRestaurant;
 import com.vincler.jf.projet6.ui.SharedData;
 import com.vincler.jf.projet6.ui.main.MainActivity;
-import com.vincler.jf.projet6.ui.main.MainActivityPresenter;
 import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 
 import java.util.ArrayList;
@@ -66,7 +62,6 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
         super.onViewCreated(view, savedInstanceState);
         getLiveData().observe(this, it -> {
             if (googleMap != null) {
-                googleMap.clear();
                 for (int i = 0; i < it.size(); i++) {
                         double latitude = it.get(i).getLatitude();
                         double longitude = it.get(i).getLongitude();
