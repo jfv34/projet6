@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         Places.initialize(getApplicationContext(), BuildConfig.API_KEY);
         bottomNavigationView = findViewById(R.id.activity_main_bottom_nav_view);
         fragmentContainer = findViewById(R.id.activity_main_frameLayout);
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar_main);
         customEditText = findViewById(R.id.toolbar_customEditText);
         searchButton = findViewById(R.id.toolbar_searchButton_imButton);
         drawerLayout = findViewById(R.id.activity_main);
@@ -150,8 +150,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     private void displayTitle() {
-        toolbar.setTitle("    " + getString(R.string.title_hungry));
-        getSupportActionBar().setTitle("    " + getString(R.string.title_hungry));
+        toolbar.setTitle(getString(R.string.title_hungry));
+        getSupportActionBar().setTitle(getString(R.string.title_hungry));
     }
 
     private void displaySearchButton() {

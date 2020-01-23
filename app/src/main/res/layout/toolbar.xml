@@ -2,12 +2,13 @@
 <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
 
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
+    android:id="@+id/toolbar_main"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
     app:contentInsetStartWithNavigation="0dp"
     app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
+    app:titleMarginStart="10dp"
     app:theme="@style/ToolbarColoredBackArrow"
     app:titleTextColor="#ffffff">
 
@@ -29,13 +30,6 @@
         app:libIZO_setBorderColor="#FFFFFF"
         app:libIZO_setBorderView="true"
         app:libIZO_setCornerRadius="4dp" />
-
-  <!--  <fragment
-        android:id="@+id/autocomplete_fragment"
-        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />-->
-
 
     <ImageButton
         android:id="@+id/toolbar_searchButton_imButton"
