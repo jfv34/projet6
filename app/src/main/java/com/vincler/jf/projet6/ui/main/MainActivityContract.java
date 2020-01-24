@@ -17,6 +17,8 @@ public interface MainActivityContract {
     interface View {
         void displayUserInformation(User user);
 
+        void displayViews();
+
         void startLogin();
 
         void updateSearch(ArrayList<Search> searchList);

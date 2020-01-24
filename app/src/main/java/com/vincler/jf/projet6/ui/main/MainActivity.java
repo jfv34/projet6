@@ -83,14 +83,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         navigationView = findViewById(R.id.nav_view);
         recyclerView = findViewById(R.id.activity_main_recycler_view);
 
-        displayViews();
         presenter.loadUser();
+
+
     }
 
-    private void displayViews() {
+    public void displayViews() {
         bottomView();
         displayToolbar();
     }
+
     final Fragment fragment1 = new MapFragment();
     final Fragment fragment2 = new ListFragment();
     final Fragment fragment3 = new WorkmatesFragment();
@@ -273,6 +275,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                 break;
             case R.id.activity_main_drawer_3:
                 disconnectUser();
+
                 break;
             default:
                 break;
@@ -305,10 +308,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     private void disconnectUser() {
+        //getSupportFragmentManager().beginTransaction().remove(active);
+        //noDisplayEditText();
         AuthUI.getInstance()
                 .signOut(this)
-                .addOnCompleteListener(task ->
-                        recreate());
+                .addOnCompleteListener(task -> {
+
+                    //Intent intent = new Intent(this, MainActivity.class);
+                    // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    //this.startActivity(intent);
+                    recreate();
+                });
     }
 
     @Override
@@ -361,10 +371,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     @Override
     public void onBackPressed() {
+
         if (this.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            finish();
         }
     }
 
@@ -372,4 +384,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         Toast toast = Toast.makeText(this, getString(message), Toast.LENGTH_LONG);
         toast.show();
     }
+
 }

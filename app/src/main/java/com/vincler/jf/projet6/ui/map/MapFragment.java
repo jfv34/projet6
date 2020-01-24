@@ -2,9 +2,13 @@ package com.vincler.jf.projet6.ui.map;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +19,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -110,6 +116,21 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
             map.getMapAsync(googleMap -> {
                 this.googleMap = googleMap;
                 googleMap.setMyLocationEnabled(true);
+
+            // LatLng latLng = SharedData.latlngMap.getValue();
+                googleMap.moveCamera(CameraUpdateFactory.zoomBy(3));
+                Log.i("tag coordonnées", "> "+googleMap.getCameraPosition().toString());
+
+                //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),15));
+
+                googleMap.setOnMyLocationClickListener(new GoogleMap.OnMyLocationClickListener() {
+                    @Override
+                    public void onMyLocationClick(@NonNull Location location) {
+                        Log.i("click","> " + location.toString());
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),15));
+                    }
+                });
+
                 googleMap.setOnMarkerClickListener(marker -> {
                     ArrayList<NearbyRestaurant> data = getLiveData().getValue();
                     NearbyRestaurant restaurant = presenter.restaurantChosenByClickOnMarker(marker, data);
@@ -124,10 +145,13 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
                     LatLng target = googleMap.getCameraPosition().target;
                     presenter.searchRestaurants(target.latitude, target.longitude);
                 });
+
                 googleMap.setOnCameraMoveListener(() -> presenter.stopFollowUser());
             });
         }
     }
+
+
 
     @Override
     public void onPause() {

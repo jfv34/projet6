@@ -80,6 +80,7 @@ public class MainActivityPresenter implements MainActivityContract.Presenter {
 
                     view.displayUserInformation(user);
                     SharedData.favoritedRestaurant.setValue(user.getRestaurantFavoriteId());
+                    view.displayViews();
                 }
             });
         }
