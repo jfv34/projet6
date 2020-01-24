@@ -117,20 +117,6 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
                 this.googleMap = googleMap;
                 googleMap.setMyLocationEnabled(true);
 
-            // LatLng latLng = SharedData.latlngMap.getValue();
-                googleMap.moveCamera(CameraUpdateFactory.zoomBy(3));
-                Log.i("tag coordonnées", "> "+googleMap.getCameraPosition().toString());
-
-                //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),15));
-
-                googleMap.setOnMyLocationClickListener(new GoogleMap.OnMyLocationClickListener() {
-                    @Override
-                    public void onMyLocationClick(@NonNull Location location) {
-                        Log.i("click","> " + location.toString());
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()),15));
-                    }
-                });
-
                 googleMap.setOnMarkerClickListener(marker -> {
                     ArrayList<NearbyRestaurant> data = getLiveData().getValue();
                     NearbyRestaurant restaurant = presenter.restaurantChosenByClickOnMarker(marker, data);
