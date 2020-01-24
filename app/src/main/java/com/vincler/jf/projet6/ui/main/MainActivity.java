@@ -307,8 +307,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     private void disconnectUser() {
         AuthUI.getInstance()
                 .signOut(this)
-                .addOnCompleteListener(task ->
-                        recreate());
+                .addOnCompleteListener(task -> {
+                    recreate();
+                    finish();
+                });
     }
 
     @Override
@@ -365,6 +367,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            finish();
         }
     }
 

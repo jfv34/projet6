@@ -110,6 +110,7 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
             map.getMapAsync(googleMap -> {
                 this.googleMap = googleMap;
                 googleMap.setMyLocationEnabled(true);
+                googleMap.moveCamera(CameraUpdateFactory.zoomBy(3));
                 googleMap.setOnMarkerClickListener(marker -> {
                     ArrayList<NearbyRestaurant> data = getLiveData().getValue();
                     NearbyRestaurant restaurant = presenter.restaurantChosenByClickOnMarker(marker, data);
