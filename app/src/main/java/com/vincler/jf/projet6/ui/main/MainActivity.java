@@ -308,16 +308,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
     }
 
     private void disconnectUser() {
-        //getSupportFragmentManager().beginTransaction().remove(active);
-        //noDisplayEditText();
         AuthUI.getInstance()
                 .signOut(this)
                 .addOnCompleteListener(task -> {
-
-                    //Intent intent = new Intent(this, MainActivity.class);
-                    // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-                    //this.startActivity(intent);
                     recreate();
+                    finish();
                 });
     }
 
