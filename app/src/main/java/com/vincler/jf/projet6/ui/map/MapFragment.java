@@ -125,14 +125,6 @@ public class MapFragment extends Fragment implements MapFragmentContract.View {
                     googleMap.setMyLocationEnabled(true);
                 }
 
-               /*googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-                   @Override
-                   public boolean onMyLocationButtonClick() {
-                       Log.i("tag_onMyLocation","ok");
-                       return true;
-                   }
-               });*/
-
                 googleMap.setOnMarkerClickListener(marker -> {
                     ArrayList<NearbyRestaurant> data = getLiveData().getValue();
                     NearbyRestaurant restaurant = presenter.restaurantChosenByClickOnMarker(marker, data);
