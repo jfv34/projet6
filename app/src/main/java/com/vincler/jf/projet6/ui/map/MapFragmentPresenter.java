@@ -95,7 +95,7 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                     newRestaurants = new ArrayList();
                     int sizeRestaurantsData = response.body().results.size();
                     for (int i = 0; i < sizeRestaurantsData; i++) {
-                        int r=0;
+                        int r = 0;
                         NearbyRestaurantResponse res = response.body().getResults().get(i);
                         NearbyRestaurant restaurant = new NearbyRestaurant(res.getName(), res.getLatitude(),
                                 res.getLongitude(), res.getAddress(), res.getPhoto(), 0,
@@ -105,11 +105,12 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
                         if (oldRestaurants != null) {
                             for (int j = 0; j < oldRestaurants.size(); j++) {
 
-                                if ( ((NearbyRestaurant)oldRestaurants.get(j)).getPlaceid().equals(restaurant.getPlaceid())) {
-                                    Log.i("tag_oldRestaurant","restau identical !");
+                                if (((NearbyRestaurant) oldRestaurants.get(j)).getPlaceid().equals(restaurant.getPlaceid())) {
+                                    Log.i("tag_oldRestaurant", "restau identical !");
                                     alreadyDisplay = true;
+                                } else {
+                                    Log.i("tag_oldRestaurant", "restau NOT identical");
                                 }
-                                else {Log.i("tag_oldRestaurant","restau NOT identical");}
                             }
                         }
                         if (!alreadyDisplay) {
@@ -176,5 +177,7 @@ public class MapFragmentPresenter implements MapFragmentContract.Presenter {
         Canvas canvas = new Canvas(bitmap);
         background.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
+
     }
+
 }

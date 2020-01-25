@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
     private final int RC_SIGN_IN = 123;
     private BottomNavigationView bottomNavigationView;
-    private FrameLayout fragmentContainer;
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     public EditText customEditText;
@@ -75,17 +74,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
         Places.initialize(getApplicationContext(), BuildConfig.API_KEY);
         bottomNavigationView = findViewById(R.id.activity_main_bottom_nav_view);
-        fragmentContainer = findViewById(R.id.activity_main_frameLayout);
         toolbar = findViewById(R.id.toolbar_main);
         customEditText = findViewById(R.id.toolbar_customEditText);
         searchButton = findViewById(R.id.toolbar_searchButton_imButton);
         drawerLayout = findViewById(R.id.activity_main);
         navigationView = findViewById(R.id.nav_view);
         recyclerView = findViewById(R.id.activity_main_recycler_view);
-
         presenter.loadUser();
-
-
     }
 
     public void displayViews() {
@@ -311,8 +306,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
         AuthUI.getInstance()
                 .signOut(this)
                 .addOnCompleteListener(task -> {
-                    recreate();
-                    finish();
+                    startLogin();
                 });
     }
 
@@ -333,6 +327,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
                         .setLogo(R.drawable.logo)
                         .build(),
                 RC_SIGN_IN);
+        drawerLayout.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -341,6 +336,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
 
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
+                drawerLayout.setVisibility(View.VISIBLE);
                 toast(R.string.connectActivity_toast_successful);
                 presenter.loadUser();
             } else {
@@ -371,7 +367,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityContr
             this.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
-            finish();
         }
     }
 

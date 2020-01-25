@@ -2,13 +2,10 @@ package com.vincler.jf.projet6.ui.map;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +13,12 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -40,9 +35,7 @@ import com.vincler.jf.projet6.ui.restaurant.RestaurantActivity;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-
-public class MapFragment extends Fragment implements MapFragmentContract.View, OnMapReadyCallback {
+public class MapFragment extends Fragment implements MapFragmentContract.View {
 
     private static final int PERMISSIONS_REQUEST_CODE = 123;
     private GoogleMap googleMap;
@@ -66,6 +59,7 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        loadMap();
         getLiveData().observe(this, it -> {
             if (googleMap != null) {
                 for (int i = 0; i < it.size(); i++) {
@@ -77,6 +71,7 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
                 }
             }
         });
+
         SharedData.latlngMap.observe(this,latLng ->changeMap(latLng));
     }
 
@@ -115,7 +110,28 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
         if (map != null) {
             map.getMapAsync(googleMap -> {
                 this.googleMap = googleMap;
-                googleMap.setMyLocationEnabled(true);
+
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (ContextCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+                        //Location Permission already granted
+                        googleMap.setMyLocationEnabled(true);
+                    } else {
+                        //Request Location Permission
+                        checkLocationPermission();
+                    }
+                } else {
+                    googleMap.setMyLocationEnabled(true);
+                }
+
+               /*googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                   @Override
+                   public boolean onMyLocationButtonClick() {
+                       Log.i("tag_onMyLocation","ok");
+                       return true;
+                   }
+               });*/
 
                 googleMap.setOnMarkerClickListener(marker -> {
                     ArrayList<NearbyRestaurant> data = getLiveData().getValue();
@@ -127,6 +143,7 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
                     }
                     return false;
                 });
+
                 googleMap.setOnCameraIdleListener(() -> {
                     LatLng target = googleMap.getCameraPosition().target;
                     presenter.searchRestaurants(target.latitude, target.longitude);
@@ -137,18 +154,14 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
         }
     }
 
-
+    private void checkLocationPermission() {
+        ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_CODE);
+    }
 
     @Override
     public void onPause() {
         super.onPause();
         presenter.stopLocate();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        checkPermissions();
     }
 
     @Override
@@ -159,30 +172,33 @@ public class MapFragment extends Fragment implements MapFragmentContract.View, O
         }
     }
 
-    private void checkPermissions() {
-        if
-        (ActivityCompat.checkSelfPermission(getActivity(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{
-                    ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-            }, PERMISSIONS_REQUEST_CODE);
-            return;
-        }
-        loadMap();
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSIONS_REQUEST_CODE) {
-            checkPermissions();
+        switch (requestCode) {
+            case PERMISSIONS_REQUEST_CODE: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        googleMap.setMyLocationEnabled(true);
+                    }
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-    }
-
-
 }

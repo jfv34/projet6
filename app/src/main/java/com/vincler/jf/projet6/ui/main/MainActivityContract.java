@@ -5,6 +5,7 @@ import android.text.Editable;
 
 import androidx.lifecycle.MutableLiveData;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.vincler.jf.projet6.models.Search;
 import com.vincler.jf.projet6.models.User;

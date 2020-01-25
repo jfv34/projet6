@@ -34,7 +34,5 @@ public interface MapFragmentContract {
         NearbyRestaurant restaurantChosenByClickOnMarker(Marker marker, ArrayList<NearbyRestaurant> data);
 
         BitmapDescriptor bitmapDescriptorFromVector(Context context, int drawable);
-
-
     }
 }
