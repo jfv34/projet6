@@ -183,14 +183,13 @@ public class MapFragment extends Fragment implements MapFragmentContract.View {
                     }
 
                 } else {
-
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }
             }
-
             // other 'case' lines to check for other
             // permissions this app might request
         }
     }
+
 }
